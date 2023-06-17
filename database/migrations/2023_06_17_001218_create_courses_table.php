@@ -13,13 +13,9 @@ return new class extends Migration
     {
         Schema::create('requests', function (Blueprint $table) {
             $table->id()->autoIncrement()->primary();
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->nullable();
-            $table->enum("type", ["registry", "confirm"]);
-            $table->integer("test_score");
-            $table->integer("hash");
-            $table->tinyInteger("saved")->default(0);
-            $table->json("data");
+            $table->string('name', 300)->nullable(false);
+            $table->enum("level", ['zero','beginner','junior','middle']);
+            $table->enum("type", ['automatic','group-online','individual-offline','individual-online']);
         });
     }
 
@@ -28,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('requests');
+        Schema::dropIfExists('courses');
     }
 };

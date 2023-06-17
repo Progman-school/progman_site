@@ -13,13 +13,12 @@ return new class extends Migration
     {
         Schema::create('requests', function (Blueprint $table) {
             $table->id()->autoIncrement()->primary();
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->nullable();
-            $table->enum("type", ["registry", "confirm"]);
-            $table->integer("test_score");
-            $table->integer("hash");
-            $table->tinyInteger("saved")->default(0);
-            $table->json("data");
+            $table->string('name', 50)->nullable(false);
+            $table->enum("type", ['text','image','string']);
+            $table->string('description', 300)->nullable();
+            $table->integer("value")->nullable(false);
+            $table->tinyInteger("show")->nullable(false)->default(1);
+            $table->integer("order")->nullable(false)->default(0);
         });
     }
 
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('requests');
+        Schema::dropIfExists('contents');
     }
 };
