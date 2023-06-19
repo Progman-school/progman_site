@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Course;
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,11 +13,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('requests', function (Blueprint $table) {
-            $table->id()->autoIncrement()->primary();
+        Schema::create('certificates', function (Blueprint $table) {
+            $table->id();
             $table->string('full_number', 30)->unique()->nullable()->default(null);
-            $table->integer('user')->nullable(false);
-            $table->integer('course')->nullable(false);
+            $table->foreignIdFor(User::Class)->constrained();
+            $table->foreignIdFor(Course::Class)->constrained();
             $table->timestamp('start_date')->useCurrent();
             $table->timestamp('date')->useCurrentOnUpdate();
             $table->integer('hours')->nullable(false);

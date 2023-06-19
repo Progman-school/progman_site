@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('requests', function (Blueprint $table) {
-            $table->id()->autoIncrement()->primary();
+        Schema::create('courses', function (Blueprint $table) {
+            $table->id();
             $table->string('name', 300)->nullable(false);
             $table->enum("level", ['zero','beginner','junior','middle']);
             $table->enum("type", ['automatic','group-online','individual-offline','individual-online']);

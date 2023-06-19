@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Tag;
+use App\Models\TagValue;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,11 +13,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tag_values', function (Blueprint $table) {
+        Schema::create('tag_tag_value', function (Blueprint $table) {
             $table->id();
-            $table->foreignId("tag")->constrained();
-            $table->enum("content", ['url','en','ru'])->nullable(false);
-            $table->string("value")->nullable(false);
+            $table->foreignIdFor(Tag::Class)->constrained();
+            $table->foreignIdFor(TagValue::Class)->constrained();
         });
     }
 
@@ -24,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tag_values');
+        Schema::dropIfExists('tag_tag_value');
     }
 };

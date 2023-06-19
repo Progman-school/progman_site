@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('requests', function (Blueprint $table) {
-            $table->id()->autoIncrement()->primary();
+        Schema::create('tags', function (Blueprint $table) {
+            $table->id();
             $table->string('name', 50)->nullable(false);
             $table->enum("type", ['text','image','string']);
             $table->string('description', 300)->nullable();
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('contents');
+        Schema::dropIfExists('tags');
     }
 };

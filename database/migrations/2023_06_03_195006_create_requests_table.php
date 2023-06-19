@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('requests', function (Blueprint $table) {
-            $table->id()->autoIncrement()->primary();
+            $table->id();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable();
             $table->enum("type", ["registry", "confirm"]);

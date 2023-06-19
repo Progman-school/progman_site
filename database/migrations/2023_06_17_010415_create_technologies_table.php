@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('technologies', function (Blueprint $table) {
-            $table->id()->autoIncrement()->primary();
+            $table->id();
             $table->string("name", 30)->unique();
             $table->enum("type", ['backend','frontend','devops','other'])->nullable(false);
             $table->string('description', 300)->nullable();
