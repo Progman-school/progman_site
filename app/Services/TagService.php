@@ -3,19 +3,12 @@
 namespace App\Services;
 
 use App\Models\Tag;
+use Exception;
 use Illuminate\Support\Facades\Session;
 
-use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
-use Illuminate\Database\Query\Builder as QueryBuilder;
-
-/**
- * @mixin EloquentBuilder
- * @mixin QueryBuilder
- */
-class TagService
+class TagService extends MainService
 {
     const LANG_SESSION_KEY = 'lang';
-
     const EN_LANGUAGE = 'en';
     const RU_LANGUAGE = 'ru';
 
@@ -29,30 +22,42 @@ class TagService
     private const REFRESH_CONTENT_HOURS = 24;
     private const ONE_HOUR = 3600;
 
-    public function __construct(
-        protected Tag $tag,
-    ) {}
+    public function __construct($tag)
+    {
+        parent::__construct($tag);
+    }
 
-    public function checkCurrentLanguage(): string
+    public static function getCurrentLanguage(): string
     {
         return Session::get(self::LANG_SESSION_KEY) ?? self::DEFAULT_LANGUAGE;
+    }
+
+    public static function switchLanguage(): string {
+        $currentLangKey = array_search(
+            self::getCurrentLanguage(),
+            self::LANG_LIST
+        );
+        $currentLang = self::LANG_LIST[$currentLangKey + 1] ?? self::LANG_LIST[0];
+        Session::put(self::LANG_SESSION_KEY, $currentLang);
+        return $currentLang;
     }
 
     private static function isOld(int $contentTime): bool {
         return ($contentTime + (self::REFRESH_CONTENT_HOURS * self::ONE_HOUR) - time()) < 0;
     }
 
-    public static function getByName(string $name, int $time, array $injectionContent = []): array|int|null
+    /**
+     * @throws Exception
+     */
+    public static function getTagDataByName(string $name, int $time, array $injectionContent = []): array|int|null
     {
+        if (!isset($request['tag'], $request['timeStamp'])) {
+            throw new Exception("Incorrect params!");
+        }
         if (!self::isOld($time)) {
             return 1;
         }
-        return Tag::findOne()->where("name", $name);
-    }
-
-    public static function getDataByTagAndLang(string $tag, int $time, array $injectionContent = []): string|int|null
-    {
-        return self::getByTag($tag, $time, $injectionContent)[Session::get(self::LANG_SESSION_KEY) ?? self::DEFAULT_LANGUAGE];
+        return Tag::all()->where("show", "=", 1)->where("name", "=", $name)->toArray();
     }
 
     public static function setDefaultLanguageForNulls(array &$tagList): array {
@@ -70,7 +75,7 @@ class TagService
 
     public static function getAllTags(array $tagList = []): array {
         $answer = [];
-        $tags = Tag::getAll();
+        $tags = Tag::all()->where("show", "=", 1)->toArray();
 
         foreach ($tags as $oneTag) {
             foreach ($oneTag->tagValues() as $tagValue) {
@@ -103,10 +108,8 @@ class TagService
                     $answer[$tag][$fieldKey] = $fieldValue;
                     $answer[$tag]['timeStamp'] = time();
                 }
-
             }
         }
         return $answer;
-
     }
 }

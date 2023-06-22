@@ -4,12 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
-use Illuminate\Database\Query\Builder as QueryBuilder;
 
 /**
-* @mixin EloquentBuilder
-* @mixin QueryBuilder
+* @method static \Illuminate\Database\Query\Builder|Tag where($value)
+* @method static \Illuminate\Database\Query\Builder|Tag findOne($value)
 */
 class Tag extends Model
 {
@@ -18,14 +16,7 @@ class Tag extends Model
 
     public function tagValues(): BelongsToMany
     {
-`        return $this->belongsToMany(TagValue::class);
+       return $this->belongsToMany(TagValue::class);
     }
 
-    /**
-     * @return self[]
-     */
-    public static function getAll(): array
-    {
-        return self::all()->where('show', 1)->toArray();
-    }
 }

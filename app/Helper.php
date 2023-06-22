@@ -3,7 +3,8 @@ namespace App;
 
 class Helper
 {
-    public static function createFrontAnswer(string $text, mixed $data = null):string {
-        return json_encode(['text' => $text, 'data' => $data], JSON_UNESCAPED_UNICODE);
+    public static function createFrontAnswer(string $text, mixed $data = null):array {
+//        return json_encode(['status' => $text, 'data' => $data], JSON_UNESCAPED_UNICODE);
+        return ['status' => $text, 'data' => $data];
     }
 }

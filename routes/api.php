@@ -23,7 +23,8 @@ use Illuminate\Support\Facades\Route;
 //
 //Route::post('check_certificate', [CertificateController::class, 'checkCertificate']);
 
-Route::post('get_current_language', [TagController::class, 'getCurrentLanguage']);
-Route::post('change_language', [TagController::class, 'changeLanguage']);
-Route::post('get_content_by_tag', [TagController::class, 'getContentByTag']);
-Route::post('get_all_tag_contents', [TagController::class, 'getAllContent']);
+Route::get('get_current_language', [TagController::class, 'getCurrentLanguage']);
+Route::post('change_language', [TagController::class, 'switchLanguage']);
+Route::get('get_all_tag_contents', [TagController::class, 'getAllContent']);
+Route::get('get_content_by_tag', [TagController::class, 'getTagDataByName']);
+
