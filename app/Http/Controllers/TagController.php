@@ -3,33 +3,29 @@
 namespace App\Http\Controllers;
 
 use App\Services\TagService;
+use Exception;
 use Illuminate\Http\Request;
 
 class TagController extends MainController
 {
     public function getCurrentLanguage(Request $request):string {
-        return $request->json(self::do(
-            TagService::getCurrentLanguage()
-        ));
+        return self::do(TagService::getCurrentLanguage());
     }
 
     public function switchLanguage(Request $request):string {
-        return $request->json(self::do(
-            TagService::switchLanguage()
-        ));
+        return self::do(TagService::switchLanguage());
     }
 
     public function getAllContent(Request $request):string {
-        return $request->json(self::do(
-            TagService::getAllTags()
-        ));
+        return self::do(TagService::getAllTags());
     }
 
-    public function getTagDataByName(Request $request): string
+    /**
+     * @throws Exception
+     */
+    public function getTagValueByName(Request $request): string
     {
-        $requestArray =  $request->toArray();
-        return $request->json(self::do(
-            TagService::getTagDataByName($requestArray["tag"], $requestArray['timeStamp'])
-        ));
+        $requestArray = $request->toArray();
+        return self::do(TagService::getTagValueByName($requestArray["tag"], $requestArray['time']));
     }
 }

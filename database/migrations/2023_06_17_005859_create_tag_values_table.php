@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('tag_values', function (Blueprint $table) {
             $table->id();
-            $table->foreignId("tag")->constrained();
             $table->enum("content", ['url','en','ru'])->nullable(false);
             $table->string("value")->nullable(false);
         });

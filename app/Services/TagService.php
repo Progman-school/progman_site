@@ -49,15 +49,16 @@ class TagService extends MainService
     /**
      * @throws Exception
      */
-    public static function getTagDataByName(string $name, int $time, array $injectionContent = []): array|int|null
+    public static function getTagValueByName(string $name, int $time, array $injectionContent = []): ?string
     {
-        if (!isset($request['tag'], $request['timeStamp'])) {
-            throw new Exception("Incorrect params!");
-        }
         if (!self::isOld($time)) {
-            return 1;
+            return null;
         }
-        return Tag::all()->where("show", "=", 1)->where("name", "=", $name)->toArray();
+        /** @var Tag $tagData */
+        $tagData = Tag::where("show", 1)->where("name",  $name)->first();
+
+        return !$tagData ? $tagData :
+            $tagData->tagValues()->where("content", self::getCurrentLanguage())->first()?->value;
     }
 
     public static function setDefaultLanguageForNulls(array &$tagList): array {

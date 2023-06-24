@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\TagController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,5 +25,5 @@ use Illuminate\Support\Facades\Route;
 Route::get('get_current_language', [TagController::class, 'getCurrentLanguage']);
 Route::post('change_language', [TagController::class, 'switchLanguage']);
 Route::get('get_all_tag_contents', [TagController::class, 'getAllContent']);
-Route::get('get_content_by_tag', [TagController::class, 'getTagDataByName']);
+Route::get('get_tag_value_by_name', [TagController::class, 'getTagValueByName']);
 

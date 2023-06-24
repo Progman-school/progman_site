@@ -4,9 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
-* @method static \Illuminate\Database\Query\Builder|Tag where($value)
+* @method static \Illuminate\Database\Query\Builder|Tag where($value, $operator, $value)
 * @method static \Illuminate\Database\Query\Builder|Tag findOne($value)
 */
 class Tag extends Model

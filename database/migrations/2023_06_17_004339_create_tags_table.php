@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('name', 50)->nullable(false);
             $table->enum("type", ['text','image','string']);
             $table->string('description', 300)->nullable();
-            $table->integer("value")->nullable(false);
             $table->tinyInteger("show")->nullable(false)->default(1);
             $table->integer("order")->nullable(false)->default(0);
         });
