@@ -32,7 +32,7 @@ class TagService extends MainService
         return Session::get(self::LANG_SESSION_KEY) ?? self::DEFAULT_LANGUAGE;
     }
 
-    public static function switchLanguage(): string {
+    public static function switchTagLanguage(): string {
         $currentLangKey = array_search(
             self::getCurrentLanguage(),
             self::LANG_LIST

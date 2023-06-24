@@ -12,8 +12,8 @@ class TagController extends MainController
         return self::do(TagService::getCurrentLanguage());
     }
 
-    public function switchLanguage(Request $request):string {
-        return self::do(TagService::switchLanguage());
+    public function switchTagLanguage(Request $request):string {
+        return self::do(TagService::switchTagLanguage());
     }
 
     public function getAllContent(Request $request):string {
