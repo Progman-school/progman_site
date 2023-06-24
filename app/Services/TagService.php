@@ -76,14 +76,13 @@ class TagService extends MainService
 
     public static function getAllTags(array $tagList = []): array {
         $answer = [];
-        $tags = Tag::all()->where("show", "=", 1)->toArray();
-
+        $tags = Tag::where("show", 1)->get();
         foreach ($tags as $oneTag) {
-            foreach ($oneTag->tagValues() as $tagValue) {
-                if ($tagValue->content == 'url') {
-                    $tagList[$oneTag->name]['file_url'] = $tagValue;
+            foreach ($oneTag->tagValues as $tagValue) {
+                if ($tagValue?->content == 'url') {
+                    $tagList[$oneTag->name]['file_url'] = $tagValue->value;
                 }
-                $tagList[$oneTag->name][$tagValue->content] = $tagValue;
+                $tagList[$oneTag->name][$tagValue->content] = $tagValue->value;;
             }
         }
 

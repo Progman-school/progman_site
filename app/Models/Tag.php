@@ -12,9 +12,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 */
 class Tag extends Model
 {
-
-    public string $name;
-
     public function tagValues(): BelongsToMany
     {
        return $this->belongsToMany(TagValue::class);
