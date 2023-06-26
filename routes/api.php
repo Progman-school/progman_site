@@ -27,3 +27,7 @@ Route::put('switch_tag_language', [TagController::class, 'switchTagLanguage']);
 Route::get('get_all_tag_contents', [TagController::class, 'getAllContent']);
 Route::get('get_tag_value_by_name', [TagController::class, 'getTagValueByName']);
 
+// tmp rebuilders
+Route::get('rebuild_tags', [\App\Http\Controllers\DBRebuilder::class, 'rebuildTags']);
+
+
