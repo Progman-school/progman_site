@@ -22,11 +22,6 @@ class TagService extends MainService
     private const REFRESH_CONTENT_HOURS = 24;
     private const ONE_HOUR = 3600;
 
-    public function __construct($tag)
-    {
-        parent::__construct($tag);
-    }
-
     public static function getCurrentLanguage(): string
     {
         return Session::get(self::LANG_SESSION_KEY) ?? self::DEFAULT_LANGUAGE;

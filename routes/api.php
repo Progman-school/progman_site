@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\Route;
 
@@ -20,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 //
 //Route::post('savetest', [RequestsController::class, 'addNewRequest']);
 //
-//Route::post('check_certificate', [CertificateController::class, 'checkCertificate']);
+Route::get('check_certificate', [CertificateController::class, 'checkCertificate']);
 
 Route::get('current_language', [TagController::class, 'getCurrentLanguage']);
 Route::get('switch_tag_language', [TagController::class, 'switchTagLanguage']);
