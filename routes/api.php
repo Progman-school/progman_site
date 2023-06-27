@@ -24,6 +24,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('current_language', [TagController::class, 'getCurrentLanguage']);
 Route::get('switch_tag_language', [TagController::class, 'switchTagLanguage']);
-Route::get('AllTags', [TagController::class, 'getAllTags']);
+Route::get('all_tags', [TagController::class, 'getAllTags']);
 Route::get('tag_value_by_name', [TagController::class, 'getTagValueByName']);
 

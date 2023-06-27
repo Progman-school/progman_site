@@ -37,7 +37,7 @@ export const useMultiLanguageStore = defineStore({
         getAllTagContents() {
             this.contentArray = []
             mixins.methods.getAPI(
-                'AllTags',
+                'all_tags',
                 null,
                 (response) => {
                     this.contentArray = response.data
