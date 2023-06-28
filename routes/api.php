@@ -29,6 +29,8 @@ Route::get('all_tags', [TagController::class, 'getAllTags']);
 Route::get('tag_value_by_name', [TagController::class, 'getTagValueByName']);
 
 // tmp rebuilders
-Route::get('rebuild_tags', [\App\Http\Controllers\DBRebuilder::class, 'rebuildTags']);
+//Route::get('rebuild_tags', [\App\Http\Controllers\DBRebuilder::class, 'rebuildTags']);
+Route::get('rebuildAllFromRequests', [\App\Http\Controllers\DBRebuilder::class, 'rebuildAllFromRequests']);
+
 
 

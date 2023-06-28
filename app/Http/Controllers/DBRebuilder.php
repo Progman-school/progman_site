@@ -37,6 +37,44 @@ class DBRebuilder extends MainController
         );
     }
 
+    public function rebuildAllFromRequests():string {
+        $timeStart = microtime(true);
+        $oldDB = $this->oldDBConnection();
+        $oldDB->beginTransaction();
+        $oldDBRequest = $oldDB->query("
+            SELECT r.*, u.id FROM requests r
+            LEFT JOIN users u on u.reg_hash = r.hash"
+        );
+        $oldDBBData = $oldDBRequest->fetchAll(PDO::FETCH_ASSOC);
+
+        DB::beginTransaction();
+        try {
+            $count = 0;
+            foreach ($oldDBBData as $oneRow) {
+                $count ++;
+            }
+        } catch (Throwable $e) {
+            DB::rollBack();
+            return self::do([
+                "result" => "Fail job",
+                "count" => $count,
+                "time" => (microtime() - $timeStart) / 1000,
+                "error" => $e->getMessage(),
+                "trace" => $e->getTrace(),
+            ]);
+        }
+
+        $oldDB->commit();
+        DB::commit();
+
+
+        return self::do([
+            "result" => "Success job",
+            "count" => $count,
+            "time" => round((microtime(true) - $timeStart) * 1000, 3)
+        ]);
+    }
+
     /**
     * FOR THE CONTENT TAG'S PART
     */
