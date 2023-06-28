@@ -16,14 +16,13 @@ class MainController extends BaseController
     protected static function do(mixed $result, string $errorText = self::DEFAULT_ERROR_TEXT): string
     {
         try {
-            $result = Helper::createFrontAnswer(self::OK_STATUS, $result);
+            return Helper::createFrontAnswer(self::OK_STATUS, $result);
         } catch (Throwable $e) {
             if ($e->getCode() == 7) {
-                $result = Helper::createFrontAnswer(self::ERROR_STATUS, $e->getMessage());
+                return Helper::createFrontAnswer(self::ERROR_STATUS, $e->getMessage());
             }
             Log::error(print_r($e->getMessage(), true));
-            $result = Helper::createFrontAnswer(self::ERROR_STATUS, $errorText);
+            return Helper::createFrontAnswer(self::ERROR_STATUS, $errorText);
         }
-        return json_encode($result, JSON_UNESCAPED_UNICODE);
     }
 }

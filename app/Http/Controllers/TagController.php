@@ -16,7 +16,7 @@ class TagController extends MainController
         return self::do(TagService::switchTagLanguage());
     }
 
-    public function getAllContent(Request $request):string {
+    public function getAllTags(Request $request):string {
         return self::do(TagService::getAllTags());
     }
 
@@ -25,7 +25,6 @@ class TagController extends MainController
      */
     public function getTagValueByName(Request $request): string
     {
-        $requestArray = $request->toArray();
-        return self::do(TagService::getTagValueByName($requestArray["tag"], $requestArray['time']));
+        return self::do(TagService::getTagValueByName($request->tag, $request->timeStamp));
     }
 }

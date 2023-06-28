@@ -22,11 +22,6 @@ class TagService extends MainService
     private const REFRESH_CONTENT_HOURS = 24;
     private const ONE_HOUR = 3600;
 
-    public function __construct($tag)
-    {
-        parent::__construct($tag);
-    }
-
     public static function getCurrentLanguage(): string
     {
         return Session::get(self::LANG_SESSION_KEY) ?? self::DEFAULT_LANGUAGE;
@@ -49,16 +44,25 @@ class TagService extends MainService
     /**
      * @throws Exception
      */
-    public static function getTagValueByName(string $name, int $time, array $injectionContent = []): ?string
+    public static function getTagValueByName(string $name, int $time, array $injectionContent = []): ?array
     {
         if (!self::isOld($time)) {
             return null;
         }
-        /** @var Tag $tagData */
-        $tagData = Tag::where("show", 1)->where("name",  $name)->first();
-
-        return !$tagData ? $tagData :
-            $tagData->tagValues()->where("content", self::getCurrentLanguage())->first()?->value;
+        /** @var Tag $tag */
+        $tag = Tag::where("show", 1)->where("name",  $name)->first();
+        if (!$tag) {
+            return null;
+        }
+        $tagDataWithValues = ["timeStamp" => time()];
+        foreach ($tag->tagValues as $tagValue) {
+            foreach (self::LANG_LIST as $lang) {
+                if ($tagValue->content == $lang) {
+                    $tagDataWithValues[$lang] = $tagValue?->value;
+                }
+            }
+        }
+        return $tagDataWithValues;
     }
 
     public static function setDefaultLanguageForNulls(array &$tagList): array {
