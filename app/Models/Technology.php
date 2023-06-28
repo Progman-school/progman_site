@@ -11,4 +11,9 @@ class Technology extends Model
     {
         return $this->belongsToMany(Course::class);
     }
+
+    public function certificates(): BelongsToMany
+    {
+        return $this->belongsToMany(Certificate::class);
+    }
 }
