@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Request;
 use App\Models\Tag;
 use App\Models\TagValue;
+use App\Models\Uids\Telegram;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use PDO;
 use Throwable;
@@ -22,6 +25,8 @@ class DBRebuilder extends MainController
     const OLD_DB_PASSWORD = "pass";
 
     const OLD_DB_DSN = 'mysql:host=' . self::OLD_DB_HOST . ';dbname=' . self::OLD_DB_NAME;
+
+    const FEATURED_CURRENTLY_EMPTY_VALUE = "none";
 
     public function oldDBConnection():PDO {
         $options = [
@@ -42,15 +47,50 @@ class DBRebuilder extends MainController
         $oldDB = $this->oldDBConnection();
         $oldDB->beginTransaction();
         $oldDBRequest = $oldDB->query("
-            SELECT r.*, u.id FROM requests r
-            LEFT JOIN users u on u.reg_hash = r.hash"
+            SELECT r.*, u.id AS 'user_id' FROM requests r
+            RIGHT JOIN users u on u.reg_hash = r.hash"
         );
         $oldDBBData = $oldDBRequest->fetchAll(PDO::FETCH_ASSOC);
 
         DB::beginTransaction();
         try {
             $count = 0;
-            foreach ($oldDBBData as $oneRow) {
+            foreach ($oldDBBData as $oneRequest) {
+                if ($oneRequest->user_id) {
+                    $oldUser = $oldDB->query("SELECT * FROM users WHERE id = '{$oneRequest->user_id}';");
+                    $oldUserData = $oldUser->fetchAll(PDO::FETCH_ASSOC)[0];
+
+                }
+                /** @var Request $reuest */
+                $reuest = Request::create([
+                    'created_at' => $oneRequest["created_at"],
+                    'updated_at' => $oneRequest["updated_at"],
+                    'uid' => $oldUserData["tg_id"],
+                    'type' => "telegram",
+                    'hash' => $oneRequest["hash"],
+                    'application_data' => $oldUserData["data"],
+                ]);
+
+                /** @var Telegram $telegramUid */
+                $telegramUid = Telegram::create([
+                    'service_uid' => $oldUser["tg_id"],
+                    'service_login' => $oldUser["tg_name"],
+                    'data' => $oldUser["user_data"]
+                ]);
+
+                /** @var User $user */
+                $user = User::create([
+                    'first_name' => $oldUser["first_name"],
+                    'last_name' => $oldUser["last_name"],
+                    'real_first_name' => $oldUser["real_first_name"],
+                    'real_last_name' => $oldUser["real_last_name"],
+                    'real_middle_name' => $oldUser["real_middle_name"],
+                    'telegram' => $telegramUid->id,
+                    'email' => null,
+                    'status' => 'processed'
+                ]);
+
+
                 $count ++;
             }
         } catch (Throwable $e) {
