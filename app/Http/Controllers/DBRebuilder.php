@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Certificate;
+use App\Models\Course;
 use App\Models\Request;
 use App\Models\Tag;
 use App\Models\TagValue;
+use App\Models\Technology;
 use App\Models\Uids\Telegram;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use Exception;
 use PDO;
 use Throwable;
 
@@ -26,7 +30,12 @@ class DBRebuilder extends MainController
 
     const OLD_DB_DSN = 'mysql:host=' . self::OLD_DB_HOST . ';dbname=' . self::OLD_DB_NAME;
 
-    const FEATURED_CURRENTLY_EMPTY_VALUE = "none";
+    private static PDO $oldConnection;
+
+    public function __construct()
+    {
+        self::$oldConnection = $this->oldDBConnection();
+    }
 
     public function oldDBConnection():PDO {
         $options = [
@@ -42,33 +51,150 @@ class DBRebuilder extends MainController
         );
     }
 
-    public function rebuildAllFromRequests():string {
+    /**
+     * @throws Exception
+     */
+    private static function lunchFacade(callable $lunchMethod):array {
         $timeStart = microtime(true);
-        $oldDB = $this->oldDBConnection();
-        $oldDB->beginTransaction();
-        $oldDBRequest = $oldDB->query("
-            SELECT r.*, u.id AS 'user_id' FROM requests r
-            RIGHT JOIN users u on u.reg_hash = r.hash"
-        );
-        $oldDBBData = $oldDBRequest->fetchAll(PDO::FETCH_ASSOC);
-
+        self::$oldConnection->beginTransaction();
         DB::beginTransaction();
         try {
-            $count = 0;
-            foreach ($oldDBBData as $oneRequest) {
-                if ($oneRequest->user_id) {
-                    $oldUser = $oldDB->query("SELECT * FROM users WHERE id = '{$oneRequest->user_id}';");
-                    $oldUserData = $oldUser->fetchAll(PDO::FETCH_ASSOC)[0];
+            $count = null;
+            $lunchMethod($count);
 
+            self::$oldConnection->commit();
+            DB::commit();
+
+            return [
+                "result" => "Success job",
+                "count" => $count,
+                "time" => round((microtime(true) - $timeStart) * 1000, 3),
+            ];
+        }catch (Throwable $e) {
+            DB::rollBack();
+            self::$oldConnection->rollBack();
+            throw new Exception( self::do([
+                "result" => "Fail job",
+                "count" => $count,
+                "time" => round((microtime(true) - $timeStart) * 1000, 3),
+                "error" => $e->getMessage(),
+                "trace" => $e->getTrace(),
+            ]));
+        }
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function rebuildCourses():array {
+        return self::lunchFacade(function(&$count) {
+
+            $oldCourses = self::$oldConnection->query("SELECT * FROM courses;")
+                ->fetchAll(PDO::FETCH_ASSOC);
+            foreach ($oldCourses as $oneCourse) {
+                $oldTechnologiesOneCourse = self::$oldConnection->query(
+                    "SELECT * FROM technologies_by_courses WHERE course = '{$oneCourse['id']}';"
+                )->fetchAll(PDO::FETCH_ASSOC);
+                $technologiesIds = [];
+                foreach ($oldTechnologiesOneCourse as $oldOneCourseTechnologiesRecord) {
+                    $oneCourseOldTechnology = self::$oldConnection->query(
+                        "SELECT * FROM technologies WHERE id = '{$oldOneCourseTechnologiesRecord['technology']}';"
+                    )->fetchAll(PDO::FETCH_ASSOC)[0];
+                    /** @var Technology $technology */
+                    $technology = Technology::firstOrCreate([
+                        'name' => $oneCourseOldTechnology["name"],
+                        'type' => $oneCourseOldTechnology["type"],
+                        'description' => $oneCourseOldTechnology["description"],
+                    ]);
+                    $technologiesIds[] = $technology->id;
                 }
+                /** @var Course $course */
+                $course = Course::create([
+                    'name' => $oneCourse["name"],
+                    'level' => $oneCourse["level"],
+                    'type' => $oneCourse["type"],
+                ]);
+                $course->technologies()->attach($technologiesIds);
+                $count ++;
+            }
+
+        });
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function rebuildCertificates():array {
+        return self::lunchFacade(function(&$count) {
+            $oldCertificates = self::$oldConnection->query("
+                SELECT c.*, u.tg_id FROM certificates c
+                INNER JOIN users u ON c.user = u.id;"
+            )->fetchAll(PDO::FETCH_ASSOC);
+            foreach ($oldCertificates as $oldCertificate) {
+                $newTechnologyIds = [];
+                $OldTechnologiesIds = self::$oldConnection->query("
+                        SELECT * FROM technologies_by_certificates WHERE certificate = '{$oldCertificate["id"]}';
+                ")->fetchAll(PDO::FETCH_ASSOC);
+
+                foreach ($OldTechnologiesIds as $oldTechnologiesId) {
+                    $OldTechnology = self::$oldConnection->query("
+                        SELECT * FROM technologies WHERE id = '{$oldTechnologiesId["technology"]}';
+                    ")->fetchAll(PDO::FETCH_ASSOC)[0];
+                    $newTechnologyIds[] = Technology::where("name", $OldTechnology["name"])->first()->id;
+                }
+                /** @var User $user */
+                $user = User::with("telegram")->where("telegram", $oldCertificate["tg_id"])->first();
+
+
+                $oldCourse = self::$oldConnection->query(
+                    "SELECT * FROM courses WHERE id = '{$oldCertificate["course"]}';"
+                )->fetchAll(PDO::FETCH_ASSOC)[0];
+
+                /** @var Course $user */
+                $course = Course::where("name", $oldCourse["name"])->first();
+
+                /** @var Certificate $certificate */
+                $certificate = Certificate::create([
+                    'full_number' => $oldCertificate["full_number"],
+                    'user_id' => $user->id,
+                    'course_id' => $course->id,
+                    'start_date' => $oldCertificate["start_date"],
+                    'date' => $oldCertificate["date"],
+                    'hours' => $oldCertificate["hours"],
+                    'description' => $oldCertificate["description"],
+                    'language' => $oldCertificate["language"],
+                    'blank' => $oldCertificate["blank"],
+                ]);
+                $certificate->technologies()->attach($newTechnologyIds);
+                $count ++;
+            }
+        });
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function rebuildUsersAndRequests():array {
+        return self::lunchFacade(function(&$count) {
+            $oldRequests = self::$oldConnection->query("
+                SELECT r.*, u.id AS 'user_id' FROM requests r
+                RIGHT JOIN users u on u.reg_hash = r.hash"
+            )->fetchAll(PDO::FETCH_ASSOC);
+            foreach ($oldRequests as $oneRequest) {
+                if (!isset($oneRequest["user_id"]) || !$oneRequest["user_id"]) {
+                    continue;
+                }
+                $oldUser = self::$oldConnection->query(
+                    "SELECT * FROM users WHERE id = '{$oneRequest["user_id"]}';"
+                )->fetchAll(PDO::FETCH_ASSOC)[0];
                 /** @var Request $reuest */
                 $reuest = Request::create([
                     'created_at' => $oneRequest["created_at"],
                     'updated_at' => $oneRequest["updated_at"],
-                    'uid' => $oldUserData["tg_id"],
+                    'uid' => $oldUser["tg_id"],
                     'type' => "telegram",
                     'hash' => $oneRequest["hash"],
-                    'application_data' => $oldUserData["data"],
+                    'application_data' => $oneRequest["data"],
                 ]);
 
                 /** @var Telegram $telegramUid */
@@ -80,53 +206,32 @@ class DBRebuilder extends MainController
 
                 /** @var User $user */
                 $user = User::create([
+                    'created_at' => $oldUser["created_at"],
+                    'updated_at' => $oldUser["updated_at"],
                     'first_name' => $oldUser["first_name"],
                     'last_name' => $oldUser["last_name"],
                     'real_first_name' => $oldUser["real_first_name"],
                     'real_last_name' => $oldUser["real_last_name"],
                     'real_middle_name' => $oldUser["real_middle_name"],
-                    'telegram' => $telegramUid->id,
-                    'email' => null,
+                    'telegram_id' => $telegramUid->id,
+                    'email_id' => null,
                     'status' => 'processed'
                 ]);
-
+                $user->requests()->attach($reuest->id);
 
                 $count ++;
             }
-        } catch (Throwable $e) {
-            DB::rollBack();
-            return self::do([
-                "result" => "Fail job",
-                "count" => $count,
-                "time" => (microtime() - $timeStart) / 1000,
-                "error" => $e->getMessage(),
-                "trace" => $e->getTrace(),
-            ]);
-        }
-
-        $oldDB->commit();
-        DB::commit();
-
-
-        return self::do([
-            "result" => "Success job",
-            "count" => $count,
-            "time" => round((microtime(true) - $timeStart) * 1000, 3)
-        ]);
+        });
     }
 
     /**
-    * FOR THE CONTENT TAG'S PART
-    */
-    public function rebuildTags():string {
-        $oldDB = $this->oldDBConnection();
-        $oldDB->beginTransaction();
-        $oldDBRequest = $oldDB->query("SELECT * FROM `language_contents`");
-        $oldDBBData = $oldDBRequest->fetchAll(PDO::FETCH_ASSOC);
-
-        DB::beginTransaction();
-        try {
-            $count = 0;
+     * FOR THE CONTENT TAG'S PART
+     * @throws Exception
+     */
+    public function rebuildTags():array {
+        return self::lunchFacade(function(&$count) {
+            $oldDBRequest = self::$oldConnection->query("SELECT * FROM `language_contents`");
+            $oldDBBData = $oldDBRequest->fetchAll(PDO::FETCH_ASSOC);
             foreach ($oldDBBData as $oneRow) {
                 $tagValueIDs = [];
                 /** @var Tag $tag */
@@ -162,24 +267,30 @@ class DBRebuilder extends MainController
                     $tagValueIDs[] = $tagValue->id;
                 }
                 $tag->tagValues()->attach($tagValueIDs);
-                $count ++;
+                $count++;
             }
-        } catch (Throwable $e) {
-            DB::rollBack();
-            return self::do([
-                "result" => "Fail job",
-                "count" => $count,
-                "error" => $e->getMessage(),
-                "trace" => $e->getTrace()
-            ]);
+        });
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function rebuildAll(): string {
+        $results = [];
+        $results["tags"] = $this->rebuildTags();
+        $results["courses"] = $this->rebuildCourses();
+        $results["users_requests"] = $this->rebuildUsersAndRequests();
+        $results["certificates"] = $this->rebuildCertificates();
+
+        $time = null;
+        $items = null;
+        foreach ($results as $result) {
+            $time += $result["time"];
+            $items += $result["count"];
         }
+        $results["total"]["items"] = $items;
+        $results["total"]["time"] = $time;
 
-        $oldDB->commit();
-        DB::commit();
-
-        return self::do([
-            "result" => "Success job",
-            "count" => $count
-        ]);
+        return self::do($results);
     }
 }

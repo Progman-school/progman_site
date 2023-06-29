@@ -17,7 +17,7 @@ return new class extends Migration
             $table->timestamp('updated_at')->nullable();
             $table->enum("type", ["registry", "confirm"]);
             $table->integer("test_score");
-            $table->integer("hash");
+            $table->string("hash", 255)->unique()->nullable(false);
             $table->tinyInteger("saved")->default(0);
             $table->json("data");
         });

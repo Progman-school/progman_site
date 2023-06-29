@@ -2,8 +2,12 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Uids\Email;
+use App\Models\Uids\Telegram;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -18,9 +22,16 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'created_at',
+        'updated_at',
+        'first_name',
+        'last_name',
+        'real_last_name',
+        'real_first_name',
+        'real_middle_name',
+        'telegram',
         'email',
-        'password',
+        'status',
     ];
 
     /**
@@ -42,4 +53,19 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function requests(): BelongsToMany
+    {
+        return $this->belongsToMany(Request::class);
+    }
+
+    public function telegram(): BelongsTo
+    {
+        return $this->belongsTo(Telegram::class);
+    }
+
+    public function email(): BelongsTo
+    {
+        return $this->belongsTo(Email::class);
+    }
 }

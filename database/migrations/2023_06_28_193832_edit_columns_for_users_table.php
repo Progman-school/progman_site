@@ -31,8 +31,8 @@ return new class extends Migration
         });
 
         Schema::table(app(User::class)->getTable(), function (Blueprint $table) {
-            $table->foreignId("telegram")->nullable(false);
-            $table->foreignId("email")->nullable(false);
+            $table->foreignId("telegram")->nullable();
+            $table->foreignId("email")->nullable();
             $table->dropColumn("complete");
             $table->enum("status", ["registered", "processed", "customer", "finished"])->nullable(false);
             $table->dropColumn("tg_name");
