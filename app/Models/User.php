@@ -5,9 +5,8 @@ namespace App\Models;
 use App\Models\Uids\Email;
 use App\Models\Uids\Telegram;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -59,13 +58,13 @@ class User extends Authenticatable
         return $this->belongsToMany(Request::class);
     }
 
-    public function telegram(): BelongsTo
+    public function telegrams(): HasMany
     {
-        return $this->belongsTo(Telegram::class);
+        return $this->hasMany(Telegram::class);
     }
 
-    public function email(): BelongsTo
+    public function emails(): HasMany
     {
-        return $this->belongsTo(Email::class);
+        return $this->hasMany(Email::class);
     }
 }

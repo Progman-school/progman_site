@@ -12,24 +12,6 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('telegrams', function (Blueprint $table) {
-            $table->id();
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->nullable();
-            $table->string("service_uid", 256)->unique()->nullable(false);
-            $table->string("service_login")->unique()->nullable();
-            $table->json("data");
-        });
-
-        Schema::create('emails', function (Blueprint $table) {
-            $table->id();
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->nullable();
-            $table->string("service_uid", 256)->unique()->nullable(false);
-            $table->string("service_login")->unique()->nullable();
-            $table->json("data");
-        });
-
         Schema::table(app(User::class)->getTable(), function (Blueprint $table) {
             $table->foreignId("telegram")->nullable();
             $table->foreignId("email")->nullable();
@@ -64,7 +46,5 @@ return new class extends Migration
             $table->string("reg_hash", 255)->unique()->nullable(false);
             $table->integer("repeater_count")->default(0);
         });
-        Schema::dropIfExists('emails');
-        Schema::dropIfExists('telegrams');
     }
 };

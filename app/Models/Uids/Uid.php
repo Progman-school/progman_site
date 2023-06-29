@@ -2,7 +2,9 @@
 
 namespace App\Models\Uids;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Uid extends Model
 {
@@ -17,5 +19,11 @@ class Uid extends Model
         'service_uid',
         'service_login',
         'data',
+        'user',
     ];
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 }
