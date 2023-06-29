@@ -33,6 +33,7 @@ Route::get('rebuild_tags', [\App\Http\Controllers\DBRebuilder::class, 'rebuildTa
 Route::get('rebuild_courses', [\App\Http\Controllers\DBRebuilder::class, 'rebuildCourses']);
 Route::get('rebuild_users_requests', [\App\Http\Controllers\DBRebuilder::class, 'rebuildUsersAndRequests']);
 Route::get('rebuild_certificates', [\App\Http\Controllers\DBRebuilder::class, 'rebuildCertificates']);
+Route::get('rebuild_all', [\App\Http\Controllers\DBRebuilder::class, 'rebuildAll']);
 
 
 

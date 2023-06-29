@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('request_user', function (Blueprint $table) {
             $table->id();
-            $table->foreignId("user_id")->constrained();
-            $table->foreignId("request_id")->constrained();
+            $table->foreignIdFor(User::class)->constrained();
+            $table->foreignIdFor(Request::class)->constrained();
         });
     }
 

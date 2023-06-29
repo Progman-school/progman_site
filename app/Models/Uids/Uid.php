@@ -19,7 +19,7 @@ class Uid extends Model
         'service_uid',
         'service_login',
         'data',
-        'user',
+        'user_id',
     ];
 
     public function user(): BelongsTo

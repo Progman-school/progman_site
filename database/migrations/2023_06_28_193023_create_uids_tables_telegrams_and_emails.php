@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Uids\Email;
+use App\Models\Uids\Telegram;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('telegrams', function (Blueprint $table) {
+        Schema::create(app(Telegram::class)->getTable(), function (Blueprint $table) {
             $table->id();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable();
@@ -20,7 +22,7 @@ return new class extends Migration
             $table->json("data");
         });
 
-        Schema::create('emails', function (Blueprint $table) {
+        Schema::create(app(Email::class)->getTable(), function (Blueprint $table) {
             $table->id();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable();

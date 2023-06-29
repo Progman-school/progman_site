@@ -18,7 +18,11 @@ use Throwable;
 
 /**
  * TMP code for redirect db data from old db to new structure
- * FOR THE CONTENT TAG'S PART
+ * Only for one time using
+ * that's why all the code is here except only routs.
+ *
+ * IT'll suppose to be deleted from the Dev and Main branches
+ * after lunching new version project
  */
 class DBRebuilder extends MainController
 {
@@ -143,13 +147,13 @@ class DBRebuilder extends MainController
                     $newTechnologyIds[] = Technology::where("name", $OldTechnology["name"])->first()->id;
                 }
                 /** @var User $user */
-                $user = User::whereRelation("telegram", "service_uid", $oldCertificate["utg_id"])->first();
+                $user = User::whereRelation("telegrams", "service_uid", $oldCertificate["utg_id"])->first();
 
                 $oldCourse = self::$oldConnection->query(
                     "SELECT * FROM courses WHERE id = '{$oldCertificate["course"]}';"
                 )->fetchAll(PDO::FETCH_ASSOC)[0];
 
-                /** @var Course $user */
+                /** @var Course $course */
                 $course = Course::where("name", $oldCourse["name"])->first();
 
                 /** @var Certificate $certificate */
@@ -196,13 +200,6 @@ class DBRebuilder extends MainController
                     'application_data' => $oneRequest["data"],
                 ]);
 
-                /** @var Telegram $telegramUid */
-                $telegramUid = Telegram::create([
-                    'service_uid' => $oldUser["tg_id"],
-                    'service_login' => $oldUser["tg_name"],
-                    'data' => $oldUser["user_data"]
-                ]);
-
                 /** @var User $user */
                 $user = User::create([
                     'created_at' => $oldUser["created_at"],
@@ -212,10 +209,16 @@ class DBRebuilder extends MainController
                     'real_first_name' => $oldUser["real_first_name"],
                     'real_last_name' => $oldUser["real_last_name"],
                     'real_middle_name' => $oldUser["real_middle_name"],
-                    'telegram_id' => $telegramUid->id,
-                    'email_id' => null,
                     'status' => 'processed'
                 ]);
+
+                Telegram::create([
+                    'service_uid' => $oldUser["tg_id"],
+                    'service_login' => $oldUser["tg_name"],
+                    'data' => $oldUser["user_data"],
+                    'user_id' => $user->id,
+                ]);
+
                 $user->requests()->attach($reuest->id);
 
                 $count ++;
