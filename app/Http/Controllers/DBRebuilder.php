@@ -127,7 +127,7 @@ class DBRebuilder extends MainController
     public function rebuildCertificates():array {
         return self::lunchFacade(function(&$count) {
             $oldCertificates = self::$oldConnection->query("
-                SELECT c.*, u.tg_id FROM certificates c
+                SELECT c.*, u.tg_id AS 'utg_id' FROM certificates c
                 INNER JOIN users u ON c.user = u.id;"
             )->fetchAll(PDO::FETCH_ASSOC);
             foreach ($oldCertificates as $oldCertificate) {
@@ -143,8 +143,7 @@ class DBRebuilder extends MainController
                     $newTechnologyIds[] = Technology::where("name", $OldTechnology["name"])->first()->id;
                 }
                 /** @var User $user */
-                $user = User::with("telegram")->where("telegram", $oldCertificate["tg_id"])->first();
-
+                $user = User::whereRelation("telegram", "service_uid", $oldCertificate["utg_id"])->first();
 
                 $oldCourse = self::$oldConnection->query(
                     "SELECT * FROM courses WHERE id = '{$oldCertificate["course"]}';"
