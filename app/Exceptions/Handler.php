@@ -2,7 +2,9 @@
 
 namespace App\Exceptions;
 
+use App\Helpers\APIHelper;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Request;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -25,6 +27,16 @@ class Handler extends ExceptionHandler
     {
         $this->reportable(function (Throwable $e) {
             //
+        });
+
+        $this->renderable(function (UserAlert $e, Request $request) {
+            if ($request->is('api/*')) {
+                return response(APIHelper::createFrontAnswer(
+                    $e->getMessage(),
+                    APIHelper::ERROR_STATUS
+                ));
+            }
+            return null;
         });
     }
 }

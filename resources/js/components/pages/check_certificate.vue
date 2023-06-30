@@ -17,8 +17,9 @@ const eventListener = useEventListener()
 import mixins from '../../mixins.js'
 
 const showCheckResult = (resultData) => {
+    console.log(resultData)
     eventListener.call('popup_alert:show', {
-        title: resultData.text,
+        title: resultData.status,
         text: resultData.data,
         href: null,
         url: null,
@@ -27,11 +28,11 @@ const showCheckResult = (resultData) => {
     document.getElementById('check_form').reset()
 }
 
-const checkCertificate = (form) => {
-    const certificateForm = new FormData(form.target)
-    mixins.methods.postAPI(
+const checkCertificate = (event) => {
+    event.preventDefault()
+    mixins.methods.getAPI(
         'check_certificate',
-        certificateForm,
+        new FormData(event.target),
         showCheckResult
     );
 }

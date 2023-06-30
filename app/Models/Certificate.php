@@ -2,10 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Certificate extends Model
 {
@@ -28,14 +27,14 @@ class Certificate extends Model
         'blank',
     ];
 
-    public function course(): HasOne
+    public function course(): BelongsTo
     {
-        return $this->hasOne(Course::class);
+        return $this->belongsTo(Course::class);
     }
 
-    public function user(): HasOne
+    public function user(): BelongsTo
     {
-        return $this->hasOne(User::class);
+        return $this->belongsTo(User::class);
     }
 
     public function technologies(): BelongsToMany
