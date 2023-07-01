@@ -60,7 +60,6 @@ export default {
                     `api/${URL}`,
                     requestObject
                 );
-                console.log(response.text())
                 let json = await response.json()
                 if (callback) {
                     await callback(json)
