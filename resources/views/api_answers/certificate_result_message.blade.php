@@ -2,7 +2,7 @@ The cert <b>#{{$certificate->full_number}}</b> issued {{date('m/d/Y', strtotime(
 <br>
 Owner: {{$certificate->user->real_last_name}} {{mb_substr($certificate->user->real_first_name, 0, 1)}} {{mb_substr($certificate->user->real_middle_name, 0, 1)}}
 <br>
-Passed: <b>{{$certificate->hours}} academic hours</b> individual lessons with a mentor
+Successfully passed: <b>{{$certificate->hours}} academic hours</b> individual lessons with a mentor
 <br>
 Language of study: {{$certificate->language}}
 <br>
