@@ -6,7 +6,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Uid extends Model
+abstract class Uid extends Model implements UidInterface
 {
     public $timestamps = false;
 
