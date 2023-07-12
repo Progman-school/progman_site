@@ -43,9 +43,9 @@ jobs:
         # AWS Region
         region: ${{ vars.MY_AWS_REGION }}
         # Beanstalk application name
-        application_name: ${{ AWS_EB_APP_NAME }}
+        application_name: ${{ vars.AWS_EB_APP_NAME }}
         # Beanstalk environment name. If empty a version will be created but not deployed anywhere.
-        environment_name: ${{ AWS_EB_APP_ENV_NAME }}
+        environment_name: ${{ vars.AWS_EB_APP_ENV_NAME }}
         # Version label for new Beanstalk version
         version_label: ${{date +%s}}-${{ github.evant.head_commit.id }}
         # Version description for the new Beanstalk version
