@@ -6,9 +6,6 @@ on:
 
 permissions:
   contents: read
-  
-env:
-  APP_VERSION: ${{ github.sha }}
 
 jobs:
   deploy:
@@ -20,36 +17,42 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
       
-    - name: Dump GitHub context
+    - name: Check dump GitHub context
       env:
         GITHUB_CONTEXT: ${{ toJson(github) }}
       run: echo "$GITHUB_CONTEXT"
     
-#     - name: Generate deployment package
-#       run: zip -r deploy.zip . -x '*.git*'
+    - name: Frontend building using npm
+      run: | 
+        npm update
+        npm install
+        npm run build
+    
+    - name: Generate deployment package
+      run: zip -r deploy.zip . -x '*.git*'
 
-#     - name: Beanstalk Deploy
-#       # You may pin to the exact commit or the version.
-#       # uses: einaregilsson/beanstalk-deploy@18e5b85bd914cabf00fccabe72f60b8757dcd3cb
-#       uses: einaregilsson/beanstalk-deploy@v21
-#       with:
-#         # AWS Access Key
-#         aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
-#         # AWS Secret Key
-#         aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-#         # AWS Region
-#         region: ${{ vars.MY_AWS_REGION }}
-#         # Beanstalk application name
-#         application_name: pm_site
-#         # Beanstalk environment name. If empty a version will be created but not deployed anywhere.
-#         environment_name: pm-site-env
-#         # Version label for new Beanstalk version
-#         version_label: "$GITHUB_CONTEXT"
-        
-#         # Version description for the new Beanstalk version
-#         version_description: # optional
+    - name: Beanstalk Deploy
+      # You may pin to the exact commit or the version.
+      # uses: einaregilsson/beanstalk-deploy@18e5b85bd914cabf00fccabe72f60b8757dcd3cb
+      uses: einaregilsson/beanstalk-deploy@v21
+      with:
+        # AWS Access Key
+        aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        # AWS Secret Key
+        aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        # AWS Region
+        region: ${{ vars.MY_AWS_REGION }}
+        # Beanstalk application name
+        application_name: ${{ AWS_EB_APP_NAME }}
+        # Beanstalk environment name. If empty a version will be created but not deployed anywhere.
+        environment_name: ${{ AWS_EB_APP_ENV_NAME }}
+        # Version label for new Beanstalk version
+        version_label: ${{date +%s}}-${{ github.evant.head_commit.id }}
+        # Version description for the new Beanstalk version
+        version_description: ${{ github.evant.head_commit.message }}
         # Zip file with the version to deploy. If skipped the action will deploy existing version.
-#         deployment_package: deploy.zip
+        deployment_package: deploy.zip
+        
         # Whether the action should skip creating a new bucket and use the given one to upload the deployment package to instead. When omitted the actions will (try to) create a new one during deployment.
 #         existing_bucket_name: # optional
         # If set to "true" then the action will deploy an existing version with the given version_label if it already exists, but otherwise create the version and deploy it. If set to true for an action with no environment name it will upload a version if it does not exist already, but do nothing if the version already exists.
