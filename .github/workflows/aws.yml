@@ -21,7 +21,12 @@ jobs:
       env:
         GITHUB_CONTEXT: ${{ toJson(github) }}
       run: echo "$GITHUB_CONTEXT"
-    
+      
+    - name: Use composer
+      run: |
+        composer install
+        composer update
+        
     - name: Frontend building using npm
       run: | 
         npm update
