@@ -47,7 +47,7 @@ jobs:
         # Beanstalk environment name. If empty a version will be created but not deployed anywhere.
         environment_name: ${{ vars.AWS_EB_APP_ENV_NAME }}
         # Version label for new Beanstalk version
-        version_label: ${{date +%s}}-${{ github.evant.head_commit.id }}
+        version_label: ${{ steps.date.outputs.date }}-${{ github.evant.head_commit.id }}
         # Version description for the new Beanstalk version
         version_description: ${{ github.evant.head_commit.message }}
         # Zip file with the version to deploy. If skipped the action will deploy existing version.
