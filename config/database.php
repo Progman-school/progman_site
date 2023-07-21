@@ -50,7 +50,7 @@ return [
             'port' => env('RDS_PORT') ?? env('DB_PORT', '3306'),
             'database' => env('RDS_DB_NAME') ?? env('DB_DATABASE', 'forge'),
             'username' => env('RDS_USERNAME') ?? env('DB_USERNAME', 'forge'),
-            'password' => env('DB_SOCKET') ?? env('DB_PASSWORD', ''),
+            'password' => env('RDS_PASSWORD') ?? env('DB_PASSWORD', ''),
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
