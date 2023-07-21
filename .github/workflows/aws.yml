@@ -36,7 +36,6 @@ jobs:
 
     - name: Frontend building using npm
       run: |
-        npm update
         npm install
         npm run build
 
