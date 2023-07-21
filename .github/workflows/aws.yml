@@ -29,10 +29,10 @@ jobs:
     - name: Create env file
       run: |
         touch .env
-        echo APP_KEY=empty_key >> .env
+
+        echo APP_KEY=${{ php artisan key:generate --force --show }} >> .env
         echo APP_DEBUG=true >> .env
         echo DB_CONNECTION=mysql >> .env
-        php artisan key:generate --force --show
         cat .env
 
     - name: Frontend building using npm
