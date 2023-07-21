@@ -32,7 +32,7 @@ jobs:
         echo APP_KEY=empty_key >> .env
         echo APP_DEBUG=true >> .env
         echo DB_CONNECTION=mysql >> .env
-        php artisan key:generate --version --force
+        php artisan key:generate --force --show
         cat .env
 
     - name: Frontend building using npm
