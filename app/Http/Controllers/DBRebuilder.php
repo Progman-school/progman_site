@@ -26,13 +26,13 @@ use Throwable;
  */
 class DBRebuilder extends MainController
 {
-    const OLD_DB_HOST = "mysql";
+    const DEF_OLD_DB_HOST = "mysql";
     const OLD_DB_PORT = "3306";
-    const OLD_DB_NAME = "laravel_tmp";
-    const OLD_DB_USER = "laravel";
-    const OLD_DB_PASSWORD = "pass";
+    const OLD_DB_NAME = "u0435463_progman_site";
+    const DEF_OLD_DB_USER = "laravel";
+    const DEF_OLD_DB_PASSWORD = "pass";
 
-    const OLD_DB_DSN = 'mysql:host=' . self::OLD_DB_HOST . ';dbname=' . self::OLD_DB_NAME;
+    const
 
     private static PDO $oldConnection;
 
@@ -48,9 +48,9 @@ class DBRebuilder extends MainController
             PDO::ATTR_EMULATE_PREPARES => false,
         ];
         return new PDO(
-            self::OLD_DB_DSN,
-            self::OLD_DB_USER,
-            self::OLD_DB_PASSWORD,
+            'mysql:host=' . env("OLD_DB_HOST",self::DEF_OLD_DB_HOST) . ';dbname=' . self::OLD_DB_NAME,
+            env("OLD_DB_USER",self::DEF_OLD_DB_USER),
+            env("OLD_DB_PASSWORD",self::DEF_OLD_DB_PASSWORD),
             $options
         );
     }

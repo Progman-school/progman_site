@@ -32,6 +32,9 @@ jobs:
         echo APP_KEY=$(php artisan key:generate --force --show) >> .env
         echo APP_DEBUG=true >> .env
         echo DB_CONNECTION=mysql >> .env
+        echo OLD_DB_HOST=${{ secrets.OLD_DB_HOST }} >> .env
+        echo OLD_DB_USER=${{ secrets.OLD_DB_USER }} >> .env
+        echo OLD_DB_PASSWORD=${{ secrets.OLD_DB_PASSWORD }} >> .env
         cat .env
 
     - name: Frontend building using npm
