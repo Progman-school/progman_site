@@ -32,8 +32,6 @@ class DBRebuilder extends MainController
     const DEF_OLD_DB_USER = "laravel";
     const DEF_OLD_DB_PASSWORD = "pass";
 
-    const
-
     private static PDO $oldConnection;
 
     public function __construct()
