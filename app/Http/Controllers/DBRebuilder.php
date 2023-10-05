@@ -76,7 +76,7 @@ class DBRebuilder extends MainController
         }catch (Throwable $e) {
             DB::rollBack();
             self::$oldConnection->rollBack();
-            throw new Exception(APIHelper::createFrontAnswer(([
+            throw new Exception(APIHelper::createFrontAnswer([
                 "result" => "Fail job",
                 "count" => $count,
                 "time" => round((microtime(true) - $timeStart) * 1000, 3),
@@ -292,6 +292,6 @@ class DBRebuilder extends MainController
         $results["total"]["items"] = $items;
         $results["total"]["time"] = $time;
 
-        return APIHelper::createFrontAnswer(($results);
+        return APIHelper::createFrontAnswer($results);
     }
 }
