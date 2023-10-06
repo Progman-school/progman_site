@@ -2,7 +2,7 @@ name: Deploy to Amazon ECS
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "NONE" ] # it's blocked temporary - that's why - NONE
 
 permissions:
   contents: read
