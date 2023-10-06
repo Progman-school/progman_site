@@ -25,6 +25,9 @@ jobs:
         run: |
           npm install
           npm run build
+      - name: Removing of extra files
+        run: |
+          rm -rf .ebextensions .platform resources/js
 
       - name: 📂 Sync files
         uses: SamKirkland/FTP-Deploy-Action@4.3.3
