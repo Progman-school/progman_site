@@ -44,7 +44,7 @@ class TagService extends MainService
     /**
      * @throws Exception
      */
-    public static function getTagValueByName(string $name, int $time, array $injectionContent = []): ?array
+    public static function getTagValueByName(string $name, int $time = 0, array $injectionContent = []): ?array
     {
         if (!self::isOld($time)) {
             return null;
