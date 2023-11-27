@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CertificateController;
+use App\Http\Controllers\RequestController;
 use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,7 +20,7 @@ use Illuminate\Support\Facades\Route;
 //Route::get('wh_get', [UserSignController::class, 'getHookInfo']);
 //Route::post('wh_set', [UserSignController::class, 'index']);
 //
-//Route::post('savetest', [RequestsController::class, 'addNewRequest']);
+Route::post('savetest', [RequestController::class, 'addRequest']);
 //
 Route::get('check_certificate', [CertificateController::class, 'checkCertificate']);
 
