@@ -1,7 +1,7 @@
 <?php
 namespace App\Helpers;
 
-class APIHelper
+class ApiHelper
 {
     public const OK_STATUS = "OK";
     public const ERROR_STATUS = 'error';
