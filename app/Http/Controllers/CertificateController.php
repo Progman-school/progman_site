@@ -1,7 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\Helpers\APIHelper;
+use App\Helpers\ApiHelper;
 use App\Services\CertificateService;
 use Exception;
 use Illuminate\Http\Request;
@@ -13,7 +13,7 @@ class CertificateController extends MainController
      */
     public function checkCertificate(Request $request): string
     {
-        return APIHelper::createFrontAnswer(
+        return ApiHelper::createFrontAnswer(
             CertificateService::checkCertificate($request->certificate, $request->student)
         );
     }
