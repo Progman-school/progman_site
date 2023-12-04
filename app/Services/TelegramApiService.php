@@ -2,8 +2,6 @@
 
 namespace App\Services;
 
-use App\Helpers\AppHelper;
-
 class TelegramApiService
 {
     const API_URL = 'https://api.telegram.org/bot';

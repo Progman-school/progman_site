@@ -36,7 +36,7 @@ return [
         'admin_chat_id' => env("TELEGRAM_ADMIN_CHAT_ID"),
         'admins_list' => array_map(
             'trim',
-            explode(",", env("TELEGRAM_ADMIN_ACCOUNTS_LIST"))
+            explode(",", env("TELEGRAM_ADMIN_ACCOUNTS_LIST") ?? [])
         )
     ],
 ];
