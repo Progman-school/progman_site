@@ -14,8 +14,12 @@ class TelegramApiController
 
     public function setHook(Request $request): ?string
     {
+        $set = $request->get("setWebhook");
+        if (is_null($set)) {
+            return "ok";
+        }
         return AppHelper::printOnScreen(
-            $this->telegramApiService->setHook((bool) $request->get("set", 1)),
+            $this->telegramApiService->setHook((bool) $set),
             true
         );
     }
