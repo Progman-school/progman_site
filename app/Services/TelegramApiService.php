@@ -31,7 +31,7 @@ class TelegramApiService
     }
 
     public function setHook($set = 1) {
-        $uri = "{$_SERVER['REQUEST_SCHEME']}://'{$_SERVER['HTTP_HOST']}/tg_api";
+        $uri = "{$_SERVER['REQUEST_SCHEME']}://'{$_SERVER['HTTP_HOST']}/tg_api/set_hook";
         return self::getTelegramApi(
             'setWebhook',
             ['url' => $set ? $uri : '']
