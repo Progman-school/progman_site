@@ -7,6 +7,7 @@ use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvi
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
+use App\Services\TelegramApiService;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -34,7 +35,7 @@ class RouteServiceProvider extends ServiceProvider
                 ->group(base_path('routes/api.php'));
 
             Route::middleware('api')
-                ->prefix('tg_api')
+                ->prefix(TelegramApiService::API_ROUT)
                 ->group(base_path('routes/tg_api.php'));
 
             Route::middleware('web')
