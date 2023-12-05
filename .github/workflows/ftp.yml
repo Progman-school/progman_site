@@ -34,7 +34,7 @@ jobs:
           echo DB_CONNECTION=mysql >> .env
           echo DB_HOST=${{ vars.DB_HOST }} >> .env
           echo DB_DATABASE=${{ vars.DB_DATABASE }} >> .env
-          echo DB_USER=${{ vars.DB_USER }} >> .env
+          echo DB_USERNAME=${{ vars.DB_USER }} >> .env
           echo DB_PASSWORD=${{ secrets.DB_PASSWORD }} >> .env
           echo TELEGRAM_API_TOKEN=${{ secrets.TELEGRAM_API_TOKEN }} >> .env
           echo TELEGRAM_ADMIN_CHAT_ID=${{ vars.TELEGRAM_ADMIN_CHAT_ID }} >> .env
