@@ -41,9 +41,6 @@ class TagService extends MainService
         return ($contentTime + (self::REFRESH_CONTENT_HOURS * self::ONE_HOUR) - time()) < 0;
     }
 
-    /**
-     * @throws Exception
-     */
     public static function getTagValueByName(string $name, int $time = 0, array $injectionContent = []): ?array
     {
         if (!self::isOld($time)) {

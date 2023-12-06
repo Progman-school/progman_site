@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Exceptions\UserAlert;
 use App\Models\User;
 use \App\Models\Request as UserRequest;
 use Illuminate\Http\Request;
@@ -29,13 +30,17 @@ class TelegramApiService
         $this->input = $input;
     }
 
+
+
     public function manageEntryCommand(Request $request): mixed {
-        $message = $request->get("message")->get("text");
-        $offset = $request->get("message")->get("entities")->get("length");
+        $message = $request->get("message")->text;
+        $offset = $request->get("message")->entities->length;
         $command_params = trim(substr($message, $offset));
         switch (substr($message, 0, $offset)) {  // check command name
             case '/start':
-                $userRequest = UserRequest::where("hash", $command_params)->first();
+
+
+
 
                 break;
             case "how yes":
