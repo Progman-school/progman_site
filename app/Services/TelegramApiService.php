@@ -2,11 +2,6 @@
 
 namespace App\Services;
 
-use App\Exceptions\UserAlert;
-use App\Models\User;
-use \App\Models\Request as UserRequest;
-use Illuminate\Http\Request;
-
 class TelegramApiService
 {
     const API_URL = 'https://api.telegram.org/bot';
@@ -17,70 +12,17 @@ class TelegramApiService
 
     private string $token;
 
-    private mixed $input;
+    private Request $request;
 
     private string $adminChatId;
 
     private array $adminsList;
 
-    function __construct($input= null){
+    function __construct(Request $request){
         $this->token = config("services.telegram.bot_token");
         $this->adminChatId = config("services.telegram.admin_chat_id");
         $this->adminsList = config("services.telegram.admins_list");;
-        $this->input = $input;
-    }
-
-
-
-    public function manageEntryCommand(Request $request): mixed {
-        $message = $request->get("message")->text;
-        $offset = $request->get("message")->entities->length;
-        $command_params = trim(substr($message, $offset));
-        switch (substr($message, 0, $offset)) {  // check command name
-            case '/start':
-
-
-
-
-                break;
-            case "how yes":
-                break;
-            case "how no":
-                break;
-            case "how all":
-                break;
-            default:
-                abort(404);
-        }
-
-        return json_decode($response, 1) ?? $response;
-    }
-
-    public function manageEntryMessage(Request $request): mixed {
-        switch ($request->get("message")->get("text")) {
-            case mb_stripos($input['message']['text'], '/start ') !== false:
-
-                break;
-            case "how yes":
-                break;
-            case "how no":
-                break;
-            case "how all":
-                break;
-            default:
-                abort(404);
-        }
-
-        return json_decode($response, 1) ?? $response;
-    }
-
-    public function manageEntryCallbackQuery(string $method, array $options = null): mixed {
-        $str_request = self::API_URL . $this->token . '/' . $method;
-        if ($options) {
-            $str_request .= '?' . http_build_query($options);
-        }
-        $response = file_get_contents($str_request);
-        return json_decode($response, 1) ?? $response;
+        $this->request = $request;
     }
 
     public function getTelegramApi(string $method, array $options = null): mixed {
@@ -90,6 +32,43 @@ class TelegramApiService
         }
         $response = file_get_contents($str_request);
         return json_decode($response, 1) ?? $response;
+    }
+
+    public function sendMessage(
+        string $text,
+        string $chatId,
+        array $keyboardArray = null
+    ): mixed {
+        $options['text'] = $text;
+        $options['chat_id'] = $chatId;
+        if ($keyboardArray) {
+            $options['reply_markup'] = $this->makeInlineKeyboard($keyboardArray);
+        }
+        return $this->getTelegramApi('sendMessage', $options);
+    }
+
+    public function sendEchoMessage(string $text, array $keyboardArray = null): mixed {
+        return $this->sendMessage(
+            $text,
+            $this->request['message']['chat']['id'],
+            $keyboardArray
+        );
+    }
+
+    public function sendMessageToAdminChat(string $text, array $keyboardArray = null) {
+        return $this->sendMessage(
+            $text,
+            $this->adminChatId,
+            $keyboardArray
+        );
+    }
+
+    public function makeInlineKeyboard(array $keyboardArray): string {
+        $buttons = [];
+        foreach ($keyboardArray as $name => $callbackData) {
+            $buttons[] = ['text' => $name, 'callback_data' => $callbackData];
+        }
+        return json_encode(["inline_keyboard" => [$buttons]]);
     }
 
     public function setHook($set = 1) {

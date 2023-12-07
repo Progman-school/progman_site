@@ -52,7 +52,7 @@ class UserService
      * @throws UserAlert
      * @throws Exception
      */
-    public static function registerUser(Request $request, string $hash): void
+    public static function confirmUserRequest(Request $request, string $hash): int
     {
         $userRequest = UserRequest::where("hash", $hash)->first();
         if (!$userRequest->get("id")) {
@@ -63,25 +63,12 @@ class UserService
 
         $user = self::addOrGetUserByRequest($request, $userRequest);
         $requests = $user->requests();
-        $requests->latest()->first();
         $delayDate = time() - (self::REQUEST_DELAY_DAYS * 3600 * 24);
         if (strtotime($requests->latest()->first()->created_at) > $delayDate) {
             throw new UserAlert(
                 TagService::getTagValueByName("too_often_registration_user_error")
             );
         }
-
-        // TODO: rewrite this ...
-        if (@$userInfo["repeater"]) {
-            $userMessage = TagService::getTagValueByName("previously_applied_warning_message")
-                . "\n\n" . TagService::getTagValueByName("telegram_question_to_repeater");
-            $bot->echoMessage($userMessage, self::KEY_FOR_REPEATER_REQUEST);
-        } else {
-            $this->sendAdminNotes($bot, $userInfo['id']);
-            $userMessage = TagService::getTagValueByName("thanks_for_registration_message")
-                . "\n\n" . TagService::getTagValueByName("telegram_success_answer_to_new_user",);
-            $bot->echoMessage($userMessage);
-        }
-
+        return $requests->count();
     }
 }
