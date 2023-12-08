@@ -13,7 +13,7 @@ class UserRequestPreSavingService
         $descriptionText = self::testScoreDescription($score);
         $userRequest = new UserRequest();
         $userRequest->test_score = $score;
-        $userRequest->data = json_encode($request->input(), JSON_UNESCAPED_UNICODE);
+        $userRequest->application_data = json_encode($request->input(), JSON_UNESCAPED_UNICODE);
         $userRequest->type = $request->type;
         $userRequest->save();
         $userRequest->id = $userRequest->getKey();
