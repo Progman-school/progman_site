@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Route;
 //Route::get('wh_get', [UserSignController::class, 'getHookInfo']);
 //Route::post('wh_set', [UserSignController::class, 'index']);
 //
-Route::post('savetest', [RequestController::class, 'addRequest']);
+Route::post('add_request', [RequestController::class, 'addRequest']);
 //
 Route::get('check_certificate', [CertificateController::class, 'checkCertificate']);
 

@@ -14,7 +14,7 @@ class UserRequestPreSavingService
         $userRequest = new UserRequest();
         $userRequest->test_score = $score;
         $userRequest->application_data = json_encode($request->input(), JSON_UNESCAPED_UNICODE);
-        $userRequest->type = $request->type;
+        $userRequest->type = $request->uid_type;
         $userRequest->save();
         $userRequest->id = $userRequest->getKey();
         $userRequest->hash = self::getRequestHash($userRequest->id);
