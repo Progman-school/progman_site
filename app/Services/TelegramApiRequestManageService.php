@@ -25,6 +25,7 @@ class TelegramApiRequestManageService extends TelegramApiService
             case '/start':
                 break;
             case '/confirm':
+                $this->confirmRequest($request);
                 break;
             default:
                 abort(404);
@@ -59,42 +60,41 @@ class TelegramApiRequestManageService extends TelegramApiService
     /**
      * @throws UserAlert
      */
-    public function confirmCommand(Request $request, string $userRequestHash): void
+    public function confirmRequest(Request $request, string $userRequestHash): void
     {
-        $userRequestsCount = UserService::confirmUserRequest($request, $userRequestHash);
-        // TODO: rewrite this ...
+        $confirmedUser = UserService::confirmUserRequest($request, $userRequestHash);
+        $userRequestsCount = UserService::getCountOfUserRequests($confirmedUser);
+
         if ($userRequestsCount > 1) {
             $userMessage = TagService::getTagValueByName("previously_applied_warning_message")
                 . "\n\n" . TagService::getTagValueByName("telegram_question_to_repeater");
             $this->sendEchoMessage($userMessage, self::KEYBOARD_FOR_REPEATER_REQUEST);
         } else {
-            $this->sendMessageToAdminChat($bot, $userInfo['id']);
+            $this->sendMessageToAdminChat($this->prepareNotesMessage(
+                $confirmedUser,
+                $userRequest, // TODO: !!!
+                $userRequestsCount
+            ));
             $userMessage = TagService::getTagValueByName("thanks_for_registration_message")
                 . "\n\n" . TagService::getTagValueByName("telegram_success_answer_to_new_user",);
-            $bot->echoMessage($userMessage);
+            $this->sendEchoMessage($userMessage);
         }
     }
 
-    public function prepareNotesMessage($id, $repeater) {
-        $userData = User::where(['id' => $id])->first();
-        $userData->repeater_count = $repeater;
-        $userData->complete = 0;
-
+    public function prepareNotesMessage(User $user, UserRequest $userRequest, int $requestsCount) {
         $message = "New request!\n";
-        if ($repeater) {
-            $message .= "REPEATER: {$repeater}\n";
-            $message .= "first request: " . date("d.m.Y", strtotime($userData->created_at)) . "\n\n";
+        if ($requestsCount > 1) {
+            $message .= "REPEATER: {$requestsCount}\n";
+            $message .= "first request: " . date("d.m.Y", strtotime($user->created_at)) . "\n\n";
         }
-        $message .= "Telegram: " . ($userData->tg_name?"@{$userData->tg_name}":" - "). "\n" .
-            "Name: {$userData->first_name} {$userData->last_name}\n" .
-            "id: {$userData->tg_id}\n\n";
+        $message .= "Telegram: " . ($userRequest->service_uid?"@{$userRequest?->service_login}":" - "). "\n" .
+            "Name: {$user->first_name} {$user->last_name}\n" .
+            "id: {$userRequest->service_uid}\n\n";
         $message .= "TEST: \n";
-        foreach (json_decode($userData->test_data) as $keyTestItem => $testItem) {
+        foreach (json_decode($userRequest->data) as $keyTestItem => $testItem) {
             $message .= "$keyTestItem: $testItem\n";
         }
-        $message .= "Test score: {$userData->test_score}\n";
-
-        $userData->save();
+        $message .= "Test score: {$userRequest->test_score}\n";
         return $message;
     }
 }

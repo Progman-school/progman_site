@@ -3,23 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\AppHelper;
-use App\Services\TelegramApiService;
+use App\Services\TelegramApiRequestManageService;
 use Illuminate\Http\Request;
 
 class TelegramApiController
 {
     public function __construct(
-        protected TelegramApiService $telegramApiService,
+        protected TelegramApiRequestManageService $telegramApiRequestManageService,
     ) {}
 
     public function entry(Request $request): ?string
     {
         if ($request->get("callback_query")) {
-            return $this->telegramApiService->manageEntryCallbackQuery($request);
+            return $this->telegramApiRequestManageService->manageEntryCallbackQuery($request);
         } elseif ($request->get("message")->get("entities")->get("type") == "bot_command") {
-            return $this->telegramApiService->manageEntryCommand($request);
+            return $this->telegramApiRequestManageService->manageEntryCommand($request);
         } elseif ($request->get("message")) {
-            return $this->telegramApiService->manageEntryMessage($request);
+            return $this->telegramApiRequestManageService->manageEntryMessage($request);
         } else {
             abort(404);
         }
@@ -32,7 +32,7 @@ class TelegramApiController
             abort(404);
         }
         return AppHelper::printOnScreen(
-            $this->telegramApiService->setHook((bool) $set),
+            $this->telegramApiRequestManageService->setHook((bool) $set),
             true
         );
     }
