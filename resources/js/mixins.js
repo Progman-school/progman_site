@@ -50,7 +50,7 @@ export default {
             try {
                 const requestObject = {
                     method: method,
-                    'Content-Type': 'application/x-www-form-urlencoded'
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
                 }
                 if (body && (method === "POST" || method === "PUT")) {
                     requestObject.body = body
