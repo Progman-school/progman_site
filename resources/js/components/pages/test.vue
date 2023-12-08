@@ -24,7 +24,7 @@ const showBotLogin = (loginData) => {
     eventListener.call('popup_alert:show', {
         title: '{{test_passed_alert_title}}',
         text: '{{alert_text}}',
-        href: 'tg://resolve?domain=progman_signup_bot&start=' + loginData.hash,
+        href: 'tg://resolve?domain=progman_signup_bot&confirm=' + loginData.hash,
         url: null,
         button: '{{test_passed_alert_tg_button}}',
     });
