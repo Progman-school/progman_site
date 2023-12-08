@@ -2,12 +2,12 @@
 
 namespace App\Providers;
 
+use App\sdks\TelegramBotApiSdk;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
-use App\Services\TelegramApiService;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -35,7 +35,7 @@ class RouteServiceProvider extends ServiceProvider
                 ->group(base_path('routes/api.php'));
 
             Route::middleware('api')
-                ->prefix(TelegramApiService::API_ROUT)
+                ->prefix(TelegramBotApiSdk::API_ROUT)
                 ->group(base_path('routes/tg_api.php'));
 
             Route::middleware('web')

@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\AppHelper;
-use App\Services\TelegramApiRequestManageService;
+use App\Services\TelegramRequestService;
 use Illuminate\Http\Request;
 
 class TelegramApiController
 {
     public function __construct(
-        protected TelegramApiRequestManageService $telegramApiRequestManageService,
+        protected TelegramRequestService $telegramApiRequestManageService,
     ) {}
 
     public function entry(Request $request): ?string

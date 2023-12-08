@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ApiHelper;
-use App\Services\RequestService;
+use App\Services\UserRequestPreSavingService;
 use Illuminate\Http\Request;
 
 class RequestController
@@ -11,7 +11,7 @@ class RequestController
     public function addRequest(Request $request): ?string
     {
         return ApiHelper::createFrontAnswer(
-            RequestService::addRequest($request)
+            UserRequestPreSavingService::addRequest($request)
         );
     }
 }

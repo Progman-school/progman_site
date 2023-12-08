@@ -6,7 +6,7 @@ use App\Exceptions\UserAlert;
 use Illuminate\Http\Request;
 use App\Models\Request as UserRequest;
 
-class RequestService
+class UserRequestPreSavingService
 {
     public static function addRequest(Request $request): array {
         $score = self::calculateTestScore($request->toArray());
