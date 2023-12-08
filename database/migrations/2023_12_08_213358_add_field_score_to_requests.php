@@ -15,8 +15,7 @@ return new class extends Migration
         DB::beginTransaction();
         Schema::table('requests', function(Blueprint $table) {
             $table->integer('test_score')->nullable(false);
-            $table->foreignId("request_id")->nullable(false)
-                ->constrained()->cascadeOnDelete();
+            $table->foreignId("request_id")->nullable(false)->constrained();
         });
         DB::commit();
     }
