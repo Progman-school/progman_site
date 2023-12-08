@@ -34,15 +34,21 @@ jobs:
             if [[ $line =~ ^([A-Z][A-Z0-9_]{2,})=(.*)$ ]]; then
               VAR=${BASH_REMATCH[1]}
               VAL=${BASH_REMATCH[2]}
-              if [[ -v vars[$VAR] ]]; then
-                VAL=vars[$VAR]
+              VAR_NAME="vars.$VAR"
+              VAR_VAL=${{$VAR_NAME}}
+              echo "checking var name $VAR_NAME\n"
+              if [[ VAR_VAL != "" ]]; then
+                VAL=VAR_VAL
                 echo "$VAR - is set to .env from github vars\n"
               fi
-              if [[ -v secrets[$VAR] ]]; then
+              SECRET_NAME="secrets.$VAR"
+              SECRET_VAL=${{$SECRET_NAME}}
+              echo "checking var name $SECRET_NAME\n"
+              if [[ $SECRET_VAL != "" ]]; then
                 VAL=vars[$VAR]
                 echo "$VAR - is set to .env from github secrets\n"
               fi
-              if [[ $VAR=="APP_KEY" ]]; then
+              if [[ $VAR==APP_KEY ]]; then
                 VAL=$(php artisan key:generate --force --show)
                 echo "$VAR - has been generated using Laravel artisan\n"
               fi
