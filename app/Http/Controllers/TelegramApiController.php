@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\UserAlert;
 use App\Helpers\AppHelper;
 use App\Services\TelegramRequestService;
 use Illuminate\Http\Request;
@@ -12,14 +13,17 @@ class TelegramApiController
         protected TelegramRequestService $telegramApiRequestManageService,
     ) {}
 
-    public function entry(Request $request): ?string
+    /**
+     * @throws UserAlert
+     */
+    public function entry(Request $request): void
     {
         if ($request->get("callback_query")) {
-            return $this->telegramApiRequestManageService->manageEntryCallbackQuery($request);
+            $this->telegramApiRequestManageService->manageEntryCallbackQuery($request);
         } elseif ($request->get("message")->get("entities")->get("type") == "bot_command") {
-            return $this->telegramApiRequestManageService->manageEntryCommand($request);
+            $this->telegramApiRequestManageService->manageEntryCommand($request);
         } elseif ($request->get("message")) {
-            return $this->telegramApiRequestManageService->manageEntryMessage($request);
+            $this->telegramApiRequestManageService->manageEntryMessage($request);
         } else {
             abort(404);
         }
