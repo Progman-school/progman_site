@@ -17,6 +17,10 @@ jobs:
         with:
           node-version: '16'
 
+      - name: Use composer
+        run: |
+          composer install
+
       - name: Create env file
         run: |
           touch .env
@@ -50,10 +54,6 @@ jobs:
             fi
           done <<<"$ex_env"
           cat .env
-
-      - name: Use composer
-        run: |
-          composer install
 
       - name: 🔨 Build Project
         run: |
