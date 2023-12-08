@@ -52,7 +52,7 @@ class UserService
      * @throws UserAlert
      * @throws Exception
      */
-    public static function confirmUserRequest(Request $request, string $hash): int
+    public static function confirmUserRequest(Request $request, string $hash): User
     {
         $userRequest = UserRequest::where("hash", $hash)->first();
         if (!$userRequest->get("id")) {
@@ -60,11 +60,16 @@ class UserService
                 TagService::getTagValueByName("invalid_command_from_site_error")
             );
         }
+        return self::addOrGetUserByRequest($request, $userRequest);
+    }
 
-        $user = self::addOrGetUserByRequest($request, $userRequest);
+    /**
+     * @throws UserAlert
+     */
+    public static function getCountOfUserRequests(User $user, $oftenRegistrationWarning = false): int{
         $requests = $user->requests();
         $delayDate = time() - (self::REQUEST_DELAY_DAYS * 3600 * 24);
-        if (strtotime($requests->latest()->first()->created_at) > $delayDate) {
+        if ($oftenRegistrationWarning & strtotime($requests->latest()->first()->created_at) > $delayDate) {
             throw new UserAlert(
                 TagService::getTagValueByName("too_often_registration_user_error")
             );

@@ -19,6 +19,8 @@ class Request extends Model
         'uid',
         'type',
         'hash',
+//        'course',
+//        'test_score',
         'application_data'
     ];
 

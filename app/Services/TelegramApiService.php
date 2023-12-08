@@ -2,6 +2,9 @@
 
 namespace App\Services;
 
+use Illuminate\Http\Request;
+
+
 class TelegramApiService
 {
     const API_URL = 'https://api.telegram.org/bot';
