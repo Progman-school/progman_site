@@ -24,4 +24,9 @@ class Course extends Model
     {
         return $this->belongsToMany(Technology::class);
     }
+
+    public function requests(): BelongsToMany
+    {
+        return $this->belongsToMany(Request::class);
+    }
 }
