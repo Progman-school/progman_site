@@ -52,7 +52,7 @@ class UserService
      * @throws UserAlert
      * @throws Exception
      */
-    public static function confirmUserRequest(Request $request, string $hash): User
+    public static function confirmUserRequest(string $hash): UserRequest
     {
         $userRequest = UserRequest::where("hash", $hash)->first();
         if (!$userRequest->get("id")) {
@@ -60,7 +60,7 @@ class UserService
                 TagService::getTagValueByName("invalid_command_from_site_error")
             );
         }
-        return self::addOrGetUserByRequest($request, $userRequest);
+        return $userRequest;
     }
 
     /**

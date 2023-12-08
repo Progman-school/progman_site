@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Services;
+namespace App\sdks;
 
 use Illuminate\Http\Request;
 
 
-class TelegramApiService
+class TelegramBotApiSdk
 {
     const API_URL = 'https://api.telegram.org/bot';
 

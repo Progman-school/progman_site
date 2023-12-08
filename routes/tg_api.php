@@ -1,8 +1,8 @@
 <?php
 
 use App\Http\Controllers\TelegramApiController;
+use App\sdks\TelegramBotApiSdk;
 use Illuminate\Support\Facades\Route;
-use App\Services\TelegramApiService;
 
 Route::get("/", [TelegramApiController::class, 'entry']);
-Route::get(TelegramApiService::API_ENTRYPOINT, [TelegramApiController::class, 'setHook']);
+Route::get(TelegramBotApiSdk::API_ENTRYPOINT, [TelegramApiController::class, 'setHook']);

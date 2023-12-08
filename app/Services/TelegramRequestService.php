@@ -1,12 +1,14 @@
 <?php
 
 namespace App\Services;
-use Illuminate\Http\Request;
-use \App\Models\Request as UserRequest;
 use App\Exceptions\UserAlert;
+use App\Models\Request as UserRequest;
 use App\Models\User;
+use App\sdks\TelegramBotApiSdk;
+use Exception;
+use Illuminate\Http\Request;
 
-class TelegramApiRequestManageService extends TelegramApiService
+class TelegramRequestService extends TelegramBotApiSdk
 {
     const KEYBOARD_CHECK_REQUESTS = [
         ['pending processing' => 'request_await'],
@@ -15,56 +17,54 @@ class TelegramApiRequestManageService extends TelegramApiService
 
     const KEYBOARD_FOR_REPEATER_REQUEST = ['Resend the request' => 'repeat_request'];
 
-    // TODO: Clean everything up here!
-
-    public function manageEntryCommand(Request $request): mixed {
+    /**
+     * @throws UserAlert
+     */
+    public function manageEntryCommand(Request $request): void {
         $message = $request->get("message")->text;
         $offset = $request->get("message")->entities->length;
         $command_params = trim(substr($message, $offset));
         switch (substr($message, 0, $offset)) {  // check command name
             case '/start':
+                exit();
                 break;
             case '/confirm':
-                $this->confirmRequest($request);
+                $this->confirmRequest($request, $command_params);
                 break;
             default:
                 abort(404);
         }
-
-        return json_decode($response, 1) ?? $response;
     }
 
-    public function manageEntryMessage(Request $request): mixed {
+    public function manageEntryMessage(Request $request): void {
         switch ($request->get("message")->get("text")) {
-            case mb_stripos($input['message']['text'], '/start ') !== false:
-
-                break;
             case "how yes":
+                exit();
                 break;
             case "how no":
+                exit();
                 break;
             case "how all":
+                exit();
                 break;
             default:
                 abort(404);
         }
-
-        return json_decode($response, 1) ?? $response;
     }
 
-    public function manageEntryCallbackQuery(Request $request): mixed {
+    public function manageEntryCallbackQuery(Request $request): void {
 
-        return;
     }
 
     /**
      * @throws UserAlert
+     * @throws Exception
      */
-    public function confirmRequest(Request $request, string $userRequestHash): void
+    public function confirmRequest(Request $request, string $confirmationHash): void
     {
-        $confirmedUser = UserService::confirmUserRequest($request, $userRequestHash);
+        $userRequest = UserService::confirmUserRequest($confirmationHash);
+        $confirmedUser = UserService::addOrGetUserByRequest($request, $userRequest);
         $userRequestsCount = UserService::getCountOfUserRequests($confirmedUser);
-
         if ($userRequestsCount > 1) {
             $userMessage = TagService::getTagValueByName("previously_applied_warning_message")
                 . "\n\n" . TagService::getTagValueByName("telegram_question_to_repeater");
@@ -72,7 +72,7 @@ class TelegramApiRequestManageService extends TelegramApiService
         } else {
             $this->sendMessageToAdminChat($this->prepareNotesMessage(
                 $confirmedUser,
-                $userRequest, // TODO: !!!
+                $userRequest,
                 $userRequestsCount
             ));
             $userMessage = TagService::getTagValueByName("thanks_for_registration_message")
@@ -81,7 +81,8 @@ class TelegramApiRequestManageService extends TelegramApiService
         }
     }
 
-    public function prepareNotesMessage(User $user, UserRequest $userRequest, int $requestsCount) {
+    public function prepareNotesMessage(User $user, UserRequest $userRequest, int $requestsCount): string
+    {
         $message = "New request!\n";
         if ($requestsCount > 1) {
             $message .= "REPEATER: {$requestsCount}\n";
