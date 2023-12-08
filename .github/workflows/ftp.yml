@@ -42,7 +42,7 @@ jobs:
                 VAL=vars[$VAR]
                 echo "$VAR - is set to .env from github secrets\n"
               fi
-              if [[ VAR=="APP_KEY" ]]; then
+              if [[ $VAR=="APP_KEY" ]]; then
                 VAL=$(php artisan key:generate --force --show)
                 echo "$VAR - has been generated using Laravel artisan\n"
               fi
