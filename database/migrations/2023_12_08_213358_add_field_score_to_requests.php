@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::table('requests', function(Blueprint $table) {
             $table->integer('test_score')->nullable(false);
-            $table->foreignId("request_id")->nullable(false)->constrained();
+            $table->foreignId("request_id")->nullable(false)->default(1)
+                ->constrained()->cascadeOnUpdate()->cascadeOnDelete();
         });
     }
 
