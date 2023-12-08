@@ -17,14 +17,6 @@ jobs:
         with:
           node-version: '16'
 
-      - name: Use composer
-        run: |
-          composer install
-
-      - name: 🔨 Build Project
-        run: |
-          npm install
-          npm run build
       - name: Create env file
         run: |
           touch .env
@@ -34,15 +26,15 @@ jobs:
             if [[ $line =~ ^([A-Z][A-Z0-9_]{2,})=(.*)$ ]]; then
               VAR=${BASH_REMATCH[1]}
               VAL=${BASH_REMATCH[2]}
-              VAR_NAME="{vars.$VAR}"
-              VAR_VAL=${$VAR_NAME}
+              VAR_NAME="{{vars.$VAR}}"
+              VAR_VAL=$$VAR_NAME
               echo "checking var name $VAR_NAME\n"
               if [[ VAR_VAL != "" ]]; then
                 VAL=VAR_VAL
                 echo "$VAR - is set to .env from github vars\n"
               fi
-              SECRET_NAME="{secrets.$VAR}"
-              SECRET_VAL=${$SECRET_NAME}
+              SECRET_NAME="{{secrets.$VAR}}"
+              SECRET_VAL=$SECRET_NAME
               echo "checking var name $SECRET_NAME\n"
               if [[ $SECRET_VAL != "" ]]; then
                 VAL=vars[$VAR]
@@ -58,6 +50,16 @@ jobs:
             fi
           done <<<"$ex_env"
           cat .env
+
+      - name: Use composer
+        run: |
+          composer install
+
+      - name: 🔨 Build Project
+        run: |
+          npm install
+          npm run build
+
       - name: Removing of extra files
         run: |
           rm -rf .ebextensions .platform resources/js
