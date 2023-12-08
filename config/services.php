@@ -32,7 +32,7 @@ return [
     ],
 
     'telegram' => [
-        'bot_token' => env('TELEGRAM_API_TOKEN'),
+        'bot_token' => env('TELEGRAM_BOT_API_TOKEN'),
         'bot_login' => env('TELEGRAM_BOT_LOGIN'),
         'admin_chat_id' => env("TELEGRAM_ADMIN_CHAT_ID"),
         'admins_list' => array_map(
