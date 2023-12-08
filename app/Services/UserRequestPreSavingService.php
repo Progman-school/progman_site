@@ -90,12 +90,6 @@ class UserRequestPreSavingService
                 elseif ($wordsCount > 35) {
                     $score += 3;
                 }
-                continue;
-            }
-            try {
-                $score += (int)trim(explode('-', $testItem)[1]);
-            } catch (\Exception $e) {
-                exit(print_r($testItem, 1) .'  ||  ' . $e);
             }
         }
 
