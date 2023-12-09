@@ -19,6 +19,7 @@ import { useMultiLanguageStore } from '../../storages/multi_language_content.js'
 const multiLanguageStore = useMultiLanguageStore()
 
 const showBotLogin = (loginData) => {
+    console.log(loginData)
     multiLanguageStore.contentArray['alert_text'] = loginData.alert_text
     eventListener.call('popup_alert:show', {
         title: '{{test_passed_alert_title}}',
