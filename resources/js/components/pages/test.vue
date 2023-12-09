@@ -24,7 +24,7 @@ const showBotLogin = (loginData) => {
     eventListener.call('popup_alert:show', {
         title: '{{test_passed_alert_title}}',
         text: '{{alert_text}}',
-        href: 'tg://resolve?domain={{telegram_bot_login}}&confirm=' + loginData.hash,
+        href: 'tg://resolve?domain=' + loginData.telegram_bot_login + '&confirm=' + loginData.hash,
         url: null,
         button: '{{test_passed_alert_tg_button}}',
     });
