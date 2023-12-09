@@ -7,7 +7,7 @@ on:
 jobs:
   web-deploy:
     name: 🎉 Deploy
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: 🚚 Get latest code
         uses: actions/checkout@v2
@@ -18,8 +18,9 @@ jobs:
           node-version: '16'
 
       - name: Use composer
-        run: |
-          composer install
+        run: composer install
+        with:
+          php-version: 8.2
 
       - name: Create env file
         run: |
