@@ -19,8 +19,6 @@ jobs:
 
       - name: Use composer
         run: composer install
-        with:
-          php-version: 8.2
 
       - name: Create env file
         run: |
