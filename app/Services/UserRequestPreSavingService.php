@@ -15,10 +15,9 @@ class UserRequestPreSavingService
         $userRequest->test_score = $score;
         $userRequest->application_data = json_encode($request->input(), JSON_UNESCAPED_UNICODE);
         $userRequest->type = $request->uid_type;
+        $userRequest->hash = self::getRequestHash($request);
         $userRequest->save();
         $userRequest->id = $userRequest->getKey();
-        $userRequest->hash = self::getRequestHash($userRequest->id);
-        $userRequest->save();
         $inject = [
             'test_result_score' => [
                 TagService::EN_LANGUAGE => $score,
@@ -96,10 +95,9 @@ class UserRequestPreSavingService
         return round($score/$maxScore*100, 1);
     }
 
-    protected static function getRequestHash(UserRequest $userRequest): ?string {
-        if (empty($userRequest->data)) {
-            throw new UserAlert("Upps! Something is wrong with application #{$userRequest->id}. Please, contact us, and we'll solve the problem.");
-        }
-        return md5(UserRequest::all()->count() - 1 . '-' . print_r($userRequest->data, 1). '=' . microtime());
+    protected static function getRequestHash(Request $request): string {
+        return md5(
+            UserRequest::all()->count() - 1 . '-' . print_r($request->toArray(), 1). '=' . microtime()
+        );
     }
 }
