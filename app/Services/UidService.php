@@ -40,6 +40,7 @@ class UidService
         $uid->save();
         return $uid;
     }
+
 //    public function getUidIdFromRequest(Request $request): string
 //    {
 //        return $request->get("uid_type");
