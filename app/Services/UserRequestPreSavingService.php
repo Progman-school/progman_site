@@ -97,9 +97,9 @@ class UserRequestPreSavingService
     }
 
     protected static function getRequestHash(UserRequest $userRequest): ?string {
-        if (empty($userRequest->data) || is_null($userRequest->id)) {
+        if (empty($userRequest->data)) {
             throw new UserAlert("Upps! Something is wrong with application #{$userRequest->id}. Please, contact us, and we'll solve the problem.");
         }
-        return md5($userRequest->id . '-' . print_r($userRequest->data, 1). '=' . microtime());
+        return md5(UserRequest::all()->count() - 1 . '-' . print_r($userRequest->data, 1). '=' . microtime());
     }
 }
