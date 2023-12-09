@@ -50,7 +50,7 @@ export const useMultiLanguageStore = defineStore({
                 timeStamp: 0
             }
 
-            if (this.contentArray[tag] !== undefined && this.contentArray[tag] !== null) {
+            if (this.contentArray[tag] !== undefined) {
                 if (this.contentArray[tag].timeStamp !== undefined) {
                     if ((this.contentArray[tag].timeStamp + refreshDelay - getTimeStamp()) > 0) {
                         return await this.contentArray[tag]
