@@ -20,7 +20,6 @@ const multiLanguageStore = useMultiLanguageStore()
 
 const showBotLogin = (loginData) => {
     multiLanguageStore.contentArray['alert_text'] = loginData.alert_text
-
     eventListener.call('popup_alert:show', {
         title: '{{test_passed_alert_title}}',
         text: '{{alert_text}}',
