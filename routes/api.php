@@ -23,7 +23,9 @@ use Illuminate\Support\Facades\Route;
 Route::post('add_request', [RequestController::class, 'addRequest']);
 //
 Route::get('check_certificate', [CertificateController::class, 'checkCertificate']);
-Route::get('check_session', function (\Illuminate\Http\Request $request) {return $request->session();});
+Route::get('check_session', function (\Illuminate\Http\Request $request) {
+    return print_r($request->session()->all());
+});
 
 Route::get('current_language', [TagController::class, 'getCurrentLanguage']);
 Route::get('switch_tag_language', [TagController::class, 'switchTagLanguage']);
