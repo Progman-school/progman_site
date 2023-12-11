@@ -19,7 +19,7 @@ const props = ref([])
 const created = () => {
     eventListener.add('popup_alert:show', (data) => {
         for (let key in data) {
-            multiLanguageStore.replaceContent(data[key]).then(
+            multiLanguageStore.replaceContent(data[key], false).then(
                 data => {props.value[key] = data}
             )
         }
