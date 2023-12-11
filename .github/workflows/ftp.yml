@@ -78,12 +78,9 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ failure() }}
     steps:
-      - uses: actions/checkout@v4
-      - run: ./debug
-
       - name: Sanding the debug result notification through Telegram
         run: |
           curl --get \
             --data-urlencode 'chat_id=${{vars.TELEGRAM_DEPLOY_NOTICE_RECIPIENT_ID}}' \
-            --data-urlencode 'text=🆘FAILED! ${{github.event.head_commit.id}} ${{github.event.head_commit.message}} ${{ toJson(steps) }}' \
+            --data-urlencode 'text=🆘FAILED! ${{github.event.head_commit.id}} ${{github.event.head_commit.message}} $(gh run view ${{github.run_id}} --log)' \
             https://api.telegram.org/bot${{secrets.TELEGRAM_DEPLOY_NOTIFIER_BOT_TOKEN}}/sendMessage
