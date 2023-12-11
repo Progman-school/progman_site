@@ -12,6 +12,12 @@ jobs:
       - name: 🚚 Get latest code
         uses: actions/checkout@v4
 
+      - name: Sanding the start notification through Telegram
+        env:
+          GET_PARAMS: $(printf %s 'chat_id={{vars.TELEGRAM_DEPLOY_NOTICE_RECIPIENT_ID}}&text=Start!\n${{github.event.head_commit.message}}'|jq -sRr @uri)
+        run: |
+          curl https://api.telegram.org/bot{{secrets.TELEGRAM_DEPLOY_NOTIFIER_BOT_TOKEN}}/sendMessage?$GET_PARAMS
+
       - name: Use Node.js 16
         uses: actions/setup-node@v2
         with:
@@ -59,7 +65,7 @@ jobs:
 
       - name: Sanding the result notification through Telegram
         env:
-          GET_PARAMS: printf %s 'chat_id={{vars.TELEGRAM_DEPLOY_NOTICE_RECIPIENT_ID}}&text=SUCCESS!\n${{github.event.head_commit.message}}'|jq -sRr @uri
+          GET_PARAMS: $(printf %s 'chat_id={{vars.TELEGRAM_DEPLOY_NOTICE_RECIPIENT_ID}}&text=SUCCESS!\n${{github.event.head_commit.message}}'|jq -sRr @uri)
         run: |
           curl https://api.telegram.org/bot{{secrets.TELEGRAM_DEPLOY_NOTIFIER_BOT_TOKEN}}/sendMessage?$GET_PARAMS
 
