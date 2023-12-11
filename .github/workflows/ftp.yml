@@ -30,7 +30,7 @@ jobs:
           php-version: '8.2'
 
       - name: Use composer
-        run: compossser install
+        run: composer install
 
       - name: Create env file
         run: |
@@ -82,5 +82,5 @@ jobs:
         run: |
           curl --get \
             --data-urlencode 'chat_id=${{vars.TELEGRAM_DEPLOY_NOTICE_RECIPIENT_ID}}' \
-            --data-urlencode 'text=🆘FAILED! ${{github.event.head_commit.id}} ${{github.event.head_commit.message}} $(gh run view ${{github.run_id}} --log)' \
+            --data-urlencode 'text=🆘FAILED! ${{github.event.head_commit.message}} (${{github.event.head_commit.id}})' \
             https://api.telegram.org/bot${{secrets.TELEGRAM_DEPLOY_NOTIFIER_BOT_TOKEN}}/sendMessage
