@@ -30,7 +30,7 @@ jobs:
           php-version: '8.2'
 
       - name: Use composer
-        run: composer install
+        run: compossser install
 
       - name: Create env file
         run: |
