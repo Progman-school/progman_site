@@ -70,8 +70,8 @@ jobs:
     if: ${{ failure() }}
     steps:
       - name: Debug
-        uses: actions/checkout@v4
-        run: ./debug
+      - uses: actions/checkout@v4
+      - run: ./debug
 
       - name: Sanding the result notification through Telegram
         env:
