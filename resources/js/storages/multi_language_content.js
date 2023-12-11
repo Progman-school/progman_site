@@ -44,13 +44,13 @@ export const useMultiLanguageStore = defineStore({
                 }
             );
         },
-        async getContentByTag(tag) {
+        async getContentByTag(tag, ifOldOny = true) {
             let params = {
                 tag: tag,
                 timeStamp: 0
             }
 
-            if (this.contentArray[tag] !== undefined) {
+            if (this.contentArray[tag] !== undefined && ifOldOny) {
                 if (this.contentArray[tag].timeStamp !== undefined) {
                     if ((this.contentArray[tag].timeStamp + refreshDelay - getTimeStamp()) > 0) {
                         return await this.contentArray[tag]
@@ -72,11 +72,11 @@ export const useMultiLanguageStore = defineStore({
             )
             return this.contentArray[tag]
         },
-        async replaceContent(content) {
+        async replaceContent(content, ifOldOny = true) {
             let result = content;
             let insert = /^\{\{([\w]+)\}\}$/ui.exec(content)
             if (insert && insert[1] !== undefined) {
-                await this.getContentByTag(insert[1]).then(insertData => {
+                await this.getContentByTag(insert[1], ifOldOny).then(insertData => {
                     result = insertData[this.currentLanguage]
                 })
             }
