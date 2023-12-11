@@ -16,7 +16,7 @@ jobs:
         run: |
           curl --get \
             --data-urlencode 'chat_id=${{vars.TELEGRAM_DEPLOY_NOTICE_RECIPIENT_ID}}' \
-            --data-urlencode 'text=Start!\n${{github.event.head_commit.message}}' \
+            --data-urlencode 'text=Start! \n ${{github.event.head_commit.message}}' \
             https://api.telegram.org/bot${{secrets.TELEGRAM_DEPLOY_NOTIFIER_BOT_TOKEN}}/sendMessage
 
       - name: Use Node.js 16
