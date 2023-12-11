@@ -61,7 +61,7 @@ jobs:
         env:
           GET_PARAMS: printf %s 'chat_id={{vars.TELEGRAM_DEPLOY_NOTICE_RECIPIENT_ID}}&text=SUCCESS!\n${{github.event.head_commit.message}}'|jq -sRr @uri
         run: |
-          curl https://api.telegram.org/bot{{secrets.TELEGRAM_DEPLOY_NOTIFIER_BOT_TOKEN}}/sendMessage?chat_id={{TELEGRAM_DEPLOY_NOTICE_RECIPIENT_ID}}&text=SUCCESS
+          curl https://api.telegram.org/bot{{secrets.TELEGRAM_DEPLOY_NOTIFIER_BOT_TOKEN}}/sendMessage?$GET_PARAMS
 
   debug:
     name: Check failure
