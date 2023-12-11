@@ -69,7 +69,6 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ failure() }}
     steps:
-      - name: Debug
       - uses: actions/checkout@v4
       - run: ./debug
 
