@@ -5,12 +5,12 @@ on:
     branches: [ "main" ]
 
 jobs:
-  web-deploy:
-    name: 🎉 Deploy
+  build-deploy:
+    name: 🎉 Build->Deploy
     runs-on: ubuntu-latest
     steps:
       - name: 🚚 Get latest code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Use Node.js 16
         uses: actions/setup-node@v2
@@ -50,8 +50,32 @@ jobs:
           rm -rf .ebextensions .platform resources/js
 
       - name: 📂 Sync files
+        id: ftp_deploy
         uses: SamKirkland/FTP-Deploy-Action@4.3.3
         with:
           server: ${{ vars.FTP_HOST }}
           username: ${{ vars.FTP_USER }}
           password: ${{ secrets.FTP_PASSWORD }}
+
+      - name: Sanding the result notification through Telegram
+        env:
+          GET_PARAMS: printf %s 'chat_id={{vars.TELEGRAM_DEPLOY_NOTICE_RECIPIENT_ID}}&text=SUCCESS!\n${{github.event.head_commit.message}}'|jq -sRr @uri)
+        run: |
+          curl https://api.telegram.org/bot{{secrets.TELEGRAM_DEPLOY_NOTIFIER_BOT_TOKEN}}/sendMessage?chat_id={{TELEGRAM_DEPLOY_NOTICE_RECIPIENT_ID}}&text=SUCCESS
+
+  debug:
+    name: Check failure
+    needs: build-deploy
+    runs-on: ubuntu-latest
+    if: ${{ failure() }}
+    steps:
+      - name: Debug
+        uses: actions/checkout@v4
+        run: ./debug
+
+      - name: Sanding the result notification through Telegram
+        env:
+          GET_PARAMS: printf %s 'chat_id={{vars.TELEGRAM_DEPLOY_NOTICE_RECIPIENT_ID}}&text=FAILED!\n${{github.event.head_commit.message}}\n\n${{toJson(steps)}}'|jq -sRr @uri)
+        run: |
+          curl https://api.telegram.org/bot{{secrets.TELEGRAM_DEPLOY_NOTIFIER_BOT_TOKEN}}/sendMessage?$GET_PARAMS
+
