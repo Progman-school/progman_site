@@ -17,6 +17,7 @@ import { useEventListener } from "../../storages/event_storage.js"
 const eventListener = useEventListener()
 
 const showBotLogin = (loginData) => {
+    console.log(loginData)
     eventListener.call('popup_alert:show', {
         title: '{{test_passed_alert_title}}',
         text: loginData.alert_text,
