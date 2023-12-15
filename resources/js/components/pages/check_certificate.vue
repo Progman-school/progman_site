@@ -17,7 +17,6 @@ const eventListener = useEventListener()
 import mixins from '../../mixins.js'
 
 const showCheckResult = (resultData) => {
-    console.log(resultData)
     eventListener.call('popup_alert:show', {
         title: resultData.status,
         text: resultData.data,
