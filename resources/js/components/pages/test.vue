@@ -19,10 +19,9 @@ import { useMultiLanguageStore } from '../../storages/multi_language_content.js'
 const multiLanguageStore = useMultiLanguageStore()
 
 const showBotLogin = (loginData) => {
-    multiLanguageStore.contentArray['alert_text'] = loginData.test_passed_alert_text
     eventListener.call('popup_alert:show', {
         title: '{{test_passed_alert_title}}',
-        text: '{{alert_text}}',
+        text: loginData.test_passed_alert_text,
         href: 'tg://resolve?domain=' + loginData.telegram_bot_login + '&confirm=' + loginData.hash,
         url: null,
         button: '{{test_passed_alert_tg_button}}',
