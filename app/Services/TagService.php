@@ -22,6 +22,8 @@ class TagService extends MainService
     private const REFRESH_CONTENT_HOURS = 24;
     private const ONE_HOUR = 3600;
 
+    private const REPLACEABLE_TAG_PATTERN = "/\{\{(\w+)\}\}/ui";
+
     public static function getCurrentLanguage(): string
     {
         return Session::get(self::LANG_SESSION_KEY) ?? self::DEFAULT_LANGUAGE;
@@ -61,6 +63,18 @@ class TagService extends MainService
         foreach ($tag->tagValues as $tagValue) {
             foreach (self::LANG_LIST as $lang) {
                 if ($tagValue->content == $lang) {
+                    if (preg_match_all(self::REPLACEABLE_TAG_PATTERN, $tagValue->value, $subTags)) {
+                        $subTagValues = [];
+                        foreach (array_values($subTags[1]) as $subTagKey => $subTag) {
+                            $subTagData = $injectionContent[$subTag] ?? self::getTagValueByName($subTag);
+                            if ($subTagData) {
+                                $subTagValues[] = $subTagData[$lang] ?? $subTagData[self::DEFAULT_LANGUAGE];
+                            } else {
+                                unset($subTags[0][$subTagKey]);
+                            }
+                        }
+                        $tagValue->value = str_replace(array_values($subTags[0]), $subTagValues, $tagValue->value);
+                    }
                     $tagDataWithValues[$lang] = $tagValue?->value;
                 }
             }
