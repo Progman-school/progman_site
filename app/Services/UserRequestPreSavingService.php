@@ -37,7 +37,7 @@ class UserRequestPreSavingService
                 'test_passed_alert_text',
                 $request->timeStamp ?? 0,
                 $inject
-            ),
+            )[TagService::getCurrentLanguage()],
             'score' => $score,
             'description' => $descriptionText,
         ];
