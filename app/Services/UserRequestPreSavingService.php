@@ -33,7 +33,7 @@ class UserRequestPreSavingService
         return [
             'hash' => $userRequest->type . '-' . $userRequest->hash,
             'telegram_bot_login' => config("services.telegram.bot_login"),
-            'test_passed_alert_text' => TagService::getTagValueByName(
+            'x' => TagService::getTagValueByName(
                 'test_passed_alert_text',
                 $request->timeStamp ?? 0,
                 $inject
