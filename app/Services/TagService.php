@@ -59,16 +59,23 @@ class TagService extends MainService
         if (!$tag) {
             return null;
         }
+
         $tagDataWithValues = ["timeStamp" => time()];
         foreach ($tag->tagValues as $tagValue) {
             foreach (self::LANG_LIST as $lang) {
                 if ($tagValue->content == $lang) {
+                    if (!empty($injectionContent)) {
+                        foreach ($injectionContent as $injectionTagName => $injection) {
+                            $tagValue->value = str_replace(
+                                "{{{$injectionTagName}}}",
+                                    $injection[$lang] ?? $injection[self::DEFAULT_LANGUAGE],
+                                $tagValue->value
+                            );
+                        }
+                    }
                     if (preg_match_all(self::REPLACEABLE_TAG_PATTERN, $tagValue->value, $subTags)) {
                         $subTagValues = [];
                         foreach (array_values($subTags[1]) as $subTagKey => $subTag) {
-                            if (isset($injectionContent[$subTag])) {
-                                $subTag = $injectionContent[$subTag][$lang];
-                            }
                             $subTagData = self::getTagValueByName($subTag);
                             if ($subTagData) {
                                 $subTagValues[] = $subTagData[$lang] ?? $subTagData[self::DEFAULT_LANGUAGE];

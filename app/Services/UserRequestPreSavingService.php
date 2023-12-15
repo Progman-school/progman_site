@@ -44,17 +44,20 @@ class UserRequestPreSavingService
     }
 
     protected static function testScoreDescription(int $scorePoints):string {
-        if ($scorePoints <= 39) {
-            $descriptionText = '{{best_test_description}}';
-        } elseif ($scorePoints > 39 && $scorePoints <= 59) {
-            $descriptionText = '{{great_test_description}}';
-
-        } elseif ($scorePoints > 59 && $scorePoints <= 79) {
-            $descriptionText = '{{good_test_description}}';
-        } elseif ($scorePoints > 79) {
-            $descriptionText = '{{satisfactory_test_description}}';
-        } else {
+        if ($scorePoints < 20) {
             $descriptionText = '{{bad_test_description}}';
+        }
+        elseif ($scorePoints <= 35) {
+            $descriptionText = '{{satisfactory_test_description}}';
+        }
+        elseif ($scorePoints <= 59) {
+            $descriptionText = '{{good_test_description}}';
+        }
+        elseif ($scorePoints <= 79) {
+            $descriptionText = '{{great_test_description}}';
+        }
+        else {
+            $descriptionText = '{{best_test_description}}';
         }
         return $descriptionText;
     }
