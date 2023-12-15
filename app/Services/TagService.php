@@ -66,7 +66,10 @@ class TagService extends MainService
                     if (preg_match_all(self::REPLACEABLE_TAG_PATTERN, $tagValue->value, $subTags)) {
                         $subTagValues = [];
                         foreach (array_values($subTags[1]) as $subTagKey => $subTag) {
-                            $subTagData = $injectionContent[$subTag] ?? self::getTagValueByName($subTag);
+                            if (isset($injectionContent[$subTag])) {
+                                $subTag = $injectionContent[$subTag][$lang];
+                            }
+                            $subTagData = self::getTagValueByName($subTag);
                             if ($subTagData) {
                                 $subTagValues[] = $subTagData[$lang] ?? $subTagData[self::DEFAULT_LANGUAGE];
                             } else {
