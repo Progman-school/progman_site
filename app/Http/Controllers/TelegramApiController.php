@@ -6,6 +6,7 @@ use App\Exceptions\UserAlert;
 use App\Helpers\AppHelper;
 use App\Services\TelegramRequestService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class TelegramApiController
 {
@@ -20,7 +21,7 @@ class TelegramApiController
     {
         if ($request->get("callback_query")) {
             $this->telegramApiRequestManageService->manageEntryCallbackQuery($request);
-        } elseif ($request->get("message")->get("entities")->get("type") == "bot_command") {
+        } elseif ($request->get("message")?->get("entities")?->get("type") == "bot_command") {
             $this->telegramApiRequestManageService->manageEntryCommand($request);
         } elseif ($request->get("message")) {
             $this->telegramApiRequestManageService->manageEntryMessage($request);

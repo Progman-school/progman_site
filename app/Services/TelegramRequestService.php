@@ -48,12 +48,20 @@ class TelegramRequestService extends TelegramBotApiSdk
                 exit();
                 break;
             default:
-                abort(404);
+                $this->sendEchoMessage("hi!");
+//                abort(404);
         }
     }
 
     public function manageEntryCallbackQuery(Request $request): void {
-
+        switch ($request->get("message")->get("text")) {
+            case "button":
+                exit();
+                break;
+            default:
+                $this->sendEchoMessage("hi cb!");
+//                abort(404);
+        }
     }
 
     /**
