@@ -17,11 +17,10 @@ import { useEventListener } from "../../storages/event_storage.js"
 const eventListener = useEventListener()
 
 const showBotLogin = (preLoginResult) => {
-    let loginData = preLoginResult.data
     eventListener.call('popup_alert:show', {
         title: '{{test_passed_alert_title}}',
-        text: loginData.alert_text,
-        href: 'tg://resolve?domain=' + loginData.telegram_bot_login + '&confirm=' + loginData.hash,
+        text: preLoginResult.data.alert_text,
+        href: `https://t.me/${preLoginResult.data.telegram_bot_login}&confirm=${preLoginResult.data.hash}`,
         url: null,
         button: '{{test_passed_alert_tg_button}}',
     });
