@@ -15,7 +15,7 @@ class TelegramBotApiSdk
 
     private string $token;
 
-    private Request $request;
+    protected Request $request;
 
     private string $adminChatId;
 

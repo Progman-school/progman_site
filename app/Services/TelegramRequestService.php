@@ -7,6 +7,7 @@ use App\Models\User;
 use App\sdks\TelegramBotApiSdk;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class TelegramRequestService extends TelegramBotApiSdk
 {
@@ -20,24 +21,27 @@ class TelegramRequestService extends TelegramBotApiSdk
     /**
      * @throws UserAlert
      */
-    public function manageEntryCommand(Request $request): void {
-        $message = $request->get("message")->text;
-        $offset = $request->get("message")->entities->length;
+    public function manageEntryCommand(): void {
+        $message = $this->request->get("message")->text;
+        $offset = $this->request->get("message")->entities->length;
         $command_params = trim(substr($message, $offset));
+        $ss = substr($message, 0, $offset);
+        Log::alert($ss);
         switch (substr($message, 0, $offset)) {  // check command name
             case '/start':
+                $this->sendEchoMessage("hi! st");
                 exit();
                 break;
             case '/confirm':
-                $this->confirmRequest($request, $command_params);
+                $this->confirmRequest($this->request, $command_params);
                 break;
             default:
                 abort(404);
         }
     }
 
-    public function manageEntryMessage(Request $request): void {
-        switch ($request->get("message")->get("text")) {
+    public function manageEntryMessage(): void {
+        switch ($this->request->get("message")["text"]) {
             case "how yes":
                 exit();
                 break;
@@ -53,8 +57,8 @@ class TelegramRequestService extends TelegramBotApiSdk
         }
     }
 
-    public function manageEntryCallbackQuery(Request $request): void {
-        switch ($request->get("message")->get("text")) {
+    public function manageEntryCallbackQuery(): void {
+        switch ($this->request->get("message")["text"]) {
             case "button":
                 exit();
                 break;

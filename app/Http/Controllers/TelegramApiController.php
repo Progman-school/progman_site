@@ -8,36 +8,40 @@ use App\Services\TelegramRequestService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
-class TelegramApiController
+class TelegramApiController extends MainController
 {
-    public function __construct(
-        protected TelegramRequestService $telegramApiRequestManageService,
-    ) {}
 
     /**
      * @throws UserAlert
      */
     public function entry(Request $request): void
     {
-        if ($request->get("callback_query")) {
-            $this->telegramApiRequestManageService->manageEntryCallbackQuery($request);
-        } elseif ($request->get("message")?->get("entities")?->get("type") == "bot_command") {
-            $this->telegramApiRequestManageService->manageEntryCommand($request);
-        } elseif ($request->get("message")) {
-            $this->telegramApiRequestManageService->manageEntryMessage($request);
-        } else {
+        $telegramApiRequestManageService = new TelegramRequestService($request);
+        $callbackQuery = $request->get("callback_query");
+        $messageData = $request->get("message");
+        if (!empty($callbackQuery)) {
+            $telegramApiRequestManageService->manageEntryCallbackQuery();
+        }
+        elseif (isset($messageData["entities"], $messageData["entities"]["type"]) && $messageData["entities"]["type"] == "bot_command") {
+            $telegramApiRequestManageService->manageEntryCommand();
+        }
+        elseif (isset($messageData["text"])) {
+            $telegramApiRequestManageService->manageEntryMessage();
+        }
+        else {
             abort(404);
         }
     }
 
     public function setHook(Request $request): ?string
     {
+        $telegramApiRequestManageService = new TelegramRequestService($request);
         $set = $request->get("setWebhook");
         if (is_null($set)) {
             abort(404);
         }
         return AppHelper::printOnScreen(
-            $this->telegramApiRequestManageService->setHook((bool) $set),
+            $telegramApiRequestManageService->setHook((bool) $set),
             true
         );
     }
