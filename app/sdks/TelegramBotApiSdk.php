@@ -11,7 +11,7 @@ class TelegramBotApiSdk
 
     const API_ROUT = "tg_api";
 
-    const API_ENTRYPOINT = "entry";
+    const API_ENTRYPOINT = "/entry";
 
     private string $token;
 
@@ -76,10 +76,11 @@ class TelegramBotApiSdk
 
     public function setHook($set = 1) {
         $uri = "{$_SERVER['REQUEST_SCHEME']}://{$_SERVER['HTTP_HOST']}/"
-            . self::API_ROUT . "/" . self::API_ENTRYPOINT;
+            . self::API_ROUT . self::API_ENTRYPOINT;
+
         return self::getTelegramApi(
             'setWebhook',
             ['url' => $set ? $uri : '']
-        );
+        ) + ["url" => $uri];
     }
 }
