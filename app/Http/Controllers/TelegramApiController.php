@@ -14,23 +14,24 @@ class TelegramApiController extends MainController
     /**
      * @throws UserAlert
      */
-    public function entry(Request $request): void
+    public function entry(Request $request): bool
     {
+        Log::notice("REQUEST FROM TG: \n" . print_r($request->toArray(), true));
         $telegramApiRequestManageService = new TelegramRequestService($request);
-        $callbackQuery = $request->get("callback_query");
+
+        if ($request->get("callback_query")) {
+            return $telegramApiRequestManageService->manageEntryCallbackQuery();
+        }
         $messageData = $request->get("message");
-        if (!empty($callbackQuery)) {
-            $telegramApiRequestManageService->manageEntryCallbackQuery();
+        if (isset($messageData["text"])) {
+            if (isset($messageData["entities"], $messageData["entities"][0])
+                && $messageData["entities"][0]["type"] == "bot_command"
+            ) {
+                return $telegramApiRequestManageService->manageEntryCommand();
+            }
+            return $telegramApiRequestManageService->manageEntryMessage();
         }
-        elseif (isset($messageData["entities"], $messageData["entities"]["type"]) && $messageData["entities"]["type"] == "bot_command") {
-            $telegramApiRequestManageService->manageEntryCommand();
-        }
-        elseif (isset($messageData["text"])) {
-            $telegramApiRequestManageService->manageEntryMessage();
-        }
-        else {
-            abort(404);
-        }
+        return abort(404);
     }
 
     public function setHook(Request $request): ?string
