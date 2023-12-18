@@ -20,7 +20,7 @@ const showBotLogin = (preLoginResult) => {
     eventListener.call('popup_alert:show', {
         title: '{{test_passed_alert_title}}',
         text: preLoginResult.data.alert_text,
-        href: `tg://resolve?domain=${preLoginResult.data.telegram_bot_login}&confirm=${preLoginResult.data.hash}`,
+        href: `tg://resolve?domain=${preLoginResult.data.telegram_bot_login}&start=${preLoginResult.data.hash}`,
         url: null,
         button: '{{test_passed_alert_tg_button}}',
     });
