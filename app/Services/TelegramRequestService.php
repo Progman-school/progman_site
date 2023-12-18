@@ -29,7 +29,6 @@ class TelegramRequestService extends TelegramBotApiSdk
         Log::alert($ss);
         switch (substr($message, 0, $offset)) {  // check command name
             case '/start':
-                $this->sendEchoMessage("hi! st");
                 exit();
                 break;
             case '/confirm':
