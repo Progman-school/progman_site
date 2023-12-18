@@ -21,50 +21,50 @@ class TelegramRequestService extends TelegramBotApiSdk
     /**
      * @throws UserAlert
      */
-    public function manageEntryCommand(): void {
-        $message = $this->request->get("message")->text;
-        $offset = $this->request->get("message")->entities->length;
-        $command_params = trim(substr($message, $offset));
-        $ss = substr($message, 0, $offset);
-        Log::alert($ss);
-        switch (substr($message, 0, $offset)) {  // check command name
+    public function manageEntryCommand(): bool
+    {
+        // tg://resolve?domain=progManTest_bot&start=telegram-720b35bf8923713e5bbbdf1c50a7eb0b
+        $message = $this->request->get("message");
+        $command_params = trim(substr($message["text"], $message["entities"][0]["length"]));
+        Log::notice("command: " . substr($message["text"], 0, $message["entities"][0]["length"]) . " |   hash: $command_params \n");
+
+        switch (substr($message["text"], 0, $message["entities"][0]["length"])) {  // check command name
             case '/start':
-                exit();
-                break;
-            case '/confirm':
                 $this->confirmRequest($this->request, $command_params);
                 break;
             default:
-                abort(404);
+                return false;
         }
+        return true;
     }
 
-    public function manageEntryMessage(): void {
+    public function manageEntryMessage(): bool {
         switch ($this->request->get("message")["text"]) {
             case "how yes":
-                exit();
+                $this->sendEchoMessage("how yes!");
                 break;
             case "how no":
-                exit();
+                $this->sendEchoMessage("how no!");
                 break;
             case "how all":
-                exit();
+                $this->sendEchoMessage("how all!");
                 break;
             default:
-                $this->sendEchoMessage("hi!");
-//                abort(404);
+               return false;
+
         }
+        return true;
     }
 
-    public function manageEntryCallbackQuery(): void {
+    public function manageEntryCallbackQuery(): bool {
         switch ($this->request->get("message")["text"]) {
             case "button":
-                exit();
+                $this->sendEchoMessage("cb button");
                 break;
             default:
-                $this->sendEchoMessage("hi cb!");
-//                abort(404);
+               return false;
         }
+        return true;
     }
 
     /**
