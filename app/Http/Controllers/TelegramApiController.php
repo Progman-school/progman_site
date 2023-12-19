@@ -16,7 +16,7 @@ class TelegramApiController extends MainController
      */
     public function entry(Request $request): bool
     {
-        Log::notice("REQUEST FROM TG: \n" . print_r($request->toArray(), true));
+//        Log::notice("REQUEST FROM TG: \n" . print_r($request->toArray(), true));
         $telegramApiRequestManageService = new TelegramRequestService($request);
 
         if ($request->get("callback_query")) {
@@ -31,7 +31,7 @@ class TelegramApiController extends MainController
             }
             return $telegramApiRequestManageService->manageEntryMessage();
         }
-        return abort(404);
+        return abort(200);
     }
 
     public function setHook(Request $request): ?string

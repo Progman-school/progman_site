@@ -35,6 +35,7 @@ return [
         'bot_token' => env('TELEGRAM_BOT_API_TOKEN'),
         'bot_login' => env('TELEGRAM_BOT_LOGIN'),
         'admin_chat_id' => env("TELEGRAM_ADMIN_CHAT_ID"),
+        'contact_manager_login' => env("TELEGRAM_CONTACT_MANAGER_LOGIN"),
         'admins_list' => array_map(
             'trim',
             explode(",", env("TELEGRAM_ADMIN_ACCOUNTS_LIST") ?? "")
