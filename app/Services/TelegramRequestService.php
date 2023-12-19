@@ -8,6 +8,7 @@ use App\sdks\TelegramBotApiSdk;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Throwable;
 
 class TelegramRequestService extends TelegramBotApiSdk
 {
@@ -24,16 +25,23 @@ class TelegramRequestService extends TelegramBotApiSdk
     public function manageEntryCommand(): bool
     {
         // tg://resolve?domain=progManTest_bot&start=telegram-720b35bf8923713e5bbbdf1c50a7eb0b
-        $message = $this->request->get("message");
-        $command_params = trim(substr($message["text"], $message["entities"][0]["length"]));
-        Log::notice("command: " . substr($message["text"], 0, $message["entities"][0]["length"]) . " |   hash: $command_params \n");
+        try {
+            $message = $this->request->get("message");
+            $command_params = trim(substr($message["text"], $message["entities"][0]["length"]));
+            Log::notice("command: " . substr($message["text"], 0, $message["entities"][0]["length"]) . " |   hash: $command_params \n");
 
-        switch (substr($message["text"], 0, $message["entities"][0]["length"])) {  // check command name
-            case '/start':
-                $this->confirmRequest($this->request, $command_params);
-                break;
-            default:
-                return false;
+            switch (substr($message["text"], 0, $message["entities"][0]["length"])) {  // check command name
+                case '/start':
+                    $this->confirmRequest($this->request, $command_params);
+                    break;
+                default:
+                    return false;
+            }
+        } catch (UserAlert $e) {
+            $this->sendEchoMessage($e->getMessage());
+        } catch (Throwable $e) {
+            $this->sendEchoMessage("Error! Unexpected command issue.");
+            Log::debug($e);
         }
         return true;
     }
@@ -77,33 +85,49 @@ class TelegramRequestService extends TelegramBotApiSdk
         $confirmedUser = UserService::addOrGetUserByRequest($request, $userRequest);
         $userRequestsCount = UserService::getCountOfUserRequests($confirmedUser);
         if ($userRequestsCount > 1) {
-            $userMessage = TagService::getTagValueByName("previously_applied_warning_message")
-                . "\n\n" . TagService::getTagValueByName("telegram_question_to_repeater");
+            $userMessage = TagService::getTagValueByName("previously_applied_warning_message")[TagService::getCurrentLanguage()]
+                . "\n\n" . TagService::getTagValueByName("telegram_question_to_repeater")[TagService::getCurrentLanguage()];
             $this->sendEchoMessage($userMessage, self::KEYBOARD_FOR_REPEATER_REQUEST);
         } else {
             $this->sendMessageToAdminChat($this->prepareNotesMessage(
                 $confirmedUser,
                 $userRequest,
+                $request,
                 $userRequestsCount
-            ));
-            $userMessage = TagService::getTagValueByName("thanks_for_registration_message")
-                . "\n\n" . TagService::getTagValueByName("telegram_success_answer_to_new_user",);
+            ), self::KEYBOARD_CHECK_REQUESTS[0]);
+            $userMessage = TagService::getTagValueByName(
+                "thanks_for_registration_message",
+                0 ,
+                    ["new_id" => [
+                        TagService::DEFAULT_LANGUAGE => $confirmedUser->id]
+                    ]
+                )[TagService::getCurrentLanguage()]
+                . "\n\n" . TagService::getTagValueByName(
+                    "telegram_success_answer_to_new_user",
+                    0,
+                    ["telegram_admit_account" =>
+                        [TagService::DEFAULT_LANGUAGE => config("services.telegram.contact_manager_login")]
+                    ]
+                )[TagService::getCurrentLanguage()];
             $this->sendEchoMessage($userMessage);
         }
     }
 
-    public function prepareNotesMessage(User $user, UserRequest $userRequest, int $requestsCount): string
+    public function prepareNotesMessage(User $user, UserRequest $userRequest, Request $request, $requestsCount): string
     {
+        $userName = $request["message"]["from"]["username"] ?? " - ";
+
         $message = "New request!\n";
         if ($requestsCount > 1) {
             $message .= "REPEATER: {$requestsCount}\n";
             $message .= "first request: " . date("d.m.Y", strtotime($user->created_at)) . "\n\n";
         }
-        $message .= "Telegram: " . ($userRequest->service_uid?"@{$userRequest?->service_login}":" - "). "\n" .
+        $message .= "Telegram: " . ($userName ? "@{$userName}" : " - ")  . "\n" .
             "Name: {$user->first_name} {$user->last_name}\n" .
-            "id: {$userRequest->service_uid}\n\n";
+            "tg id: {$request["message"]["from"]["id"]}\n" .
+            "system id: {$userRequest->id}\n\n";
         $message .= "TEST: \n";
-        foreach (json_decode($userRequest->data) as $keyTestItem => $testItem) {
+        foreach (json_decode($userRequest->application_data) as $keyTestItem => $testItem) {
             $message .= "$keyTestItem: $testItem\n";
         }
         $message .= "Test score: {$userRequest->test_score}\n";
