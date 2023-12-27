@@ -34,6 +34,7 @@ class UserService
         $checkUser->last_name = $request["message"]["from"]["last_name"] ?? null;
         $checkUser->save();
         $newId = $checkUser->getKey();
+        $checkUser->requests()->attach($userRequest->id);
 
         UidService::createUid(
             $userRequest->type,
@@ -59,6 +60,7 @@ class UserService
                 TagService::getTagValueByName("invalid_command_from_site_error")[TagService::getCurrentLanguage()]
             );
         }
+        $userRequest->status = UserRequest::REGISTERED_STATUS;
         return $userRequest;
     }
 

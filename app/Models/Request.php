@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Request extends Model
 {
+    const RECEIVED_STATUS = "received";
+    const PROCESSED_STATUS = "processed";
+
     /**
      * The attributes that are mass assignable.
      *
