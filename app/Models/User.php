@@ -15,11 +15,6 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    const REGISTERED_STATUS = "registered";
-    const PROCESSED_STATUS = "processed";
-    const CUSTOMER_STATUS = "customer";
-    const FINISHED_STATUS = "finished";
-
     /**
      * The attributes that are mass assignable.
      *

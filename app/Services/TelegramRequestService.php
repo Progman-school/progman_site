@@ -65,8 +65,8 @@ class TelegramRequestService extends TelegramBotApiSdk
     }
 
     public function manageEntryCallbackQuery(): bool {
-        switch ($this->request->get("message")["text"]) {
-            case "button":
+        switch ($this->request->get("callback_query")["data"]) {
+            case self::KEYBOARD_CHECK_REQUESTS[0]:
                 $this->sendEchoMessage("cb button");
                 break;
             default:
@@ -128,9 +128,12 @@ class TelegramRequestService extends TelegramBotApiSdk
             "system id: {$userRequest->id}\n\n";
         $message .= "TEST: \n";
         foreach (json_decode($userRequest->application_data) as $keyTestItem => $testItem) {
+            if ($keyTestItem == "uid_type") {
+                continue;
+            }
             $message .= "$keyTestItem: $testItem\n";
         }
-        $message .= "Test score: {$userRequest->test_score}\n";
+        $message .= "TEST SCORE: {$userRequest->test_score}\n";
         return $message;
     }
 }
