@@ -12,12 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('requests', function (Blueprint $table) {
-            $table->renameColumn('admin_massage_id', 'admin_message_id');
-        });
-        Schema::table('requests', function (Blueprint $table) {
+            $table->dropColumn('admin_massage_id');
             $table->string('admin_message_id')->unique()->nullable()->default(null);
         });
-
     }
 
     /**
@@ -27,9 +24,8 @@ return new class extends Migration
     {
         Schema::table('requests', function (Blueprint $table) {
             $table->dropIndex("admin_message_id");
-        });
-        Schema::table('requests', function (Blueprint $table) {
-            $table->renameColumn('admin_message_id', 'admin_massage_id');
+            $table->dropColumn('admin_message_id');
+            $table->string('admin_massage_id')->nullable()->default(null);
         });
     }
 };
