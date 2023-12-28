@@ -142,7 +142,7 @@ class TelegramRequestService extends TelegramBotApiSdk
         $message .= "Telegram: " . ($userName ? "@{$userName}" : " - ")  . "\n" .
             "Name: {$user->first_name} {$user->last_name}\n" .
             "tg id: {$request["message"]["from"]["id"]}\n" .
-            "system id: {$userRequest->id}\n\n";
+            "Request №: {$userRequest->id}\n\n";
         $message .= "TEST: \n";
         foreach (json_decode($userRequest->application_data) as $keyTestItem => $testItem) {
             if ($keyTestItem == "uid_type") {
