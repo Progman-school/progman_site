@@ -89,12 +89,8 @@ class TelegramRequestService extends TelegramBotApiSdk
                 . "\n\n" . TagService::getTagValueByName("telegram_question_to_repeater")[TagService::getCurrentLanguage()];
             $this->sendEchoMessage($userMessage, self::KEYBOARD_FOR_REPEATER_REQUEST);
         } else {
-            $this->sendMessageToAdminChat($this->prepareNotesMessage(
-                $confirmedUser,
-                $userRequest,
-                $request,
-                $userRequestsCount
-            ), self::KEYBOARD_CHECK_REQUESTS[0]);
+            $this->sendNewRequestToAdminChat($confirmedUser, $userRequest, $request, $userRequestsCount);
+
             $userMessage = TagService::getTagValueByName(
                 "thanks_for_registration_message",
                 0 ,
@@ -111,6 +107,22 @@ class TelegramRequestService extends TelegramBotApiSdk
                 )[TagService::getCurrentLanguage()];
             $this->sendEchoMessage($userMessage);
         }
+    }
+
+    public function sendNewRequestToAdminChat(
+        User $confirmedUser,
+        UserRequest $userRequest,
+        Request $request,
+        int $userRequestsCount
+    ): void {
+        $result = $this->sendMessageToAdminChat($this->prepareNotesMessage(
+            $confirmedUser,
+            $userRequest,
+            $request,
+            $userRequestsCount
+        ), self::KEYBOARD_CHECK_REQUESTS[0]);
+//        if ($result[""])
+//        $userRequest
     }
 
     public function prepareNotesMessage(User $user, UserRequest $userRequest, Request $request, $requestsCount): string
