@@ -3,6 +3,7 @@
 namespace App\sdks;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 
 class TelegramBotApiSdk
@@ -34,7 +35,15 @@ class TelegramBotApiSdk
             $str_request .= '?' . http_build_query($options);
         }
         $response = file_get_contents($str_request);
-        return json_decode($response, 1) ?? $response;
+        $response_data = json_decode($response, 1) ?? $response;
+
+        Log::notice("TG API request: \n" . print_r([
+            "method" => $method,
+            "params" => $options,
+            "result" => $response_data
+        ], true));
+
+        return $response_data;
     }
 
     public function sendMessage(
