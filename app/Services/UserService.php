@@ -60,7 +60,7 @@ class UserService
                 TagService::getTagValueByName("invalid_command_from_site_error")[TagService::getCurrentLanguage()]
             );
         }
-        $userRequest->status = UserRequest::REGISTERED_STATUS;
+        $userRequest->status = UserRequest::RECEIVED_STATUS;
         return $userRequest;
     }
 
