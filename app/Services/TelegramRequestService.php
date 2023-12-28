@@ -121,8 +121,13 @@ class TelegramRequestService extends TelegramBotApiSdk
             $request,
             $userRequestsCount
         ), self::KEYBOARD_CHECK_REQUESTS[0]);
-//        if ($result[""])
-//        $userRequest
+        if (!isset($result["ok"])) {
+            $this->sendMessageToAdminChat(
+                "Emergency error, during saving the confirmation of the request №{$userRequest->id}!"
+            );
+        }
+        $userRequest->admin_message_id = $result["result"]["message_id"];
+        $userRequest->save();
     }
 
     public function prepareNotesMessage(User $user, UserRequest $userRequest, Request $request, $requestsCount): string
