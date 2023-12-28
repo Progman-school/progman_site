@@ -13,8 +13,11 @@ return new class extends Migration
     {
         Schema::table('requests', function (Blueprint $table) {
             $table->renameColumn('admin_massage_id', 'admin_message_id');
+        });
+        Schema::table('requests', function (Blueprint $table) {
             $table->string('admin_message_id')->unique()->nullable()->default(null);
         });
+
     }
 
     /**
@@ -24,6 +27,8 @@ return new class extends Migration
     {
         Schema::table('requests', function (Blueprint $table) {
             $table->dropIndex("admin_message_id");
+        });
+        Schema::table('requests', function (Blueprint $table) {
             $table->renameColumn('admin_message_id', 'admin_massage_id');
         });
     }
