@@ -12,9 +12,9 @@ use Throwable;
 
 class TelegramRequestService extends TelegramBotApiSdk
 {
-    const KEYBOARD_CHECK_REQUESTS = [
-        ['pending processing' => 'request_await'],
-        ['DONE' => 'request_complete']
+    const REQUEST_STATUS_KEYBOARDS = [
+        UserRequest::RECEIVED_STATUS => ['⚠️ new received' => UserRequest::PROCESSED_STATUS],
+        UserRequest::PROCESSED_STATUS => ['✅ DONE ✅' => UserRequest::RECEIVED_STATUS],
     ];
 
     const KEYBOARD_FOR_REPEATER_REQUEST = ['Resend the request' => 'repeat_request'];
@@ -65,14 +65,32 @@ class TelegramRequestService extends TelegramBotApiSdk
     }
 
     public function manageEntryCallbackQuery(): bool {
-        switch ($this->request->get("callback_query")["data"]) {
-            case self::KEYBOARD_CHECK_REQUESTS[0]:
-                $this->sendEchoMessage("cb button");
+        $callbackQuery = $this->request->get("callback_query");
+        switch ($callbackQuery["data"]) {
+            case UserRequest::RECEIVED_STATUS:
+            case UserRequest::PROCESSED_STATUS:
+                $this->setRequestStatus(
+                    $callbackQuery["message"]["message_id"],
+                    $callbackQuery["data"]
+                );
                 break;
             default:
                return false;
         }
         return true;
+    }
+
+    public function setRequestStatus(string $adminMessageId, string $status): void {
+        $userRequest = UserRequest::where(
+            ["admin_message_id" => $adminMessageId ]
+        )->first();
+        $userRequest->status = $status;
+        $userRequest->save();
+        $this->editKeyboardOfMessage(
+            $this->adminChatId,
+            $adminMessageId,
+            self::REQUEST_STATUS_KEYBOARDS[$status]
+        );
     }
 
     /**
@@ -120,7 +138,7 @@ class TelegramRequestService extends TelegramBotApiSdk
             $userRequest,
             $request,
             $userRequestsCount
-        ), self::KEYBOARD_CHECK_REQUESTS[0]);
+        ), self::REQUEST_STATUS_KEYBOARDS[UserRequest::RECEIVED_STATUS]);
         if (!isset($result["ok"])) {
             $this->sendMessageToAdminChat(
                 "Emergency error, during saving the confirmation of the request №{$userRequest->id}!"

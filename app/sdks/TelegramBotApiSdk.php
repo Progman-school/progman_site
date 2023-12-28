@@ -18,9 +18,9 @@ class TelegramBotApiSdk
 
     protected Request $request;
 
-    private string $adminChatId;
+    protected string $adminChatId;
 
-    private array $adminsList;
+    protected array $adminsList;
 
     function __construct(Request $request){
         $this->token = config("services.telegram.bot_token");
@@ -34,6 +34,12 @@ class TelegramBotApiSdk
         if ($options) {
             $str_request .= '?' . http_build_query($options);
         }
+
+        Log::notice("PRE TG API request: \n" . print_r([
+                "method" => $method,
+                "params" => $options,
+            ], true));
+
         $response = file_get_contents($str_request);
         $response_data = json_decode($response, 1) ?? $response;
 
@@ -57,6 +63,17 @@ class TelegramBotApiSdk
             $options['reply_markup'] = $this->makeInlineKeyboard($keyboardArray);
         }
         return $this->getTelegramApi('sendMessage', $options);
+    }
+
+    public function editKeyboardOfMessage(
+        string $chatId,
+        string $messageId,
+        array $newKeyboardArray = null
+    ): mixed {
+        $options['chat_id'] = $chatId;
+        $options['message_id'] = $messageId;
+        $options['reply_markup'] = $this->makeInlineKeyboard($newKeyboardArray);
+        return $this->getTelegramApi('editMessageReplyMarkup', $options);
     }
 
     public function sendEchoMessage(string $text, array $keyboardArray = null): mixed {
