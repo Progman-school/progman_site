@@ -9,7 +9,8 @@ use App\Models\Request as UserRequest;
 
 class UserRequestPreSavingService
 {
-    const LOGIN_CONTROLLER_FUNCTION = ""
+    const CONFIRM_URL_PARAM = "confirm";
+
     public static function addRequest(Request $request): array {
         $score = self::calculateTestScore($request->toArray());
         $descriptionText = self::testScoreDescription($score);
@@ -34,9 +35,9 @@ class UserRequestPreSavingService
         ];
 
         if ($userRequest->type == "telegram") {
-            $hashLink = "tg://resolve?domain=" . config("services.telegram.bot_login") . "&start={$userRequest->type}'-'{$userRequest->hash}";
+            $hashLink = "tg://resolve?domain=" . config("services.telegram.bot_login") . "&" . self::CONFIRM_URL_PARAM . "={$userRequest->type}'-'{$userRequest->hash}";
         } elseif ($userRequest->type == "email") {
-            $hashLink = "https://{$_SERVER['HTTP_HOST']}/" . EmailServiceSdk::API_ENTRYPOINT .
+            $hashLink = "https://{$_SERVER['HTTP_HOST']}/" . EmailServiceSdk::API_ENTRYPOINT . "?" . self::CONFIRM_URL_PARAM . "={$userRequest->type}'-'{$userRequest->hash}";
         }
         return [
             'hash_link' => $hashLink,

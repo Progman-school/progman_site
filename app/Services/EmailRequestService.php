@@ -51,7 +51,10 @@ class EmailRequestService extends EmailServiceSdk
         }
     }
 
-    public function showResultPage() {
-
+    public function showResultPage(string $text) {
+        return view(
+            'result_page_of_email_action.blade',
+            ['text' => $text]
+        )->render();
     }
 }
