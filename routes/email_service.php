@@ -1,8 +1,6 @@
 <?php
 
-use App\Http\Controllers\TelegramApiController;
-use App\sdks\TelegramBotApiSdk;
+use App\sdks\EmailServiceSdk;
 use Illuminate\Support\Facades\Route;
 
-Route::post(TelegramBotApiSdk::API_ENTRYPOINT, [TelegramApiController::class, 'entry']);
-Route::get("/", [TelegramApiController::class, 'setHook']);
+Route::post(EmailServiceSdk::API_ENTRYPOINT, [EmailServiceSdk::class, 'entry']);
