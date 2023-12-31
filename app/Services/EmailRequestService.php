@@ -10,11 +10,11 @@ use Illuminate\Http\Request;
 
 class EmailRequestService extends EmailServiceSdk
 {
-    protected TelegramBotApiSdk $telegramSdk;
+    protected TelegramRequestService $telegramService;
 
     public function __construct(Request $request) {
         parent::__construct($request);
-        $this->telegramSdk = new TelegramBotApiSdk($request);
+        $this->telegramService = new TelegramRequestService($request);
     }
 
     /**
@@ -31,7 +31,7 @@ class EmailRequestService extends EmailServiceSdk
                 . "\n\n" . TagService::getTagValueByName("telegram_question_to_repeater")[TagService::getCurrentLanguage()];
             $this->showResultPage($userMessage);
         } else {
-            $this->telegramSdk->sendNewRequestToAdminChat($confirmedUser, $userRequest, $request, $userRequestsCount);
+            $this->telegramService->sendNewRequestToAdminChat($confirmedUser, $userRequest, $request, $userRequestsCount);
 
             $userMessage = TagService::getTagValueByName(
                     "thanks_for_registration_message",
@@ -47,7 +47,7 @@ class EmailRequestService extends EmailServiceSdk
                         [TagService::DEFAULT_LANGUAGE => config("services.telegram.contact_manager_login")]
                     ]
                 )[TagService::getCurrentLanguage()];
-            $this->sendEchoMessage($userMessage);
+            $this->showResultPage($userMessage);
         }
     }
 
