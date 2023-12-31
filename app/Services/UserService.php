@@ -20,6 +20,10 @@ class UserService
         if ($userRequest->type == "telegram") {
             $serviceUid = $request["message"]["from"]["id"];
             $serviceLogin = $request["message"]["from"]["username"] ?? null;
+        } elseif ($userRequest->type == "email") {
+            // temp
+            $serviceUid = $request;
+            $serviceLogin = $request;
         }
 
         /** @var User $checkUser */

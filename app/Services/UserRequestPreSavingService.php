@@ -30,9 +30,14 @@ class UserRequestPreSavingService
                 'timeStamp' => 0,
             ],
         ];
+
+        if ($userRequest->type == "telegram") {
+            $hashLink = "tg://resolve?domain=" . config("services.telegram.bot_login") . "&start={$userRequest->type}'-'{$userRequest->hash}";
+        } elseif ($userRequest->type == "email") {
+            $hashLink = "";
+        }
         return [
-            'hash' => $userRequest->type . '-' . $userRequest->hash,
-            'telegram_bot_login' => config("services.telegram.bot_login"),
+            'hash_link' => $hashLink,
             'alert_text' => TagService::getTagValueByName(
                 'test_passed_alert_text',
                 $request->timeStamp ?? 0,
