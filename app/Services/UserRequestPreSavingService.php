@@ -3,11 +3,13 @@
 namespace App\Services;
 
 use App\Exceptions\UserAlert;
+use App\sdks\EmailServiceSdk;
 use Illuminate\Http\Request;
 use App\Models\Request as UserRequest;
 
 class UserRequestPreSavingService
 {
+    const LOGIN_CONTROLLER_FUNCTION = ""
     public static function addRequest(Request $request): array {
         $score = self::calculateTestScore($request->toArray());
         $descriptionText = self::testScoreDescription($score);
@@ -34,7 +36,7 @@ class UserRequestPreSavingService
         if ($userRequest->type == "telegram") {
             $hashLink = "tg://resolve?domain=" . config("services.telegram.bot_login") . "&start={$userRequest->type}'-'{$userRequest->hash}";
         } elseif ($userRequest->type == "email") {
-            $hashLink = "";
+            $hashLink = "https://{$_SERVER['HTTP_HOST']}/" . EmailServiceSdk::API_ENTRYPOINT .
         }
         return [
             'hash_link' => $hashLink,
