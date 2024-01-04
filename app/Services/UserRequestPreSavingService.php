@@ -3,9 +3,11 @@
 namespace App\Services;
 
 use App\Exceptions\UserAlert;
+use App\Mail\ConfirmApplication;
 use App\sdks\EmailServiceSdk;
 use Illuminate\Http\Request;
 use App\Models\Request as UserRequest;
+use Illuminate\Support\Facades\Mail;
 
 class UserRequestPreSavingService
 {
@@ -33,22 +35,33 @@ class UserRequestPreSavingService
                 'timeStamp' => 0,
             ],
         ];
+        $alertText = TagService::getTagValueByName(
+            'test_passed_alert_text',
+            $request->timeStamp ?? 0,
+            $inject
+        )[TagService::getCurrentLanguage()];
 
         if ($userRequest->type == "telegram") {
-            $hashLink = "tg://resolve?domain=" . config("services.telegram.bot_login") . "&" . self::CONFIRM_URL_PARAM . "={$userRequest->type}'-'{$userRequest->hash}";
+            return [
+                'hash_link' => "tg://resolve?domain=" . config("services.telegram.bot_login") . "&" . self::CONFIRM_URL_PARAM . "={$userRequest->type}'-'{$userRequest->hash}",
+                'alert_text' => $alertText,
+                'score' => $score,
+                'description' => $descriptionText,
+            ];
         } elseif ($userRequest->type == "email") {
-            $hashLink = "https://{$_SERVER['HTTP_HOST']}/" . EmailServiceSdk::API_ENTRYPOINT . "?" . self::CONFIRM_URL_PARAM . "={$userRequest->type}'-'{$userRequest->hash}";
+            Mail::to($userRequest->email)->send(new ConfirmApplication(
+                "https://{$_SERVER['HTTP_HOST']}/" . EmailServiceSdk::API_ENTRYPOINT . "?" . self::CONFIRM_URL_PARAM . "={$userRequest->type}'-'{$userRequest->hash}&lang=" . TagService::getCurrentLanguage(),
+                $score,
+                $alertText
+            ));
+            return [
+                'hash_link' => null,
+                'alert_text' => $alertText,
+                'score' => $score,
+                'description' => $descriptionText,
+            ];
         }
-        return [
-            'hash_link' => $hashLink,
-            'alert_text' => TagService::getTagValueByName(
-                'test_passed_alert_text',
-                $request->timeStamp ?? 0,
-                $inject
-            )[TagService::getCurrentLanguage()],
-            'score' => $score,
-            'description' => $descriptionText,
-        ];
+
     }
 
     protected static function testScoreDescription(int $scorePoints):string {
