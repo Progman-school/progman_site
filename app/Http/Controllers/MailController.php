@@ -7,10 +7,12 @@ use Illuminate\Support\Facades\Mail;
 
 class MailController extends MainController
 {
-    public function sendTestMessage()
+    public function sendTestMessage(): string
     {
-        Mail::send(
+        return Mail::to(
+            "denisb.intouch@gmail.com"
+        )->send(
             new ConfirmApplication("https://google.com", 32, "Some test text")
-        );
+        )->toString();
     }
 }
