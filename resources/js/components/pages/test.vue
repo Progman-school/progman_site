@@ -40,6 +40,7 @@ const saveTestData = (form) => {
 
 const showEmailField = ref(false)
 const changeRegistrationType = (selectedValue) => {
+    console.log(selectedValue)
     showEmailField.value = selectedValue === "email"
 }
 
