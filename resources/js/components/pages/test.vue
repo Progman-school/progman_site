@@ -18,7 +18,7 @@ import {ref} from "vue";
 import {usePreloadedDataStorage} from "../../storages/preloaded_content_storage";
 const eventListener = useEventListener()
 const preloadedData = usePreloadedDataStorage()
-
+preloadedData.getCoursesList();
 const showLoginAlert = (preLoginResult) => {
     eventListener.call('popup_alert:show', {
         title: '{{test_passed_alert_title}}',

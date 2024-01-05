@@ -9,6 +9,6 @@ use Illuminate\Http\Request;
 class PreloadedContentController extends MainController
 {
     public function getCoursesList():string {
-        return ApiHelper::createFrontAnswer(CourseService::getCoursesList());
+        return ApiHelper::createFrontAnswer(CourseService::getCoursesList(true));
     }
 }

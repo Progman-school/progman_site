@@ -6,8 +6,16 @@ use App\Models\Course;
 
 class CourseService
 {
-    public static function getCoursesList(): array
+    public static function getCoursesList(?bool $active = null): array
     {
-        return Course::with("technologies")->where(["active" => true])->get();
+        $conditions = [];
+        if (!is_null($active)) {
+            $conditions = ["active" => $active];
+        }
+
+        return Course::with("technologies")
+            ->where($conditions)
+            ->get()
+            ->toArray();
     }
 }
