@@ -8,10 +8,6 @@ class CourseService
 {
     public static function getCoursesList(): array
     {
-        $courses = Course::where(["active" => true])->all();
-        foreach ($courses as &$course){
-            $course["technologies"] = $course->technologies();
-        }
-        return $courses;
+        return Course::with("technologies")->where(["active" => true])->get();
     }
 }
