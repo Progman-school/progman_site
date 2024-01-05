@@ -2,7 +2,7 @@
 {{-- Header --}}
 <x-slot:header>
 <x-mail::header :url="config('app.url')">
-{{ config('app.name') }}
+    <h3 style="pointer-events: none; text-align: center">Message from {{ config('app.name') }}</h3>
 </x-mail::header>
 </x-slot:header>
 
