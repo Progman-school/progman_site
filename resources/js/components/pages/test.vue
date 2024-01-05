@@ -15,7 +15,9 @@ export default {
 import mixins from "../../mixins.js";
 import { useEventListener } from "../../storages/event_storage.js"
 import {ref} from "vue";
+import {usePreloadedDataStorage} from "../../storages/preloaded_content_storage";
 const eventListener = useEventListener()
+const preloadedData = usePreloadedDataStorage()
 
 const showLoginAlert = (preLoginResult) => {
     eventListener.call('popup_alert:show', {
@@ -61,8 +63,9 @@ const changeRegistrationType = (event) => {
                             Choose the course that you are interesting in:
                         </label>
                         <select id="course" name="course_id">
-                            <option value="1" selected>WEB full-stack</option>
-                            <option value="2" selected>Different..</option>
+                            <option v-for="course in preloadedData.courses" value="{{course.id}}" title="{{course.level}}">
+                                {{course.name}}
+                            </option>
                         </select>
                     </div>
                 </content>
