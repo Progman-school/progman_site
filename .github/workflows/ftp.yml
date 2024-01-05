@@ -35,7 +35,7 @@ jobs:
       - name: Create env file
         run: |
           touch .env
-          echo APP_NAME="ProgMan site" >> .env
+          echo APP_NAME=\"ProgMan site\" >> .env
           echo APP_URL="http://localhost" >> .env
           echo APP_KEY=$(php artisan key:generate --force --show) >> .env
           echo APP_DEBUG=true >> .env
