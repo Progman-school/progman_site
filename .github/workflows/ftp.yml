@@ -36,6 +36,7 @@ jobs:
         run: |
           touch .env
           echo APP_NAME="ProgMan.site" >> .env
+          echo APP_URL="https://progman.site" >> .env
           echo APP_KEY=$(php artisan key:generate --force --show) >> .env
           echo APP_DEBUG=true >> .env
           echo DB_CONNECTION=mysql >> .env

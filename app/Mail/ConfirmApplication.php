@@ -15,11 +15,11 @@ class ConfirmApplication extends Mailable
     /**
      * Create a new message instance.
      */
-    protected string $confirmUrl;
+    public string $confirmUrl;
 
-    protected int $score;
+    public int $score;
 
-    protected string $text;
+    public string $text;
 
     public function __construct(string $confirmUrl, int $score, string $text)
     {
@@ -44,7 +44,7 @@ class ConfirmApplication extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'mails.application_confirmation',
+            markdown: 'mails.application_confirmation',
         );
     }
 
