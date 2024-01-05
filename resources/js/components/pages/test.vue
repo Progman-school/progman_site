@@ -39,9 +39,8 @@ const saveTestData = (form) => {
 }
 
 const showEmailField = ref(false)
-const changeRegistrationType = (selectedValue) => {
-    console.log(selectedValue)
-    showEmailField.value = selectedValue === "email"
+const changeRegistrationType = (event) => {
+    showEmailField.value = event.target.value === "email"
 }
 
 </script>
