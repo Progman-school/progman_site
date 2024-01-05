@@ -55,29 +55,33 @@ const changeRegistrationType = (event) => {
         <section>
             <h3 class="major">Answer the question:</h3>
             <form id="test_form" @submit="saveTestData">
-                <div class="field">
-                    <label for="course">
-                        Choose the course that you are interesting in:
-                    </label>
-                    <select id="course" name="course_id">
-                        <option value="1" selected>WEB full-stack</option>
-                        <option value="2" selected>Different..</option>
-                    </select>
-                </div>
+                <content class="fields">
+                    <div class="field">
+                        <label for="course">
+                            Choose the course that you are interesting in:
+                        </label>
+                        <select id="course" name="course_id">
+                            <option value="1" selected>WEB full-stack</option>
+                            <option value="2" selected>Different..</option>
+                        </select>
+                    </div>
+                </content>
                 <insert-content set_class="fields">test_for_registration</insert-content>
-                <label for="uid_type">
-                    Select where would you like to receive your test results and advices:
-                </label>
-                <div class="field">
-                    <select id="uid_type" name="uid_type" @change="changeRegistrationType">
-                        <option value="telegram" selected>Telegram</option>
-                        <option value="email" selected>E-Mail</option>
-                    </select>
-                </div>
-                <div class="field" v-if="showEmailField">
-                    <label for="age">Your E-mail:</label>
-                    <input type="email" placeholder="your-real@email.com" required>
-                </div>
+                <content class="fields">
+                    <label for="uid_type">
+                        Select where would you like to receive your test results and advices:
+                    </label>
+                    <div class="field">
+                        <select id="uid_type" name="uid_type" @change="changeRegistrationType">
+                            <option value="telegram" selected>Telegram</option>
+                            <option value="email" selected>E-Mail</option>
+                        </select>
+                    </div>
+                    <div class="field" v-if="showEmailField">
+                        <label for="age">Your E-mail:</label>
+                        <input type="email" placeholder="your-real@email.com" required>
+                    </div>
+                </content>
                 <ul class="actions">
                     <li><button type="submit" class="primary">Finish the test</button></li>
                 </ul>
