@@ -38,7 +38,7 @@ const saveTestData = (form) => {
     )
 }
 
-const showEmailField = ref(false)
+const showEmailField = ref(true)
 const changeRegistrationType = (event) => {
     showEmailField.value = event.target.value === "email"
 }
@@ -68,18 +68,19 @@ const changeRegistrationType = (event) => {
                 </content>
                 <insert-content set_class="fields">test_for_registration</insert-content>
                 <content class="fields">
-                    <label for="uid_type">
-                        Select where would you like to receive your test results and advices:
-                    </label>
                     <div class="field">
+                        <label for="uid_type">
+                            Select where would you like to receive your test results and advices:
+                        </label>
                         <select id="uid_type" name="uid_type" @change="changeRegistrationType">
-                            <option value="telegram" selected>Telegram</option>
                             <option value="email" selected>E-Mail</option>
+                            <option value="telegram">Telegram</option>
                         </select>
-                    </div>
-                    <div class="field" v-if="showEmailField">
-                        <label for="age">Your E-mail:</label>
-                        <input type="email" placeholder="your-real@email.com" required>
+                        <br/>
+                        <div v-if="showEmailField">
+                            <label for="age">Your E-mail:</label>
+                            <input type="email" placeholder="your-real@email.com" required>
+                        </div>
                     </div>
                 </content>
                 <ul class="actions">
