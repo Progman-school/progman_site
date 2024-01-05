@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CertificateController;
+use App\Http\Controllers\PreloadedContentController;
 use App\Http\Controllers\RequestController;
 use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\Route;
@@ -32,7 +33,7 @@ Route::get('switch_tag_language', [TagController::class, 'switchTagLanguage']);
 Route::get('all_tags', [TagController::class, 'getAllTags']);
 Route::get('tag_value_by_name', [TagController::class, 'getTagValueByName']);
 
-Route::get('get_courses_list', [TagController::class, 'getCoursesList']);
+Route::get('get_courses_list', [PreloadedContentController::class, 'getCoursesList']);
 
 
 // tmp rebuilders
