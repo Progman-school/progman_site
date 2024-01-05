@@ -1,9 +1,9 @@
 @props(['url'])
 <tr>
 <td class="header">
-<a href="{{ $url }}" style="display: inline-block;">
-<img src="{{asset("/images/progman_white.png")}}" class="logo" alt="Logo">
+<div style="padding: 20px 0">
+    <img src="{{asset("/images/progman_white.png")}}" class="logo" alt="Logo">
+</div>
 {{ $slot }}
-</a>
 </td>
 </tr>
