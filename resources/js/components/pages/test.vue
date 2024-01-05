@@ -77,7 +77,7 @@ const changeRegistrationType = (event) => {
                             <option value="telegram">Telegram</option>
                         </select>
                         <br/>
-                        <div v-if="showEmailField">
+                        <div v-if="showEmailField" style="border: none">
                             <label for="age">Your E-mail:</label>
                             <input type="email" placeholder="your-real@email.com" required>
                         </div>
