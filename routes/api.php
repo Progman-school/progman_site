@@ -32,6 +32,9 @@ Route::get('switch_tag_language', [TagController::class, 'switchTagLanguage']);
 Route::get('all_tags', [TagController::class, 'getAllTags']);
 Route::get('tag_value_by_name', [TagController::class, 'getTagValueByName']);
 
+Route::get('get_courses_list', [TagController::class, 'getCoursesList']);
+
+
 // tmp rebuilders
 //Route::get('rebuild_tags', [\App\Http\Controllers\DBRebuilder::class, 'rebuildTags']);
 //Route::get('rebuild_courses', [\App\Http\Controllers\DBRebuilder::class, 'rebuildCourses']);
