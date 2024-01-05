@@ -9,7 +9,7 @@ export const usePreloadedDataStorage = defineStore('preloadedContent', {
         getCoursesList() {
             this.currentLanguage = null;
             mixins.methods.getAPI(
-                'current_language',
+                'get_courses_list',
                 null,
                 (data) => this.courses = data
             )

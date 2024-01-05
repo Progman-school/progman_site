@@ -21,6 +21,10 @@ class Course extends Model
         'type',
     ];
 
+    protected $hidden = [
+        'pivot'
+    ];
+
     public function technologies(): BelongsToMany
     {
         return $this->belongsToMany(Technology::class);
