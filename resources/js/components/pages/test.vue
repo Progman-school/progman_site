@@ -73,13 +73,16 @@ const changeRegistrationType = (event) => {
                             Select where would you like to receive your test results and advices:
                         </label>
                         <select id="uid_type" name="uid_type" @change="changeRegistrationType">
-                            <option value="email" selected>E-Mail</option>
-                            <option value="telegram">Telegram</option>
+                            <option value="email" selected>E-Mail address</option>
+                            <option value="telegram">Telegram messenger</option>
                         </select>
                         <br/>
                         <div v-if="showEmailField" style="border: none">
                             <label for="age">Your E-mail:</label>
                             <input type="email" placeholder="your-real@email.com" required>
+                        </div>
+                        <div v-if="!showEmailField" style="border: none">
+                            <b>Important! Make sure that you have installed Telegram messenger on this device, or choose Email</b>
                         </div>
                     </div>
                 </content>
