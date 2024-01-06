@@ -63,7 +63,7 @@ const changeRegistrationType = (event) => {
                             Choose the course that you are interesting in:
                         </label>
                         <select id="course" name="course_id">
-                            <option v-for="course in preloadedData.courses" value="{{course.id}}" title="{{course.level}}">
+                            <option v-for="course in preloadedData.courses" :value=course.id :title=course.level>
                                 {{course.name}}
                             </option>
                         </select>
