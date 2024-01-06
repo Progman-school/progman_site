@@ -22,10 +22,21 @@ class MailController extends MainController
     /**
      * @throws UserAlert
      */
-    public function confirmRequest(Request $request): string
+    public function entry(Request $request): string
     {
+        if (!$request->get("action")) {
+            abort(404);
+        }
         $emailRequestService = new EmailRequestService($request);
-        return $emailRequestService->confirmRequest();
+
+        switch ($request->action) {
+            case "confirm_request":
+                return $emailRequestService->confirmRequest();
+            case "confirm_email":
+                return "";
+            default:
+                abort(404);
+        }
     }
 
 }

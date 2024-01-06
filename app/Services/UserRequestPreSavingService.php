@@ -11,9 +11,9 @@ use Illuminate\Support\Facades\Mail;
 
 class UserRequestPreSavingService
 {
-    const CONFIRM_URL_PARAM = "confirm";
+    const CONFIRM_URL_PARAM = "hash";
 
-    public static function addRequest(Request $request): array {
+    public static function addRequest(Request $request): ?array {
         $score = self::calculateTestScore($request->toArray());
         $descriptionText = self::testScoreDescription($score);
         $userRequest = new UserRequest();
@@ -50,7 +50,12 @@ class UserRequestPreSavingService
             ];
         } elseif ($userRequest->type == "email") {
             Mail::to($request->email)->send(new ConfirmApplication(
-                "https://{$_SERVER['HTTP_HOST']}/" . EmailServiceSdk::API_ROUT . EmailServiceSdk::API_ENTRYPOINT . "?" . self::CONFIRM_URL_PARAM . "={$userRequest->type}'-'{$userRequest->hash}&lang=" . TagService::getCurrentLanguage(),
+                "https://{$_SERVER['HTTP_HOST']}/" . EmailServiceSdk::API_ROUT . EmailServiceSdk::API_ENTRYPOINT .
+                "?" . http_build_query([
+                    "action" => "confirm_request",
+                    self::CONFIRM_URL_PARAM => "{$userRequest->type}-{$userRequest->hash}",
+                    "lang" => TagService::getCurrentLanguage(),
+                ]),
                 $score,
                 $alertText
             ));
@@ -61,7 +66,7 @@ class UserRequestPreSavingService
                 'description' => $descriptionText,
             ];
         }
-
+        return null;
     }
 
     protected static function testScoreDescription(int $scorePoints):string {

@@ -27,7 +27,7 @@ class UidService
         /** @var Uid $uid */
         $uid = ("App\Models\Uids\\" . ucfirst($uidType))::where("service_uid", $serviceUid)->first();
 
-        if (!$uid->get("id")) {
+        if (!$uid?->id) {
             /** @var Uid $uid */
             $uid = new (ucfirst($uidType))();
             $uid->service_uid = $serviceUid;
