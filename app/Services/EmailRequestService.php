@@ -21,17 +21,17 @@ class EmailRequestService extends EmailServiceSdk
      * @throws UserAlert
      * @throws Exception
      */
-    public function confirmRequest(Request $request, string $confirmationHash): void
+    public function confirmRequest(): string
     {
+        $confirmationHash = $this->request->hash;
         $userRequest = UserService::confirmUserRequest($confirmationHash);
-        $confirmedUser = UserService::addOrGetUserByRequest($request, $userRequest);
+        $confirmedUser = UserService::addOrGetUserByRequest($this->request, $userRequest);
         $userRequestsCount = UserService::getCountOfUserRequests($confirmedUser);
         if ($userRequestsCount > 1) {
             $userMessage = TagService::getTagValueByName("previously_applied_warning_message")[TagService::getCurrentLanguage()]
                 . "\n\n" . TagService::getTagValueByName("telegram_question_to_repeater")[TagService::getCurrentLanguage()];
-            $this->showResultPage($userMessage);
         } else {
-            $this->telegramService->sendNewRequestToAdminChat($confirmedUser, $userRequest, $request, $userRequestsCount);
+            $this->telegramService->sendNewRequestToAdminChat($confirmedUser, $userRequest, $this->request, $userRequestsCount);
 
             $userMessage = TagService::getTagValueByName(
                     "thanks_for_registration_message",
@@ -39,19 +39,19 @@ class EmailRequestService extends EmailServiceSdk
                     ["new_id" => [
                         TagService::DEFAULT_LANGUAGE => $confirmedUser->id]
                     ]
-                )[TagService::getCurrentLanguage()]
+                )[$this->request->lang ?? TagService::getCurrentLanguage()]
                 . "\n\n" . TagService::getTagValueByName(
                     "telegram_success_answer_to_new_user",
                     0,
                     ["telegram_admit_account" =>
                         [TagService::DEFAULT_LANGUAGE => config("services.telegram.contact_manager_login")]
                     ]
-                )[TagService::getCurrentLanguage()];
-            $this->showResultPage($userMessage);
+                )[$this->request->lang ?? TagService::getCurrentLanguage()];
         }
+        return $this->showResultPage($userMessage);
     }
 
-    public function showResultPage(string $text) {
+    public function showResultPage(string $text): string {
         return view(
             'result_page_of_email_action.blade',
             ['text' => $text]
