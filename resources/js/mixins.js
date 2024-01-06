@@ -62,7 +62,6 @@ export default {
                 );
                 let json = await response.json()
                 if (callback) {
-                    console.log(json)
                     await callback(json)
                 }
             } catch (error) {
