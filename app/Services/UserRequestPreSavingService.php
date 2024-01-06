@@ -49,8 +49,8 @@ class UserRequestPreSavingService
                 'description' => $descriptionText,
             ];
         } elseif ($userRequest->type == "email") {
-            Mail::to($userRequest->email)->send(new ConfirmApplication(
-                "https://{$_SERVER['HTTP_HOST']}/" . EmailServiceSdk::API_ENTRYPOINT . "?" . self::CONFIRM_URL_PARAM . "={$userRequest->type}'-'{$userRequest->hash}&lang=" . TagService::getCurrentLanguage(),
+            Mail::to($request->email)->send(new ConfirmApplication(
+                "https://{$_SERVER['HTTP_HOST']}/" . EmailServiceSdk::API_ROUT . EmailServiceSdk::API_ENTRYPOINT . "?" . self::CONFIRM_URL_PARAM . "={$userRequest->type}'-'{$userRequest->hash}&lang=" . TagService::getCurrentLanguage(),
                 $score,
                 $alertText
             ));
