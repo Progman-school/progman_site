@@ -81,8 +81,8 @@ const changeRegistrationType = (event) => {
                         </select>
                         <br/>
                         <div v-if="showEmailField" style="border: none">
-                            <label for="age">Your E-mail:</label>
-                            <input type="email" placeholder="your-real@email.com" required>
+                            <label for="email">Your E-mail:</label>
+                            <input type="email" id="email" name="email" placeholder="your-real@email.com" required>
                         </div>
                         <div v-if="!showEmailField" style="border: none">
                             <b>Important! Make sure that you have installed Telegram messenger on this device, or choose Email</b>
