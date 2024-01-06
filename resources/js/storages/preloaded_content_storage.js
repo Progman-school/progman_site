@@ -8,10 +8,10 @@ export const usePreloadedDataStorage = defineStore('preloadedContent', {
     actions: {
         async getCoursesList() {
             let courses
-            await mixins.methods.getAPI(
+            mixins.methods.getAPI(
                 'get_courses_list',
                 null,
-                function (data) {console.log(courses); courses = data;}
+                (data) => {console.log(courses); courses = data;}
             )
             console.log(courses)
             return courses
