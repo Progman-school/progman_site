@@ -150,6 +150,7 @@ class TelegramRequestService extends TelegramBotApiSdk
 
     public function prepareNotesMessage(User $user, UserRequest $userRequest, Request $request, $requestsCount): string
     {
+        dd($userRequest);
         $userName = $request["message"]["from"]["username"] ?? " - ";
 
         $message = "New request!\n";
