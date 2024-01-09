@@ -31,9 +31,12 @@ class MailController extends MainController
 
         switch ($request->action) {
             case "confirm_request":
-                return $emailRequestService->confirmRequest();
-            case "confirm_email":
-                return "";
+                return redirect(
+                    EmailRequestService::API_ROUT .  EmailRequestService::API_ENTRYPOINT .
+                    "?action=show_confirm_result&text=" . urlencode($emailRequestService->confirmRequest())
+                );
+            case "show_confirm_result":
+                return $emailRequestService->showResultPage(urldecode($request->text) ?? abort(404));
             default:
                 abort(404);
         }

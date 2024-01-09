@@ -52,13 +52,13 @@ class EmailRequestService extends EmailServiceSdk
                     ]
                 )[$this->request->lang ?? TagService::getCurrentLanguage()];
         }
-        return $this->showResultPage($userMessage);
+        return $userMessage;
     }
 
     public function showResultPage(string $text): string {
         return view(
-            'result_page_of_email_action.blade',
-            ['text' => $text]
+            'api_answers.result_page_of_email_action',
+            ['text' => str_replace("\n", "<br/>", $text)]
         )->render();
     }
 }

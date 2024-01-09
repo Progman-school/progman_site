@@ -10,7 +10,7 @@
 <body>
     <div style="text-align: center">
         <h3>Status:</h3>
-        <p><b>{{$text}}</b></p>
+        <p><b>{!! $text !!}</b></p>
         <a href="/" title="progman.site">Go back to the site >></a>
     </div>
 </body>

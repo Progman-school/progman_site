@@ -37,15 +37,10 @@ class UidService
         $uid->service_login = $serviceLogin;
         $uid->data = $data;
         $uid->save();
-        dd($uid);
         if (!$uid?->id) {
             throw new Exception("Error while creating/updating uid '{$serviceUid}'({$uidType})");
         }
         return $uid;
     }
 
-//    public function getUidIdFromRequest(Request $request): string
-//    {
-//        return $request->get("uid_type");
-//    }
 }
