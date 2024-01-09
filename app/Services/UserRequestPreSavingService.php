@@ -15,7 +15,6 @@ class UserRequestPreSavingService
 
     public static function addRequest(Request $request): ?array {
         $score = self::calculateTestScore($request->toArray());
-        $descriptionText = self::testScoreDescription($score);
         $userRequest = new UserRequest();
         $userRequest->test_score = $score;
         $userRequest->application_data = json_encode($request->input(), JSON_UNESCAPED_UNICODE);
@@ -23,31 +22,24 @@ class UserRequestPreSavingService
         $userRequest->hash = self::getRequestHash($request);
         $userRequest->save();
         $userRequest->id = $userRequest->getKey();
-        $inject = [
-            'test_result_score' => [
-                TagService::EN_LANGUAGE => $score,
-                TagService::RU_LANGUAGE => $score,
-                'timeStamp' => 0,
-            ],
-            'test_result_description' => [
-                TagService::EN_LANGUAGE => $descriptionText,
-                TagService::RU_LANGUAGE => $descriptionText,
-                'timeStamp' => 0,
-            ],
+
+        $return = [
+            'hash_link' => null,
+            'alert_text' => TagService::getTagValueByName(
+                'alert_text_after_application_complete',
+                $request->timeStamp ?? 0,
+                [
+                    'type_of_user_uid' => [
+                        TagService::EN_LANGUAGE => $request->uid_type,
+                        TagService::RU_LANGUAGE => $request->uid_type,
+                    ],
+                ]
+            )[TagService::getCurrentLanguage()],
         ];
-        $alertText = TagService::getTagValueByName(
-            'test_passed_alert_text',
-            $request->timeStamp ?? 0,
-            $inject
-        )[TagService::getCurrentLanguage()];
 
         if ($userRequest->type == "telegram") {
-            return [
-                'hash_link' => "tg://resolve?domain=" . config("services.telegram.bot_login") . "&" . self::CONFIRM_URL_PARAM . "={$userRequest->type}'-'{$userRequest->hash}",
-                'alert_text' => $alertText,
-                'score' => $score,
-                'description' => $descriptionText,
-            ];
+                $return['hash_link'] = "tg://resolve?domain=" . config("services.telegram.bot_login") .
+                    "&" . self::CONFIRM_URL_PARAM . "={$userRequest->type}'-'{$userRequest->hash}";
         } elseif ($userRequest->type == "email") {
             Mail::to($request->email)->send(new ConfirmApplication(
                 "https://{$_SERVER['HTTP_HOST']}/" . EmailServiceSdk::API_ROUT . EmailServiceSdk::API_ENTRYPOINT .
@@ -57,16 +49,31 @@ class UserRequestPreSavingService
                     "lang" => TagService::getCurrentLanguage(),
                 ]),
                 $score,
-                $alertText
+                self::generateAlertText($userRequest)
             ));
-            return [
-                'hash_link' => null,
-                'alert_text' => $alertText,
-                'score' => $score,
-                'description' => $descriptionText,
-            ];
         }
-        return null;
+        return $return;
+    }
+
+    public static function generateAlertText(UserRequest $userRequest): string {
+        $descriptionText = self::testScoreDescription($userRequest->test_score);
+
+        return TagService::getTagValueByName(
+            'test_passed_alert_text',
+            $userRequest->created_at->getTimestamp(),
+            [
+                'test_result_score' => [
+                    TagService::EN_LANGUAGE => $userRequest->test_score,
+                    TagService::RU_LANGUAGE => $userRequest->test_score,
+                    'timeStamp' => 0,
+                ],
+                'test_result_description' => [
+                    TagService::EN_LANGUAGE => $descriptionText,
+                    TagService::RU_LANGUAGE => $descriptionText,
+                    'timeStamp' => 0,
+                ],
+            ]
+        )[TagService::getCurrentLanguage()];
     }
 
     protected static function testScoreDescription(int $scorePoints):string {

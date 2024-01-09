@@ -102,14 +102,16 @@ class TelegramRequestService extends TelegramBotApiSdk
         $userRequest = UserService::confirmUserRequest($confirmationHash);
         $confirmedUser = UserService::addOrGetUserByRequest($request, $userRequest);
         $userRequestsCount = UserService::getCountOfUserRequests($confirmedUser);
+
+        $userMessage = "Super!\n". UserRequestPreSavingService::generateAlertText($userRequest);
         if ($userRequestsCount > 1) {
-            $userMessage = TagService::getTagValueByName("previously_applied_warning_message")[TagService::getCurrentLanguage()]
+            $userMessage .= TagService::getTagValueByName("previously_applied_warning_message")[TagService::getCurrentLanguage()]
                 . "\n\n" . TagService::getTagValueByName("telegram_question_to_repeater")[TagService::getCurrentLanguage()];
             $this->sendEchoMessage($userMessage, self::KEYBOARD_FOR_REPEATER_REQUEST);
         } else {
             $this->sendNewRequestToAdminChat($confirmedUser, $userRequest, $request, $userRequestsCount);
 
-            $userMessage = TagService::getTagValueByName(
+            $userMessage .= TagService::getTagValueByName(
                 "thanks_for_registration_message",
                 0 ,
                     ["new_id" => [
