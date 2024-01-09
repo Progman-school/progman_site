@@ -153,13 +153,9 @@ class TelegramRequestService extends TelegramBotApiSdk
         $userRequestData = json_decode($userRequest->application_data);
         $userName = $userRequestData->username ?? " - ";
 
-        $message = "New request! ({$userRequest->type})\n";
-        $message .= "№: {$userRequest->id}\n";
+        $message = "New request! ({$userRequest->type} type)\n";
+        $message .= "№: {$userRequest->id}\n\n";
 
-        if ($requestsCount > 1) {
-            $message .= "REPEATER: {$requestsCount}\n";
-            $message .= "first request: " . date("d.m.Y", strtotime($user->created_at)) . "\n\n";
-        }
         if ($userRequest->type == "email") {
             $message .= "Email: {$userRequest->uid}\n";
             $message .= "Name: " . ($userRequestData->name ?? "-") . "\n";
@@ -168,15 +164,19 @@ class TelegramRequestService extends TelegramBotApiSdk
             $message .= "Name: {$user->first_name} {$user->last_name}\n";
             $message .= "tg id: {$request["message"]["from"]["id"]}\n";
         }
+        if ($requestsCount > 1) {
+            $message .= "REPEATER: {$requestsCount}\n\n";
+            $message .= "first request: " . date("d.m.Y", strtotime($user->created_at)) . "\n";
+        }
 
-        $message .= "TEST: \n";
+        $message .= "\nTEST: \n";
         foreach ($userRequestData as $keyTestItem => $testItem) {
-            if ($keyTestItem == "uid_type") {
+            if (in_array($keyTestItem, ["uid_type", "name", "email"])) {
                 continue;
             }
             $message .= "$keyTestItem: $testItem\n";
         }
-        $message .= "TEST SCORE: {$userRequest->test_score}\n";
+        $message .= "\nTEST SCORE: {$userRequest->test_score}\n";
         return $message;
     }
 }
