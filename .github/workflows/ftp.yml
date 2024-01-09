@@ -72,7 +72,7 @@ jobs:
         with:
           server: ${{ vars.TEST_FTP_STAGE_HOST }}
           username: ${{ vars.TEST_FTP_STAGE_FTP_USER }}
-          password: ${{ secrets.TEST_FTP_STAGE_DB_PASSWORD }}
+          password: ${{ secrets.TEST_FTP_STAGE_FTP_PASSWORD }}
 
       - name: Sanding the result notification through Telegram
         run: |
