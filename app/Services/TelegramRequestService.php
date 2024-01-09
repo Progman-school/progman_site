@@ -150,20 +150,27 @@ class TelegramRequestService extends TelegramBotApiSdk
 
     public function prepareNotesMessage(User $user, UserRequest $userRequest, Request $request, $requestsCount): string
     {
-        dd($userRequest);
-        $userName = $request["message"]["from"]["username"] ?? " - ";
+        $userRequestData = json_decode($userRequest->application_data);
+        $userName = $userRequestData->username ?? " - ";
 
-        $message = "New request!\n";
+        $message = "New request! ({$userRequest->type})\n";
+        $message .= "№: {$userRequest->id}\n";
+
         if ($requestsCount > 1) {
             $message .= "REPEATER: {$requestsCount}\n";
             $message .= "first request: " . date("d.m.Y", strtotime($user->created_at)) . "\n\n";
         }
-        $message .= "Telegram: " . ($userName ? "@{$userName}" : " - ")  . "\n" .
-            "Name: {$user->first_name} {$user->last_name}\n" .
-            "tg id: {$request["message"]["from"]["id"]}\n" .
-            "Request №: {$userRequest->id}\n\n";
+        if ($userRequest->type == "email") {
+            $message .= "Email: {$userRequest->uid}\n";
+            $message .= "Name: " . ($userRequestData->name ?? "-") . "\n";
+        } elseif ($userRequest->type == "telegram") {
+            $message .= "Telegram: " . ($userName ? "@{$userName}" : " - ")  . "\n";
+            $message .= "Name: {$user->first_name} {$user->last_name}\n";
+            $message .= "tg id: {$request["message"]["from"]["id"]}\n";
+        }
+
         $message .= "TEST: \n";
-        foreach (json_decode($userRequest->application_data) as $keyTestItem => $testItem) {
+        foreach ($userRequestData as $keyTestItem => $testItem) {
             if ($keyTestItem == "uid_type") {
                 continue;
             }
