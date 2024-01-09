@@ -25,6 +25,10 @@ class EmailRequestService extends EmailServiceSdk
     {
         $confirmationHash = $this->request->hash;
         $userRequest = UserService::confirmUserRequest($confirmationHash);
+        if ($userRequest->type == 'email') {
+            $userRequest->uid = json_decode($userRequest->application_data)->email;
+            $userRequest->save();
+        }
         $confirmedUser = UserService::addOrGetUserByRequest($this->request, $userRequest);
         $userRequestsCount = UserService::getCountOfUserRequests($confirmedUser);
         if ($userRequestsCount > 1) {
