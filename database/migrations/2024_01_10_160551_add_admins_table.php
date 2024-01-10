@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('admins', function (Blueprint $table) {
+        Schema::create('admins', function (Blueprint $table) {
             $table->id();
             $table->string('login');
             $table->string('password');
@@ -20,7 +20,7 @@ return new class extends Migration
         });
     }
 
-    /**
+   /**
      * Reverse the migrations.
      */
     public function down(): void
