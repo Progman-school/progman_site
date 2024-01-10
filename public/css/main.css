@@ -532,7 +532,7 @@ input[type="radio"]:checked + label:before {
     background: #ffffff !important;
     border-color: #ffffff !important;
     color: #1b1f22;
-    content: '&#xe5ca';
+    content: '✔';
 }
 
 input[type="checkbox"]:focus + label:before,
