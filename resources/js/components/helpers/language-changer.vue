@@ -18,16 +18,17 @@ const iClass = computed({
     get () {
         if (!multiLanguageStore.currentLanguage) {
             eventListener.call('cookie_alert:show', true)
-            return 'rotate_circle fa-solid fa-globe'
+            return 'rotate_circle'
         }
-        return 'fa-solid fa-globe'
+        return ''
     },
 })
 </script>
 
 <template>
     <div id="langSwitcher" @click="multiLanguageStore.changeLanguage">
-        <span>{{multiLanguageStore.currentLanguage || '-- --'}}</span><i :class="iClass"></i>
+        <span>{{multiLanguageStore.currentLanguage || '-- --'}}</span>
+        <font-awesome-icon icon="fa-solid fa-globe" :class="iClass"></font-awesome-icon>
     </div>
 </template>
 

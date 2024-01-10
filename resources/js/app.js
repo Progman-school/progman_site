@@ -10,9 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { faGlobe } from '@fortawesome/free-solid-svg-icons'
 // import {  } from '@fortawesome/free-regular-svg-icons'
 import { faTelegram } from '@fortawesome/free-brands-svg-icons'
-
-library.add(faGlobe)
-library.add(faTelegram)
+library.add(faGlobe, faTelegram)
 
 const pinia = createPinia()
 const vueApp = createApp(app)
