@@ -32,7 +32,7 @@
             </p>
             <a href="tg://resolve?domain=progman_manager">
                 <button class="primary">
-                    <i class="fab fa-telegram"></i>
+                    <font-awesome-icon icon="fa-solid fa-telegram"></font-awesome-icon>
                     Connect by Telegram
                 </button>
             </a>
