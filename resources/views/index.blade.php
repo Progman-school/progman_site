@@ -20,6 +20,8 @@
 
     <!-- Fonts -->
     <link href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,500,0,0" />
+    <!-- Styles -->
     <link rel="stylesheet" href="{{asset('/css/main.css')}}" />
     <link rel="stylesheet" href="{{asset('/css/noscript.css')}}" />
     @vite('resources/css/app.css')
