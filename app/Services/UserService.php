@@ -21,9 +21,8 @@ class UserService
             $serviceUid = $request["message"]["from"]["id"];
             $serviceLogin = $request["message"]["from"]["username"] ?? null;
         } elseif ($userRequest->type == "email") {
-            // temp
-            $serviceUid = $request;
-            $serviceLogin = $request;
+            $serviceUid = $userRequest->service_uid;
+            $serviceLogin = $userRequest->service_uid;
         }
 
         /** @var User $checkUser */

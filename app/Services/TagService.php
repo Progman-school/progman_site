@@ -2,8 +2,10 @@
 
 namespace App\Services;
 
+use App\Exceptions\UserAlert;
 use App\Models\Tag;
 use Exception;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 
 class TagService extends MainService
@@ -49,15 +51,13 @@ class TagService extends MainService
      * @param array $injectionContent
      * @return array|null
      */
-    public static function getTagValueByName(string $name, int $time = 0, array $injectionContent = []): ?array
+    public static function getTagValueByName(string $name, int $time = 0, array $injectionContent = []): array
     {
-        if (!self::isOld($time)) {
-            return null;
-        }
         /** @var Tag $tag */
         $tag = Tag::where("show", 1)->where("name",  $name)->first();
         if (!$tag) {
-            return null;
+            Log::error("The tag of content is not found in DB: {$name}. Try to add the tag and its content values to DB or provide that as an injectionContent.");
+            throw new UserAlert("Sorry, Some minor error with content preloading.");
         }
 
         $tagDataWithValues = ["timeStamp" => time()];
