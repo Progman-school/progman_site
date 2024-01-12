@@ -30,8 +30,12 @@ class UserRequestPreSavingService
                 $request->timeStamp ?? 0,
                 [
                     'type_of_user_uid' => [
-                        TagService::EN_LANGUAGE => $request->uid_type,
-                        TagService::RU_LANGUAGE => $request->uid_type,
+                        TagService::DEFAULT_LANGUAGE => $request->uid_type,
+                        'timeStamp' => 0,
+                    ],
+                    'where_to_look_for_results' => [
+                        TagService::DEFAULT_LANGUAGE => ucfirst($userRequest->type),
+                        'timeStamp' => 0,
                     ],
                 ]
             )[TagService::getCurrentLanguage()],
@@ -63,13 +67,11 @@ class UserRequestPreSavingService
             $userRequest->created_at->getTimestamp(),
             [
                 'test_result_score' => [
-                    TagService::EN_LANGUAGE => $userRequest->test_score,
-                    TagService::RU_LANGUAGE => $userRequest->test_score,
+                    TagService::DEFAULT_LANGUAGE => $userRequest->test_score,
                     'timeStamp' => 0,
                 ],
                 'test_result_description' => [
-                    TagService::EN_LANGUAGE => $descriptionText,
-                    TagService::RU_LANGUAGE => $descriptionText,
+                    TagService::DEFAULT_LANGUAGE => $descriptionText,
                     'timeStamp' => 0,
                 ],
             ]

@@ -119,11 +119,7 @@ class TelegramRequestService extends TelegramBotApiSdk
                     ]
                 )[TagService::getCurrentLanguage()]
                 . "\n\n" . TagService::getTagValueByName(
-                    "telegram_success_answer_to_new_user",
-                    0,
-                    ["telegram_admit_account" =>
-                        [TagService::DEFAULT_LANGUAGE => config("services.telegram.contact_manager_login")]
-                    ]
+                    "telegram_success_answer_to_new_user"
                 )[TagService::getCurrentLanguage()];
             $this->sendEchoMessage($userMessage);
         }
