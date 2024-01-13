@@ -163,7 +163,7 @@ class TelegramRequestService extends TelegramBotApiSdk
             $message .= "Email: {$userRequest->uid}\n";
             $message .= "Name: " . ($userRequestData->name ?? "-") . "\n";
         } elseif ($userRequest->type == "telegram") {
-            $message .= "Telegram: " . ($userName ? "@{$userName}" : " - ")  . "\n";
+            $message .= "Telegram: " . ($request["message"]["from"]["username"] ?? " - ")  . "\n";
             $message .= "Name: {$user->first_name} {$user->last_name}\n";
             $message .= "tg id: {$request["message"]["from"]["id"]}\n";
         }
