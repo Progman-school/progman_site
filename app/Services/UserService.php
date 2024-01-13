@@ -17,16 +17,15 @@ class UserService
      */
     public static function addOrGetUserByRequest(Request $request, UserRequest $userRequest): User
     {
+
         if ($userRequest->type == "telegram") {
             $serviceUid = $request["message"]["from"]["id"];
             $serviceLogin = $request["message"]["from"]["username"] ?? null;
         } elseif ($userRequest->type == "email") {
-            $serviceUid = $userRequest->service_uid;
-            $serviceLogin = $userRequest->service_uid;
+            $serviceLogin = $userRequest->uid;
         }
-
         /** @var User $checkUser */
-        $checkUser = UserRequest::where('hash', $userRequest->hash)->first()->users()->first();
+        $checkUser = $userRequest->users()->first();
 
         if ($checkUser?->id) {
             return $checkUser;

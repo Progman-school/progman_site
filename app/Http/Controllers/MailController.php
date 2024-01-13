@@ -22,24 +22,21 @@ class MailController extends MainController
     /**
      * @throws UserAlert
      */
-    public function entry(Request $request): string
+    public function entry(Request $request): mixed
     {
         if (!$request->get("action")) {
             abort(404);
         }
         $emailRequestService = new EmailRequestService($request);
 
-        switch ($request->action) {
-            case "confirm_request":
-                return redirect(
-                    EmailRequestService::API_ROUT .  EmailRequestService::API_ENTRYPOINT .
-                    "?action=show_confirm_result&text=" . urlencode($emailRequestService->confirmRequest())
-                );
-            case "show_confirm_result":
-                return $emailRequestService->showResultPage(urldecode($request->text) ?? abort(404));
-            default:
-                abort(404);
-        }
+        return match ($request->action) {
+            "confirm_request" => redirect(
+                EmailRequestService::API_ROUT . EmailRequestService::API_ENTRYPOINT .
+                "?action=show_confirm_result&text=" . urlencode($emailRequestService->confirmRequest())
+            ),
+            "show_confirm_result" => $emailRequestService->showResultPage(urldecode($request->text) ?? abort(404)),
+            default => abort(404),
+        };
     }
 
 }
