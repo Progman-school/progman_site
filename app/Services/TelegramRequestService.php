@@ -24,15 +24,17 @@ class TelegramRequestService extends TelegramBotApiSdk
      */
     public function manageEntryCommand(): bool
     {
-        // tg://resolve?domain=progManTest_bot&start=telegram-720b35bf8923713e5bbbdf1c50a7eb0b
         try {
             $message = $this->request->get("message");
-            $command_params = trim(substr($message["text"], $message["entities"][0]["length"]));
-            Log::notice("command: " . substr($message["text"], 0, $message["entities"][0]["length"]) . " |   hash: $command_params \n");
+            $command_param = trim(substr($message["text"], $message["entities"][0]["length"]));
 
             switch (substr($message["text"], 0, $message["entities"][0]["length"])) {  // check command name
-                case '/start':
-                    $this->confirmRequest($this->request, $command_params);
+                case "/" . UserRequestPreSavingService::CONFIRM_URL_PARAM:
+                    if (!$command_param){
+                        $this->sendEchoMessage("Unexpected command command");
+                        return true;
+                    }
+                    $this->confirmRequest($this->request, $command_param);
                     break;
                 default:
                     return false;
@@ -40,7 +42,9 @@ class TelegramRequestService extends TelegramBotApiSdk
         } catch (UserAlert $e) {
             $this->sendEchoMessage($e->getMessage());
         } catch (Throwable $e) {
-            $this->sendEchoMessage("Error! Unexpected command issue.");
+            $this->sendEchoMessage(
+                "Sorry! Unexpected command issue.\n Please, connect to manager @"
+                . TagService::getTagValueByName("telegram_manager_account")[TagService::getCurrentLanguage()]);
             Log::debug($e);
         }
         return true;
@@ -99,6 +103,7 @@ class TelegramRequestService extends TelegramBotApiSdk
      */
     public function confirmRequest(Request $request, string $confirmationHash): void
     {
+        // tg://resolve?domain=progManTest_bot&start=telegram-c61d4d1b3f8796551cb79f02edacbf9d
         $userRequest = UserService::confirmUserRequest($confirmationHash);
         $confirmedUser = UserService::addOrGetUserByRequest($request, $userRequest);
         $userRequestsCount = UserService::getCountOfUserRequests($confirmedUser);
@@ -107,7 +112,7 @@ class TelegramRequestService extends TelegramBotApiSdk
         if ($userRequestsCount > 1) {
             $userMessage .= TagService::getTagValueByName("previously_applied_warning_message")[TagService::getCurrentLanguage()]
                 . "\n\n" . TagService::getTagValueByName("telegram_question_to_repeater")[TagService::getCurrentLanguage()];
-            $this->sendEchoMessage($userMessage, self::KEYBOARD_FOR_REPEATER_REQUEST);
+            $this->sendEchoMessage(strip_tags($userMessage), self::KEYBOARD_FOR_REPEATER_REQUEST);
         } else {
             $this->sendNewRequestToAdminChat($confirmedUser, $userRequest, $request, $userRequestsCount);
 
@@ -121,7 +126,7 @@ class TelegramRequestService extends TelegramBotApiSdk
                 . "\n\n" . TagService::getTagValueByName(
                     "telegram_success_answer_to_new_user"
                 )[TagService::getCurrentLanguage()];
-            $this->sendEchoMessage($userMessage);
+            $this->sendEchoMessage(strip_tags($userMessage));
         }
     }
 

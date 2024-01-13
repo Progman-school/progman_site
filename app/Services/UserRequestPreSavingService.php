@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Mail;
 
 class UserRequestPreSavingService
 {
-    const CONFIRM_URL_PARAM = "hash";
+    const CONFIRM_URL_PARAM = "start";
 
     public static function addRequest(Request $request): ?array {
         $score = self::calculateTestScore($request->toArray());
@@ -38,12 +38,16 @@ class UserRequestPreSavingService
                         'timeStamp' => 0,
                     ],
                 ]
+            )[TagService::getCurrentLanguage()]
+                . "<br /><br />" .
+            TagService::getTagValueByName(
+                "what_to_do_to_get_offer_by_{$userRequest->type}"
             )[TagService::getCurrentLanguage()],
         ];
 
         if ($userRequest->type == "telegram") {
                 $return['hash_link'] = "tg://resolve?domain=" . config("services.telegram.bot_login") .
-                    "&" . self::CONFIRM_URL_PARAM . "={$userRequest->type}'-'{$userRequest->hash}";
+                    "&" . self::CONFIRM_URL_PARAM . "={$userRequest->type}-{$userRequest->hash}";
         } elseif ($userRequest->type == "email") {
             Mail::to($request->email)->send(new ConfirmApplication(
                 "https://{$_SERVER['HTTP_HOST']}/" . EmailServiceSdk::API_ROUT . EmailServiceSdk::API_ENTRYPOINT .

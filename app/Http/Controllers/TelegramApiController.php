@@ -16,7 +16,6 @@ class TelegramApiController extends MainController
      */
     public function entry(Request $request): bool
     {
-//        Log::notice("REQUEST FROM TG: \n" . print_r($request->toArray(), true));
         $telegramApiRequestManageService = new TelegramRequestService($request);
 
         if ($request->get("callback_query")) {
