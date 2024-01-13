@@ -103,7 +103,6 @@ class TelegramRequestService extends TelegramBotApiSdk
      */
     public function confirmRequest(Request $request, string $confirmationHash): void
     {
-        // tg://resolve?domain=progManTest_bot&start=telegram-c61d4d1b3f8796551cb79f02edacbf9d
         $userRequest = UserService::confirmUserRequest($confirmationHash);
         $confirmedUser = UserService::addOrGetUserByRequest($request, $userRequest);
         $userRequestsCount = UserService::getCountOfUserRequests($confirmedUser);

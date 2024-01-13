@@ -57,6 +57,11 @@ class UserService
     {
         $hashData = explode("-", $hashString);
         $userRequest = UserRequest::where(["type" => $hashData[0], "hash" => $hashData[1]])->first();
+        if ($userRequest->admin_message_id) {
+            throw new UserAlert(
+                TagService::getTagValueByName("user_warning_request_is_already_confirmed")[TagService::getCurrentLanguage()]
+            );
+        }
         if (!$userRequest?->id) {
             throw new UserAlert(
                 TagService::getTagValueByName("invalid_command_from_site_error")[TagService::getCurrentLanguage()]
