@@ -24,7 +24,8 @@ class Request extends Model
         'hash',
         'course',
         'test_score',
-        'application_data'
+        'application_data',
+        'language',
     ];
 
     public function users(): BelongsToMany

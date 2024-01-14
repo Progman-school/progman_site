@@ -32,8 +32,8 @@ class EmailRequestService extends EmailServiceSdk
         $confirmedUser = UserService::addOrGetUserByRequest($this->request, $userRequest);
         $userRequestsCount = UserService::getCountOfUserRequests($confirmedUser);
         if ($userRequestsCount > 1) {
-            $userMessage = TagService::getTagValueByName("previously_applied_warning_message")[TagService::getCurrentLanguage()]
-                . "\n\n" . TagService::getTagValueByName("telegram_question_to_repeater")[TagService::getCurrentLanguage()];
+            $userMessage = TagService::getTagValueByName("previously_applied_warning_message")[$userRequest->language]
+                . "\n\n" . TagService::getTagValueByName("telegram_question_to_repeater")[$userRequest->language];
         } else {
             $this->telegramService->sendNewRequestToAdminChat($confirmedUser, $userRequest, $this->request, $userRequestsCount);
 
@@ -43,10 +43,10 @@ class EmailRequestService extends EmailServiceSdk
                     ["new_id" => [
                         TagService::DEFAULT_LANGUAGE => $confirmedUser->id]
                     ]
-                )[$this->request->lang ?? TagService::getCurrentLanguage()]
+                )[$userRequest->language]
                 . "\n\n" . TagService::getTagValueByName(
                     "telegram_success_answer_to_new_user"
-                )[$this->request->lang ?? TagService::getCurrentLanguage()];
+                )[$userRequest->language];
         }
         return $userMessage;
     }

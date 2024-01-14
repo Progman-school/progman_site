@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Services;
-
+https://api.telegram.org/bot6832045325:AAFyqc9MzghHMZlqDQptnbUPV4LyvxKdcPo/sendMessage?text=%F0%9F%91%8B%0AReportDay%21+How+is+it+going%2C+guys%3F&chat_id=-1002118965429
+https://api.telegram.org/bot6832045325:AAFyqc9MzghHMZlqDQptnbUPV4LyvxKdcPo/sendMessage?text=Check%2C+it%21%3F&chat_id=-1002118965429
 use App\Exceptions\UserAlert;
 use App\Models\User;
 use Exception;
