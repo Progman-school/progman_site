@@ -20,6 +20,7 @@ class UserRequestPreSavingService
         $userRequest->application_data = json_encode($request->input(), JSON_UNESCAPED_UNICODE);
         $userRequest->type = $request->uid_type;
         $userRequest->hash = self::getRequestHash($request);
+        $userRequest->language = TagService::getCurrentLanguage();
         $userRequest->save();
         $userRequest->id = $userRequest->getKey();
 
@@ -54,7 +55,6 @@ class UserRequestPreSavingService
                 "?" . http_build_query([
                     "action" => "confirm_request",
                     self::CONFIRM_URL_PARAM => "{$userRequest->type}-{$userRequest->hash}",
-                    "lang" => TagService::getCurrentLanguage(),
                 ]),
                 $score,
                 self::generateAlertText($userRequest)

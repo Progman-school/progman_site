@@ -109,8 +109,8 @@ class TelegramRequestService extends TelegramBotApiSdk
 
         $userMessage = "Super!\n". UserRequestPreSavingService::generateAlertText($userRequest);
         if ($userRequestsCount > 1) {
-            $userMessage .= TagService::getTagValueByName("previously_applied_warning_message")[TagService::getCurrentLanguage()]
-                . "\n\n" . TagService::getTagValueByName("telegram_question_to_repeater")[TagService::getCurrentLanguage()];
+            $userMessage .= TagService::getTagValueByName("previously_applied_warning_message")[$userRequest->language]
+                . "\n\n" . TagService::getTagValueByName("telegram_question_to_repeater")[$userRequest->language];
             $this->sendEchoMessage(strip_tags($userMessage), self::KEYBOARD_FOR_REPEATER_REQUEST);
         } else {
             $this->sendNewRequestToAdminChat($confirmedUser, $userRequest, $request, $userRequestsCount);
@@ -121,10 +121,10 @@ class TelegramRequestService extends TelegramBotApiSdk
                     ["new_id" => [
                         TagService::DEFAULT_LANGUAGE => $confirmedUser->id]
                     ]
-                )[TagService::getCurrentLanguage()]
+                )[$userRequest->language]
                 . "\n\n" . TagService::getTagValueByName(
                     "telegram_success_answer_to_new_user"
-                )[TagService::getCurrentLanguage()];
+                )[$userRequest->language];
             $this->sendEchoMessage(strip_tags($userMessage));
         }
     }
@@ -153,7 +153,6 @@ class TelegramRequestService extends TelegramBotApiSdk
     public function prepareNotesMessage(User $user, UserRequest $userRequest, Request $request, $requestsCount): string
     {
         $userRequestData = json_decode($userRequest->application_data);
-        $userName = $userRequestData->username ?? " - ";
 
         $message = "New request! ({$userRequest->type} type)\n";
         $message .= "№: {$userRequest->id}\n\n";
