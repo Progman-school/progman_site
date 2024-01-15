@@ -41,7 +41,7 @@ export default {
             this.APIRequest(
                 "PATCH",
                 this.makeURL(requestURL, urlParams),
-                this.makeJSONFromForm(formData),
+                formData ? this.makeJSONFromForm(formData) : null,
                 callback
             )
         },
