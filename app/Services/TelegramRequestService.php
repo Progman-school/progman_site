@@ -104,6 +104,8 @@ class TelegramRequestService extends TelegramBotApiSdk
     public function confirmRequest(Request $request, string $confirmationHash): void
     {
         $userRequest = UserService::confirmUserRequest($confirmationHash);
+        TagService::setCurrentLanguage($userRequest->language);
+
         $confirmedUser = UserService::addOrGetUserByRequest($request, $userRequest);
         $userRequestsCount = UserService::getCountOfUserRequests($confirmedUser);
 
@@ -111,7 +113,11 @@ class TelegramRequestService extends TelegramBotApiSdk
         if ($userRequestsCount > 1) {
             $userMessage .= TagService::getTagValueByName("previously_applied_warning_message")[$userRequest->language]
                 . "\n\n" . TagService::getTagValueByName("telegram_question_to_repeater")[$userRequest->language];
-            $this->sendEchoMessage(strip_tags($userMessage), self::KEYBOARD_FOR_REPEATER_REQUEST);
+            $this->sendEchoMessage(strip_tags(str_replace(
+                ["<br />", "<br/>", "<br>"],
+                "\n",
+                $userMessage
+            )), self::KEYBOARD_FOR_REPEATER_REQUEST);
         } else {
             $this->sendNewRequestToAdminChat($confirmedUser, $userRequest, $request, $userRequestsCount);
 
@@ -121,10 +127,10 @@ class TelegramRequestService extends TelegramBotApiSdk
                     ["new_id" => [
                         TagService::DEFAULT_LANGUAGE => $confirmedUser->id]
                     ]
-                )[$userRequest->language]
+                )[TagService::getCurrentLanguage()]
                 . "\n\n" . TagService::getTagValueByName(
                     "telegram_success_answer_to_new_user"
-                )[$userRequest->language];
+                )[TagService::getCurrentLanguage()];
             $this->sendEchoMessage(strip_tags($userMessage));
         }
     }
