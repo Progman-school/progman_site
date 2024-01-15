@@ -23,7 +23,7 @@ use Illuminate\Support\Facades\Route;
 //
 Route::post('add_request', [RequestController::class, 'addRequest']);
 //
-Route::get('check_certificate', [CertificateController::class, 'checkCertificate']);
+Route::post('check_certificate', [CertificateController::class, 'checkCertificate']);
 //Route::get('check_session', function (\Illuminate\Http\Request $request) {
 //    return print_r($request->session()->all());
 //});
