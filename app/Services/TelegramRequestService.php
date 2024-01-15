@@ -165,12 +165,14 @@ class TelegramRequestService extends TelegramBotApiSdk
             $message .= "Name: {$user->first_name} {$user->last_name}\n";
             $message .= "tg id: {$request["message"]["from"]["id"]}\n";
         }
+        $message .= "language: {$userRequest->language}\n\n";
+
         if ($requestsCount > 1) {
             $message .= "REPEATER: {$requestsCount}\n\n";
             $message .= "first request: " . date("d.m.Y", strtotime($user->created_at)) . "\n";
         }
 
-        $message .= "\nTEST: \n";
+        $message .= "TEST: \n";
         foreach ($userRequestData as $keyTestItem => $testItem) {
             if (in_array($keyTestItem, ["uid_type", "name", "email"])) {
                 continue;
