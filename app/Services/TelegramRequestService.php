@@ -111,8 +111,9 @@ class TelegramRequestService extends TelegramBotApiSdk
 
         $userMessage = "Super!\n". UserRequestPreSavingService::generateAlertText($userRequest);
         if ($userRequestsCount > 1) {
-            $userMessage .= TagService::getTagValueByName("previously_applied_warning_message")[$userRequest->language]
-                . "\n\n" . TagService::getTagValueByName("telegram_question_to_repeater")[$userRequest->language];
+            $userMessage .=
+                "\n\n" . TagService::getTagValueByName("previously_applied_warning_message")[TagService::getCurrentLanguage()]
+                . "\n\n" . TagService::getTagValueByName("telegram_question_to_repeater")[TagService::getCurrentLanguage()];
             $this->sendEchoMessage(strip_tags(str_replace(
                 ["<br />", "<br/>", "<br>"],
                 "\n",
@@ -121,7 +122,7 @@ class TelegramRequestService extends TelegramBotApiSdk
         } else {
             $this->sendNewRequestToAdminChat($confirmedUser, $userRequest, $request, $userRequestsCount);
 
-            $userMessage .= TagService::getTagValueByName(
+            $userMessage .= "\n\n" . TagService::getTagValueByName(
                 "thanks_for_registration_message",
                 0 ,
                     ["new_id" => [
