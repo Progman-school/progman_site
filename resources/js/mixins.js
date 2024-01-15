@@ -37,6 +37,15 @@ export default {
             )
         },
 
+        patchAPI(requestURL, urlParams, formData, callback) {
+            this.APIRequest(
+                "PATCH",
+                this.makeURL(requestURL, urlParams),
+                this.makeJSONFromForm(formData),
+                callback
+            )
+        },
+
         deleteAPI(requestURL, id, callback) {
             this.APIRequest(
                 "DELETE",

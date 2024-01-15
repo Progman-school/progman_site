@@ -29,9 +29,9 @@ Route::get('check_certificate', [CertificateController::class, 'checkCertificate
 //});
 
 Route::get('current_language', [TagController::class, 'getCurrentLanguage']);
-Route::get('switch_tag_language', [TagController::class, 'switchTagLanguage']);
 Route::get('all_tags', [TagController::class, 'getAllTags']);
 Route::get('tag_value_by_name', [TagController::class, 'getTagValueByName']);
+Route::patch('switch_tag_language', [TagController::class, 'switchTagLanguage']);
 
 Route::get('get_courses_list', [PreloadedContentController::class, 'getCoursesList']);
 
