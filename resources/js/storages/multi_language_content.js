@@ -27,6 +27,7 @@ export const useMultiLanguageStore = defineStore({
             mixins.methods.patchAPI(
                 'switch_tag_language',
                 null,
+                null,
                 this.saveLanguage
             );
         },
