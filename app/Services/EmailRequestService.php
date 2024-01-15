@@ -23,7 +23,7 @@ class EmailRequestService extends EmailServiceSdk
      */
     public function confirmRequest(): string
     {
-        $confirmationHash = $this->request->hash;
+        $confirmationHash = $this->request->{UserRequestPreSavingService::CONFIRM_URL_PARAM};
         $userRequest = UserService::confirmUserRequest($confirmationHash);
         TagService::setCurrentLanguage($userRequest->language);
 
