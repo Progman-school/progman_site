@@ -22,8 +22,12 @@ class UserService
             $serviceUid = $request["message"]["from"]["id"];
             $serviceLogin = $request["message"]["from"]["username"] ?? null;
         } elseif ($userRequest->type == "email") {
+            $serviceUid = $userRequest->uid;
             $serviceLogin = $userRequest->uid;
+        } else {
+            throw new Exception("Unexpected user request type '{$userRequest->type}'");
         }
+
         /** @var User $checkUser */
         $checkUser = $userRequest->users()->first();
 

@@ -25,11 +25,9 @@ class UidService
         if (!in_array($uidType, self::AVAILABLE_TYPES)) {
             throw new Exception("Unexpected uid type '{$uidType}'");
         }
-        /** @var Uid $uid */
         $uid = ("App\Models\Uids\\" . ucfirst($uidType))::where("service_uid", $serviceUid)->first();
 
         if (!$uid?->id) {
-            /** @var Uid $uid */
             $uid = new ("App\Models\Uids\\" . ucfirst($uidType))();
             $uid->service_uid = $serviceUid;
             $uid->user_id = $userId;
