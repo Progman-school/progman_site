@@ -87,9 +87,10 @@ class DBRebuilder extends MainController
     }
 
     /**
+     * @return array
      * @throws Exception
      */
-    public function rebuildCourses():array {
+    public static function rebuildCourses():array {
         return self::lunchFacade(function(&$count) {
 
             $oldCourses = self::$oldConnection->query("SELECT * FROM courses;")
@@ -125,9 +126,10 @@ class DBRebuilder extends MainController
     }
 
     /**
+     * @return array
      * @throws Exception
      */
-    public function rebuildCertificates():array {
+    public static function rebuildCertificates():array {
         return self::lunchFacade(function(&$count) {
             $oldCertificates = self::$oldConnection->query("
                 SELECT c.*, u.tg_id AS 'utg_id' FROM certificates c
@@ -174,9 +176,10 @@ class DBRebuilder extends MainController
     }
 
     /**
+     * @return array
      * @throws Exception
      */
-    public function rebuildUsersAndRequests():array {
+    public static function rebuildUsersAndRequests():array {
         return self::lunchFacade(function(&$count) {
             $oldRequests = self::$oldConnection->query("
                 SELECT r.*, u.id AS 'user_id' FROM requests r
@@ -227,9 +230,10 @@ class DBRebuilder extends MainController
 
     /**
      * FOR THE CONTENT TAG'S PART
+     * @return array
      * @throws Exception
      */
-    public function rebuildTags():array {
+    public static function rebuildTags():array {
         return self::lunchFacade(function(&$count) {
             $oldDBRequest = self::$oldConnection->query("SELECT * FROM `language_contents`");
             $oldDBBData = $oldDBRequest->fetchAll(PDO::FETCH_ASSOC);
@@ -274,14 +278,15 @@ class DBRebuilder extends MainController
     }
 
     /**
+     * @return string
      * @throws Exception
      */
-    public function rebuildAll(): string {
+    public static function rebuildAll(): string {
         $results = [];
-        $results["tags"] = $this->rebuildTags();
-        $results["courses"] = $this->rebuildCourses();
-        $results["users_requests"] = $this->rebuildUsersAndRequests();
-        $results["certificates"] = $this->rebuildCertificates();
+        $results["tags"] = DBRebuilder::rebuildTags();
+        $results["courses"] = DBRebuilder::rebuildCourses();
+        $results["users_requests"] = DBRebuilder::rebuildUsersAndRequests();
+        $results["certificates"] = DBRebuilder::rebuildCertificates();
 
         $time = null;
         $items = null;
