@@ -64,7 +64,7 @@ export default {
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                     }
                 }
-                if (body && (method === "POST" || method === "PUT")) {
+                if (body && ["POST", "PUT", "PATCH"].includes(method)) {
                     requestObject.body = body
                     requestObject.headers["Content-Type"] = 'application/json'
                 }
