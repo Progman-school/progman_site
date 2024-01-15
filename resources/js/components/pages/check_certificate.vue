@@ -29,7 +29,7 @@ const showCheckResult = (resultData) => {
 
 const checkCertificate = (event) => {
     event.preventDefault()
-    mixins.methods.getAPI(
+    mixins.methods.postAPI(
         'check_certificate',
         new FormData(event.target),
         showCheckResult
