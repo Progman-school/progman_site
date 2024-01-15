@@ -13,4 +13,13 @@ class AppHelper
         echo $print;
         return null;
     }
+
+    public static function removeHtmlTagsFromString(string $string): string
+    {
+        return strip_tags(str_replace(
+            ["<br />", "<br/>", "<br>"],
+            "\n",
+            $string
+        ));
+    }
 }

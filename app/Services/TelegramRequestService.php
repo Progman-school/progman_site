@@ -2,6 +2,7 @@
 
 namespace App\Services;
 use App\Exceptions\UserAlert;
+use App\Helpers\AppHelper;
 use App\Models\Request as UserRequest;
 use App\Models\User;
 use App\sdks\TelegramBotApiSdk;
@@ -114,11 +115,10 @@ class TelegramRequestService extends TelegramBotApiSdk
             $userMessage .=
                 "\n\n" . TagService::getTagValueByName("previously_applied_warning_message")[TagService::getCurrentLanguage()]
                 . "\n\n" . TagService::getTagValueByName("telegram_question_to_repeater")[TagService::getCurrentLanguage()];
-            $this->sendEchoMessage(strip_tags(str_replace(
-                ["<br />", "<br/>", "<br>"],
-                "\n",
-                $userMessage
-            )), self::KEYBOARD_FOR_REPEATER_REQUEST);
+            $this->sendEchoMessage(
+                AppHelper::removeHtmlTagsFromString($userMessage),
+                self::KEYBOARD_FOR_REPEATER_REQUEST
+            );
         } else {
             $this->sendNewRequestToAdminChat($confirmedUser, $userRequest, $request, $userRequestsCount);
 
@@ -132,7 +132,7 @@ class TelegramRequestService extends TelegramBotApiSdk
                 . "\n\n" . TagService::getTagValueByName(
                     "telegram_success_answer_to_new_user"
                 )[TagService::getCurrentLanguage()];
-            $this->sendEchoMessage(strip_tags($userMessage));
+            $this->sendEchoMessage(AppHelper::removeHtmlTagsFromString($userMessage));
         }
     }
 
