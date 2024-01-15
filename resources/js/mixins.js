@@ -50,7 +50,10 @@ export default {
             try {
                 const requestObject = {
                     method: method,
-                    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    }
                 }
                 if (body && (method === "POST" || method === "PUT")) {
                     requestObject.body = body
