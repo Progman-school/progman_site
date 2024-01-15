@@ -31,11 +31,11 @@ class UserRequestPreSavingService
                 $request->timeStamp ?? 0,
                 [
                     'type_of_user_uid' => [
-                        TagService::getCurrentLanguage() => $request->uid_type,
+                        TagService::DEFAULT_LANGUAGE => $request->uid_type,
                         'timeStamp' => 0,
                     ],
                     'where_to_look_for_results' => [
-                        TagService::getCurrentLanguage() => ucfirst($userRequest->type),
+                        TagService::DEFAULT_LANGUAGE => ucfirst($userRequest->type),
                         'timeStamp' => 0,
                     ],
                 ]
