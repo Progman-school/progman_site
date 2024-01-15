@@ -71,11 +71,11 @@ class UserRequestPreSavingService
             $userRequest->created_at->getTimestamp(),
             [
                 'test_result_score' => [
-                    TagService::getCurrentLanguage() => $userRequest->test_score,
+                    TagService::DEFAULT_LANGUAGE => $userRequest->test_score,
                     'timeStamp' => 0,
                 ],
                 'test_result_description' => [
-                    TagService::getCurrentLanguage() => $descriptionText,
+                    TagService::DEFAULT_LANGUAGE => $descriptionText,
                     'timeStamp' => 0,
                 ],
             ]
