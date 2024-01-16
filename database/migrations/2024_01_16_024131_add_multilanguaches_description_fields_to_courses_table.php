@@ -13,10 +13,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('courses', function (Blueprint $table) {
-            $table->renameColumn('description', 'description_en');
+            $table->dropColumn('description');
+            $table->string('description_' . TagService::EN_LANGUAGE)->nullable(false)->after("name");
         });
         Schema::table('courses', function (Blueprint $table) {
-            $table->string('description_ru')->nullable()->after('description_en');
+            $table->string('description_' . TagService::RU_LANGUAGE)->nullable(false)->after('description_' . TagService::EN_LANGUAGE);
         });
     }
 
@@ -26,8 +27,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('courses', function (Blueprint $table) {
-            $table->renameColumn('description_' . TagService::EN_LANGUAGE, 'description');
+            $table->dropColumn('description_' . TagService::EN_LANGUAGE);
             $table->dropColumn('description_' . TagService::RU_LANGUAGE);
+            $table->string('description')->nullable(false)->after("name");
         });
     }
 };
