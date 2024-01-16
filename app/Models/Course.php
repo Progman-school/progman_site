@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\TagService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
@@ -16,7 +17,8 @@ class Course extends Model
      */
     protected $fillable = [
         'name',
-        "description",
+        "description_" . TagService::EN_LANGUAGE,
+        "description_" . TagService::RU_LANGUAGE,
         'level',
         'type',
     ];
