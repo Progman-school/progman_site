@@ -14,10 +14,10 @@ return new class extends Migration
     {
         Schema::table('courses', function (Blueprint $table) {
             $table->dropColumn('description');
-            $table->string('description_' . TagService::EN_LANGUAGE)->nullable(false)->after("name");
+            $table->string('description_' . TagService::EN_LANGUAGE)->nullable()->after("name");
         });
         Schema::table('courses', function (Blueprint $table) {
-            $table->string('description_' . TagService::RU_LANGUAGE)->nullable(false)->after('description_' . TagService::EN_LANGUAGE);
+            $table->string('description_' . TagService::RU_LANGUAGE)->nullable()->after('description_' . TagService::EN_LANGUAGE);
         });
     }
 
@@ -29,7 +29,7 @@ return new class extends Migration
         Schema::table('courses', function (Blueprint $table) {
             $table->dropColumn('description_' . TagService::EN_LANGUAGE);
             $table->dropColumn('description_' . TagService::RU_LANGUAGE);
-            $table->string('description')->nullable(false)->after("name");
+            $table->string('description')->nullable()->after("name");
         });
     }
 };
