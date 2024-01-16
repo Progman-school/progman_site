@@ -14,6 +14,8 @@ return new class extends Migration
     {
         Schema::table('courses', function (Blueprint $table) {
             $table->renameColumn('description', 'description_' . TagService::EN_LANGUAGE);
+        });
+        Schema::table('courses', function (Blueprint $table) {
             $table->string('description_' . TagService::RU_LANGUAGE)->nullable()->after('description_' . TagService::EN_LANGUAGE);
         });
     }
