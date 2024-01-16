@@ -13,10 +13,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('courses', function (Blueprint $table) {
-            $table->renameColumn('description', 'description_' . TagService::EN_LANGUAGE);
+            $table->renameColumn('description', 'description_en');
         });
         Schema::table('courses', function (Blueprint $table) {
-            $table->string('description_' . TagService::RU_LANGUAGE)->nullable()->after('description_' . TagService::EN_LANGUAGE);
+            $table->string('description_ru')->nullable()->after('description_en');
         });
     }
 
