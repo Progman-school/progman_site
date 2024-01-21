@@ -71,6 +71,7 @@ const chooseCourse = (event) => {
                             Choose the course that you are interesting in:
                         </label>
                         <select id="course" name="course_id" @change="chooseCourse">
+                            <option value="" selected disabled>Choose the course</option>
                             <option v-for="course in preloadedData.courses" :value=course.id :title=course.level>
                                 {{course.name}}
                             </option>
@@ -82,7 +83,7 @@ const chooseCourse = (event) => {
                                 <b>Type:&nbsp;&nbsp;{{chosenCourse.type}}</b>
                             </div>
                             <p>
-                                {{chosenCourse.description}}
+                                {{chosenCourse.description || 'No description :('}}
                             </p>
                             <h6>Technologies:</h6>
                             <ul>
