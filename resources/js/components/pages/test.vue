@@ -67,7 +67,7 @@ const chooseCourse = (event) => {
                         <label for="course">
                             Choose the course that you are interesting in:
                         </label>
-                        <select id="course" name="course_id">
+                        <select id="course" name="course_id" @change="chooseCourse">
                             <option v-for="course in preloadedData.courses" :value=course.id :title=course.level>
                                 {{course.name}}
                             </option>
