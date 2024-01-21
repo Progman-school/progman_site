@@ -49,9 +49,9 @@ const chosenCourse = ref(null)
 const chooseCourse = (event) => {
     chosenCourse.value = preloadedData.courses[event.target.value]
     console.log(chosenCourse.value)
-    console.log(chosenCourse.level)
-    console.log(chosenCourse.technologies)
-    console.log(chosenCourse.technologies.pivot)
+    console.log(chosenCourse.value.level)
+    console.log(chosenCourse.value.technologies)
+    console.log(chosenCourse.value.technologies.pivot)
 }
 
 </script>
