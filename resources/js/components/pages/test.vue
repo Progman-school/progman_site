@@ -45,6 +45,11 @@ const changeRegistrationType = (event) => {
     showEmailField.value = event.target.value === "email"
 }
 
+const chosenCourse = ref(null)
+const chooseCourse = (event) => {
+    chosenCourse.value = preloadedData.courses[event.target.value]
+}
+
 </script>
 
 <template>
@@ -67,6 +72,23 @@ const changeRegistrationType = (event) => {
                                 {{course.name}}
                             </option>
                         </select>
+                    </div>
+                    <div class="field_details" v-if="chosenCourse">
+                        <div>
+                            <b>Level: {{chosenCourse.level}}</b>
+                            <b>Type: {{chosenCourse.type}}</b>
+                        </div>
+                        <p>
+                            <b>Details:</b> {{chosenCourse.description}}
+                        </p>
+                        <div>
+                            <h6>Technologies:</h6>
+                            <ul>
+                                <li v-for="technology in chosenCourse.technologies" :title=technology.description>
+                                    {{technology.name}} <~ {{chosenCourse.technologies.pivot.hours}} hours>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </content>
                 <insert-content set_class="fields">test_for_registration</insert-content>

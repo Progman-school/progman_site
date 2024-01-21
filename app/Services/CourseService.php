@@ -16,6 +16,7 @@ class CourseService
         return Course::with("technologies")
             ->where($conditions)
             ->get()
+            ->keyBy('id')
             ->toArray();
     }
 }
