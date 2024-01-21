@@ -14,6 +14,9 @@ export const useMultiLanguageStore = defineStore({
         contentArray: {},
     }),
     actions: {
+        readCurrentLanguage() {
+            return this.currentLanguage;
+        },
         getCurrentLanguage() {
             this.currentLanguage = null;
             mixins.methods.getAPI(

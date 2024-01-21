@@ -16,6 +16,8 @@ import mixins from "../../mixins.js";
 import { useEventListener } from "../../storages/event_storage.js"
 import {ref} from "vue";
 import {usePreloadedDataStorage} from "../../storages/preloaded_content_storage";
+import {useMultiLanguageStore} from "../../storages/multi_language_content";
+const multiLanguageStore = useMultiLanguageStore()
 const eventListener = useEventListener()
 const preloadedData = usePreloadedDataStorage()
 preloadedData.getCoursesList();
@@ -48,10 +50,7 @@ const changeRegistrationType = (event) => {
 const chosenCourse = ref(null)
 const chooseCourse = (event) => {
     chosenCourse.value = preloadedData.courses[event.target.value]
-    console.log(chosenCourse.value)
-    console.log(chosenCourse.value.level)
-    console.log(chosenCourse.value.technologies)
-    console.log(chosenCourse.value.technologies.pivot)
+    chosenCourse.value.description = chosenCourse.value['description_' + multiLanguageStore.currentLanguage]
 }
 
 </script>
@@ -76,20 +75,19 @@ const chooseCourse = (event) => {
                                 {{course.name}}
                             </option>
                         </select>
-                    </div>
-                    <div class="field_details" v-if="chosenCourse">
-                        <div>
-                            <b>Level: {{chosenCourse.level}}</b>
-                            <b>Type: {{chosenCourse.type}}</b>
-                        </div>
-                        <p>
-                            <b>Details:</b> {{chosenCourse.description}}
-                        </p>
-                        <div>
+                        <div class="field_details" v-if="chosenCourse">
+                            <h4>Details:</h4>
+                            <div>
+                                <b>Level:&nbsp;&nbsp;{{chosenCourse.level}}</b>
+                                <b>Type:&nbsp;&nbsp;{{chosenCourse.type}}</b>
+                            </div>
+                            <p>
+                                {{chosenCourse.description}}
+                            </p>
                             <h6>Technologies:</h6>
                             <ul>
                                 <li v-for="technology in chosenCourse.technologies" :title=technology.description>
-                                    {{technology.name}} &lt;~ {{chosenCourse.technologies.pivot.hours}} hours&lt;
+                                    <b>{{technology.name}}</b> (~{{technology.pivot.hours}}h)
                                 </li>
                             </ul>
                         </div>
@@ -129,5 +127,37 @@ const chooseCourse = (event) => {
 </template>
 
 <style scoped>
+.field_details {
+    padding: 0;
+    border: none !important;
+}
+
+.field_details > h4 {
+    margin-top: 20px;
+}
+
+.field_details > div {
+    padding: 0;
+    border: none;
+    display: flex;
+    justify-content: space-around;
+}
+.field_details > p {
+    margin: 20px 0;
+    font-style: italic;
+}
+
+.field_details ul {
+    border: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 3px 20px;
+    margin: 0;
+}
+
+.field_details ul li {
+    border: none;
+    padding-left: 2px;
+}
 
 </style>
