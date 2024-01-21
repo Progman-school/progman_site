@@ -48,6 +48,7 @@ const changeRegistrationType = (event) => {
 const chosenCourse = ref(null)
 const chooseCourse = (event) => {
     chosenCourse.value = preloadedData.courses[event.target.value]
+    console.log(chosenCourse.value)
 }
 
 </script>
