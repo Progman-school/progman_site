@@ -24,12 +24,12 @@ class Course extends Model
     ];
 
     protected $hidden = [
-        'pivot'
+//        'pivot'
     ];
 
     public function technologies(): BelongsToMany
     {
-        return $this->belongsToMany(Technology::class);
+        return $this->belongsToMany(Technology::class)->withPivot('hours');
     }
 
     public function requests(): BelongsToMany
