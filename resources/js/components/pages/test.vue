@@ -127,8 +127,9 @@ const chooseCourse = (event) => {
 </template>
 
 <style scoped>
+
 .field_details {
-    padding: 0;
+    padding: 0 !important;
     border: none !important;
 }
 
