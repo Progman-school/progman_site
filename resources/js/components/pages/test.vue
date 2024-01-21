@@ -85,7 +85,7 @@ const chooseCourse = (event) => {
                             <h6>Technologies:</h6>
                             <ul>
                                 <li v-for="technology in chosenCourse.technologies" :title=technology.description>
-                                    {{technology.name}} <~ {{chosenCourse.technologies.pivot.hours}} hours>
+                                    {{technology.name}} &lt;~ {{chosenCourse.technologies.pivot.hours}} hours&lt;
                                 </li>
                             </ul>
                         </div>
