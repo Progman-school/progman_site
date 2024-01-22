@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignIdFor(User::Class)->constrained();
             $table->foreignIdFor(Course::Class)->constrained();
             $table->timestamp('start_date')->useCurrent();
-            $table->timestamp('date')->useCurrentOnUpdate();
+            $table->timestamp('date')->useCurrentOnUpdate()->nullable();
             $table->integer('hours')->nullable(false);
             $table->string('description', 5000)->nullable(false);
             $table->enum("language", ["ru", "en"]);
