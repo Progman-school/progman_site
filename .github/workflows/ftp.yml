@@ -41,9 +41,12 @@ jobs:
           echo APP_DEBUG=true >> .env
           echo DB_CONNECTION=mysql >> .env
           echo DB_HOST=${{ vars.DB_HOST }} >> .env
-          echo DB_DATABASE=${{ vars.DB_DATABASE }} >> .env
+          echo DB_NAME=${{ vars.DB_NAME }} >> .env
           echo DB_USERNAME=${{ vars.DB_USER }} >> .env
           echo DB_PASSWORD=${{ secrets.DB_PASSWORD }} >> .env
+          echo OLD_DB_NANE=${{ vars.OLD_DB_NANE }} >> .env
+          echo OLD_DB_USER=${{ vars.OLD_DB_USER }} >> .env
+          echo OLD_DB_PASSWORD=${{ secrets.OLD_DB_PASSWORD }} >> .env
           echo TELEGRAM_BOT_API_TOKEN=${{ secrets.TELEGRAM_BOT_API_TOKEN }} >> .env
           echo TELEGRAM_BOT_LOGIN=${{ vars.TELEGRAM_BOT_LOGIN }} >> .env
           echo TELEGRAM_ADMIN_CHAT_ID=${{ vars.TELEGRAM_ADMIN_CHAT_ID }} >> .env

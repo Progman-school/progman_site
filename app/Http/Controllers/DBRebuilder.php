@@ -47,7 +47,7 @@ class DBRebuilder extends MainController
             PDO::ATTR_EMULATE_PREPARES => false,
         ];
         return new PDO(
-            'mysql:host=' . env("OLD_DB_HOST",self::DEF_OLD_DB_HOST) . ';dbname=' . self::OLD_DB_NAME,
+            'mysql:host=' . env("OLD_DB_HOST",self::DEF_OLD_DB_HOST) . ';dbname=' . env("OLD_DB_NANE",self::OLD_DB_NAME) . ";",
             env("OLD_DB_USER",self::DEF_OLD_DB_USER),
             env("OLD_DB_PASSWORD",self::DEF_OLD_DB_PASSWORD),
             $options
