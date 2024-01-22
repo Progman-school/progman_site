@@ -3,6 +3,7 @@
 use App\Models\Request;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -12,9 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table(app(Request::class)->getTable(), function (Blueprint $table) {
-            $table-> enum("type", ['email','telegram'])->nullable(false)->change();
-        });
+        DB::statement("ALTER TABLE `requests` CHANGE `type` `type` ENUM('email','telegram');");
     }
 
     /**
@@ -22,8 +21,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table(app(Request::class)->getTable(), function (Blueprint $table) {
-            $table->enum("type", ['registry', 'confirm'])->nullable(false)->change();
-        });
+        DB::statement("ALTER TABLE `requests` CHANGE `type` `type` ENUM('registry', 'confirm');");
     }
 };

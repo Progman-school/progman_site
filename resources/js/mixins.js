@@ -72,9 +72,15 @@ export default {
                     `api/${URL}`,
                     requestObject
                 );
-                let json = await response.json()
+                let data = await response.json()
+
+                if (data.status === "error") {
+                    console.error(data.data)
+                    return false
+                }
+
                 if (callback) {
-                    await callback(json)
+                    await callback(data)
                 }
             } catch (error) {
                 console.error('Error:', error)
