@@ -12,8 +12,11 @@ import { faGlobe } from '@fortawesome/free-solid-svg-icons'
 import { faTelegram } from '@fortawesome/free-brands-svg-icons'
 library.add(faGlobe, faTelegram)
 
+import Carousel3d from 'vue-carousel-3d';
+
+
 const pinia = createPinia()
 const vueApp = createApp(app)
 vueApp.component('font-awesome-icon', FontAwesomeIcon)
-vueApp.use(pinia).use(router).mount("#wrapper")
+vueApp.use(pinia).use(router).use(Carousel3d).mount("#wrapper")
 
