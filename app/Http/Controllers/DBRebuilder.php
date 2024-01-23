@@ -58,7 +58,7 @@ class DBRebuilder extends MainController
     /**
      * @throws Exception
      */
-    private static function lunchFacade(callable $lunchMethod):string {
+    private static function lunchFacade(callable $lunchMethod): array {
         $timeStart = microtime(true);
         self::$oldConnection->beginTransaction();
         DB::beginTransaction();
@@ -69,7 +69,7 @@ class DBRebuilder extends MainController
             self::$oldConnection->commit();
             DB::commit();
 
-            $result = [
+            return [
                 "result" => "Success job",
                 "count" => $count,
                 "time" => round((microtime(true) - $timeStart) * 1000, 3),
@@ -77,7 +77,7 @@ class DBRebuilder extends MainController
         } catch (Throwable $e) {
             DB::rollBack();
             self::$oldConnection->rollBack();
-            $result = [
+            return [
                 "result" => "Fail job",
                 "count" => $count,
                 "time" => round((microtime(true) - $timeStart) * 1000, 3),
@@ -85,13 +85,12 @@ class DBRebuilder extends MainController
                 "trace" => print_r($e->getTraceAsString(), true),
             ];
         }
-        return print_r($result, true);
     }
 
     /**
      * @throws Exception
      */
-    public static function rebuildCourses():string {
+    public static function rebuildCourses(): array {
         return self::lunchFacade(function(&$count) {
 
             $oldCourses = self::$oldConnection->query("SELECT * FROM courses;")
@@ -129,7 +128,7 @@ class DBRebuilder extends MainController
     /**
      * @throws Exception
      */
-    public static function rebuildCertificates():string {
+    public static function rebuildCertificates(): array {
         return self::lunchFacade(function(&$count) {
             $oldCertificates = self::$oldConnection->query("
                 SELECT c.*, u.tg_id AS 'utg_id' FROM certificates c
@@ -178,14 +177,13 @@ class DBRebuilder extends MainController
     /**
      * @throws Exception
      */
-    public static function rebuildUsersAndRequests():string {
+    public static function rebuildUsersAndRequests(): array {
         return self::lunchFacade(function(&$count) {
             $oldRequests = self::$oldConnection->query("
                 SELECT r.*, u.id AS 'user_id' FROM requests r
                 RIGHT JOIN users u on u.reg_hash = r.hash"
             )->fetchAll(PDO::FETCH_ASSOC);
             $theOnlyExistsCourse = Course::all()->first(); // because the only one course was in the old DB
-            print_r($theOnlyExistsCourse->id);
             foreach ($oldRequests as $oneRequest) {
                 if (!isset($oneRequest["user_id"]) || !$oneRequest["user_id"]) {
                     continue;
@@ -234,7 +232,7 @@ class DBRebuilder extends MainController
      * FOR THE CONTENT TAG'S PART
      * @throws Exception
      */
-    public static function rebuildTags():string {
+    public static function rebuildTags(): array {
         return self::lunchFacade(function(&$count) {
             $oldDBRequest = self::$oldConnection->query("SELECT * FROM `language_contents`");
             $oldDBBData = $oldDBRequest->fetchAll(PDO::FETCH_ASSOC);
@@ -279,25 +277,28 @@ class DBRebuilder extends MainController
     }
 
     /**
-     * @return string
      * @throws Exception
      */
-    public static function rebuildAll(): string {
+    public static function rebuildAll(): array {
         $results = [];
         $results["tags"] = DBRebuilder::rebuildTags();
         $results["courses"] = DBRebuilder::rebuildCourses();
         $results["users_requests"] = DBRebuilder::rebuildUsersAndRequests();
         $results["certificates"] = DBRebuilder::rebuildCertificates();
 
-        $time = null;
-        $items = null;
+        $time = 0;
+        $items = 0;
+
         foreach ($results as $result) {
             $time += $result["time"];
             $items += $result["count"];
         }
-        $results["total"]["items"] = $items;
-        $results["total"]["time"] = $time;
 
-        return implode("\n", $results);
+        $results["total"] = [
+            "items" => $items,
+            "time" => $time,
+        ];
+
+        return $results;
     }
 }
