@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\ApiHelper;
 use App\Models\Certificate;
 use App\Models\Course;
 use App\Models\Request;
@@ -46,18 +45,20 @@ class DBRebuilder extends MainController
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
             PDO::ATTR_EMULATE_PREPARES => false,
         ];
-        return new PDO(
-            'mysql:host=' . env("OLD_DB_HOST",self::DEF_OLD_DB_HOST) . ';dbname=' . env("OLD_DB_NANE",self::OLD_DB_NAME) . ";",
+        $connection = new PDO(
+            'mysql:host=' . env("DB_HOST",self::DEF_OLD_DB_HOST) . ';dbname=' . env("OLD_DB_NANE",self::OLD_DB_NAME) . ";",
             env("OLD_DB_USER",self::DEF_OLD_DB_USER),
             env("OLD_DB_PASSWORD",self::DEF_OLD_DB_PASSWORD),
             $options
         );
+        $connection->exec("set names utf8");
+        return $connection;
     }
 
     /**
      * @throws Exception
      */
-    private static function lunchFacade(callable $lunchMethod):array {
+    private static function lunchFacade(callable $lunchMethod):string {
         $timeStart = microtime(true);
         self::$oldConnection->beginTransaction();
         DB::beginTransaction();
@@ -68,29 +69,29 @@ class DBRebuilder extends MainController
             self::$oldConnection->commit();
             DB::commit();
 
-            return [
+            $result = [
                 "result" => "Success job",
                 "count" => $count,
                 "time" => round((microtime(true) - $timeStart) * 1000, 3),
             ];
-        }catch (Throwable $e) {
+        } catch (Throwable $e) {
             DB::rollBack();
             self::$oldConnection->rollBack();
-            throw new Exception(ApiHelper::createFrontAnswer([
+            $result = [
                 "result" => "Fail job",
                 "count" => $count,
                 "time" => round((microtime(true) - $timeStart) * 1000, 3),
                 "error" => $e->getMessage(),
-                "trace" => $e->getTrace(),
-            ]));
+                "trace" => print_r($e->getTraceAsString(), true),
+            ];
         }
+        return print_r($result, true);
     }
 
     /**
-     * @return array
      * @throws Exception
      */
-    public static function rebuildCourses():array {
+    public static function rebuildCourses():string {
         return self::lunchFacade(function(&$count) {
 
             $oldCourses = self::$oldConnection->query("SELECT * FROM courses;")
@@ -118,7 +119,7 @@ class DBRebuilder extends MainController
                     'level' => $oneCourse["level"],
                     'type' => $oneCourse["type"],
                 ]);
-                $course->technologies()->attach($technologiesIds);
+                $course->technologies()->attach($technologiesIds, ["hours" => rand(2, 20)]);
                 $count ++;
             }
 
@@ -126,10 +127,9 @@ class DBRebuilder extends MainController
     }
 
     /**
-     * @return array
      * @throws Exception
      */
-    public static function rebuildCertificates():array {
+    public static function rebuildCertificates():string {
         return self::lunchFacade(function(&$count) {
             $oldCertificates = self::$oldConnection->query("
                 SELECT c.*, u.tg_id AS 'utg_id' FROM certificates c
@@ -176,15 +176,16 @@ class DBRebuilder extends MainController
     }
 
     /**
-     * @return array
      * @throws Exception
      */
-    public static function rebuildUsersAndRequests():array {
+    public static function rebuildUsersAndRequests():string {
         return self::lunchFacade(function(&$count) {
             $oldRequests = self::$oldConnection->query("
                 SELECT r.*, u.id AS 'user_id' FROM requests r
                 RIGHT JOIN users u on u.reg_hash = r.hash"
             )->fetchAll(PDO::FETCH_ASSOC);
+            $theOnlyExistsCourse = Course::all()->first(); // because the only one course was in the old DB
+            print_r($theOnlyExistsCourse->id);
             foreach ($oldRequests as $oneRequest) {
                 if (!isset($oneRequest["user_id"]) || !$oneRequest["user_id"]) {
                     continue;
@@ -197,6 +198,8 @@ class DBRebuilder extends MainController
                     'created_at' => $oneRequest["created_at"],
                     'updated_at' => $oneRequest["updated_at"],
                     'uid' => $oldUser["tg_id"],
+                    'test_score' => $oneRequest["test_score"],
+                    'course_id' => $theOnlyExistsCourse->id,
                     'type' => "telegram",
                     'hash' => $oneRequest["hash"],
                     'application_data' => $oneRequest["data"],
@@ -211,7 +214,6 @@ class DBRebuilder extends MainController
                     'real_first_name' => $oldUser["real_first_name"],
                     'real_last_name' => $oldUser["real_last_name"],
                     'real_middle_name' => $oldUser["real_middle_name"],
-                    'status' => 'processed'
                 ]);
 
                 Telegram::create([
@@ -230,10 +232,9 @@ class DBRebuilder extends MainController
 
     /**
      * FOR THE CONTENT TAG'S PART
-     * @return array
      * @throws Exception
      */
-    public static function rebuildTags():array {
+    public static function rebuildTags():string {
         return self::lunchFacade(function(&$count) {
             $oldDBRequest = self::$oldConnection->query("SELECT * FROM `language_contents`");
             $oldDBBData = $oldDBRequest->fetchAll(PDO::FETCH_ASSOC);
@@ -297,6 +298,6 @@ class DBRebuilder extends MainController
         $results["total"]["items"] = $items;
         $results["total"]["time"] = $time;
 
-        return ApiHelper::createFrontAnswer($results);
+        return implode("\n", $results);
     }
 }

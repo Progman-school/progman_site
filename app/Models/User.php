@@ -28,9 +28,6 @@ class User extends Authenticatable
         'real_last_name',
         'real_first_name',
         'real_middle_name',
-        'telegram',
-        'email',
-        'status',
     ];
 
     /**

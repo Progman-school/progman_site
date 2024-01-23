@@ -15,24 +15,32 @@ use Illuminate\Support\Facades\Artisan;
 |
 */
 
-// BD rebuilders commands from old DB structure
+// BD rebuilder commands from old DB structure
 
-Artisan::command('rebuild_tags', function () {
-    $this->comment(DBRebuilder::rebuildTags());
-})->purpose('Moving tags content');
-
-Artisan::command('rebuild_courses', function () {
-    $this->comment(DBRebuilder::rebuildCourses());
-})->purpose('Moving tags courses data');
-
-Artisan::command('rebuild_users_requests', function () {
-    $this->comment(DBRebuilder::rebuildUsersAndRequests());
-})->purpose('Moving userRequests data');
-
-Artisan::command('rebuild_certificates', function () {
-    $this->comment(DBRebuilder::rebuildCertificates());
-})->purpose('Moving certificates data');
-
-Artisan::command('rebuild_all', function () {
-    $this->comment(DBRebuilder::rebuildAll());
-})->purpose('Moving all data, from the old DB to a new one');
+Artisan::command('rebuild-db {part}', function ($part) {
+    $dbRebuilder = new DBRebuilder();
+    switch ($part) {
+        case 'tags':
+            $this->comment($dbRebuilder->rebuildTags());
+            break;
+        case 'courses':
+            $this->comment($dbRebuilder->rebuildCourses());
+            break;
+        case 'users_requests':
+            $this->comment($dbRebuilder->rebuildUsersAndRequests());
+            break;
+        case 'certificates':
+            $this->comment($dbRebuilder->rebuildCertificates());
+            break;
+        case 'all':
+            $this->comment($dbRebuilder->rebuildAll());
+            break;
+        case 'part-list':
+            $this->comment('Available parts: tags, courses, users_requests, certificates, all');
+            break;
+        default:
+            $this->comment('Wrong part name');
+    }
+})->purpose(
+    "Moving data, from the old DB structure to a new one.\n Try part-list to see all available parts"
+);
