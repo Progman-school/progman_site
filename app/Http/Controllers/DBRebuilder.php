@@ -117,6 +117,7 @@ class DBRebuilder extends MainController
                     'name' => $oneCourse["name"],
                     'level' => $oneCourse["level"],
                     'type' => $oneCourse["type"],
+                    'admin_id' => DB::table("admins")->first()->id ?? null,
                 ]);
                 $course->technologies()->attach($technologiesIds, ["hours" => rand(2, 20)]);
                 $count ++;
