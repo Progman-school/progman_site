@@ -22,7 +22,7 @@ class Request extends Model
         'uid',
         'type',
         'hash',
-        'course',
+        'course_id',
         'test_score',
         'application_data',
         'language',
