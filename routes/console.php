@@ -21,19 +21,19 @@ Artisan::command('rebuild-db {part}', function ($part) {
     $dbRebuilder = new DBRebuilder();
     switch ($part) {
         case 'tags':
-            $this->comment($dbRebuilder->rebuildTags());
+            $this->comment(print_r($dbRebuilder->rebuildTags(), true));
             break;
         case 'courses':
-            $this->comment($dbRebuilder->rebuildCourses());
+            $this->comment(print_r($dbRebuilder->rebuildCourses(), true));
             break;
         case 'users_requests':
-            $this->comment($dbRebuilder->rebuildUsersAndRequests());
+            $this->comment(print_r($dbRebuilder->rebuildUsersAndRequests(), true));
             break;
         case 'certificates':
-            $this->comment($dbRebuilder->rebuildCertificates());
+            $this->comment(print_r($dbRebuilder->rebuildCertificates(), true));
             break;
         case 'all':
-            $this->comment($dbRebuilder->rebuildAll());
+            $this->comment(print_r($dbRebuilder->rebuildAll(), true));
             break;
         case 'part-list':
             $this->comment('Available parts: tags, courses, users_requests, certificates, all');

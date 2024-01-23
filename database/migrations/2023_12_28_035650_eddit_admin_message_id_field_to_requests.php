@@ -23,7 +23,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('requests', function (Blueprint $table) {
-            $table->dropIndex("admin_message_id");
             $table->dropColumn('admin_message_id');
             $table->string('admin_massage_id')->nullable()->default(null);
         });
