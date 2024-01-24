@@ -23,9 +23,9 @@
         "pinia": "^2.1.4",
         "resolve-url-loader": "5.0.0",
         "vue": "3.3.4",
-        "vue-carousel-3d": "^1.0.1",
         "vue-loader": "17.2.2",
         "vue-router": "4.2.2",
-        "vue-template-compiler": "2.7.14"
+        "vue-template-compiler": "2.7.14",
+        "vue3-carousel": "^0.3.1"
     }
 }
