@@ -108,7 +108,7 @@ html {
 
 }
 
-@media screen and (max-width: 736px) {
+@media screen and (max-width: 760px) {
 
     html {
         font-size: 11pt;
@@ -211,7 +211,7 @@ h6 {
     font-size: 0.6rem;
 }
 
-@media screen and (max-width: 736px) {
+@media screen and (max-width: 760px) {
 
     h1 {
         font-size: 1.75rem;
@@ -677,7 +677,7 @@ input[type="radio"] + label:before {
     width: 100%;
 }
 
-@media screen and (max-width: 736px) {
+@media screen and (max-width: 760px) {
     .image.main {
         margin: 2rem 0;
     }
@@ -1173,23 +1173,9 @@ body.is-preload #bg:before {
     display: block;
 }
 
-@media screen and (max-width: 1680px) {
-    #wrapper {
-        padding: 3rem 2rem;
-    }
-
-    #header .content p {
-        min-width: 650px;
-    }
-}
-
-@media screen and (max-width: 736px) {
+@media screen and (max-width: 760px) {
     #wrapper {
         padding: 2rem 1rem;
-    }
-
-    #header .content p {
-        min-width: 100%;
     }
 }
 
@@ -1221,7 +1207,7 @@ body.is-preload #bg:before {
     background-image: -webkit-radial-gradient(rgba(0, 0, 0, 0.25) 25%, rgba(0, 0, 0, 0) 55%);
     background-image: -ms-radial-gradient(rgba(0, 0, 0, 0.25) 25%, rgba(0, 0, 0, 0) 55%);
     background-image: radial-gradient(rgba(0, 0, 0, 0.25) 25%, rgba(0, 0, 0, 0) 55%);
-    max-width: 100%;
+    width: 100%;
     text-align: center;
 }
 
@@ -1273,7 +1259,8 @@ body.is-preload #bg:before {
     border-color: #ffffff;
     border-top-width: 1px;
     border-bottom-width: 1px;
-    max-width: 100%;
+    width: 100%;
+    /*max-width: 100%;*/
 }
 
 #header .content .inner {
@@ -1396,7 +1383,7 @@ body.is-preload #header .content .inner {
     }
 }
 
-@media screen and (max-width: 736px) {
+@media screen and (max-width: 760px) {
     #header > * {
         margin-top: 2rem;
     }
@@ -1424,9 +1411,13 @@ body.is-preload #header .content .inner {
         line-height: 1.875;
     }
 
+    #main {
+        width: 100%
+    }
+
 }
 
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 760px) {
 
     #header {
         padding: 1.5rem 0;
@@ -1564,12 +1555,7 @@ body.is-preload #header .content .inner {
     background-color: rgba(255, 255, 255, 0.175);
 }
 
-@media screen and (max-width: 736px) {
-
-    #main article {
-        padding: 3.5rem 2rem 0.5rem 2rem;
-    }
-
+@media screen and (max-width: 760px) {
     #main article .close:before {
         top: 0.875rem;
         left: 0.875rem;
@@ -1577,7 +1563,6 @@ body.is-preload #header .content .inner {
         height: 2.25rem;
         background-size: 14px 14px;
     }
-
 }
 
 @media screen and (max-width: 480px) {
