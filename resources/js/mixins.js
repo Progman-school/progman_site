@@ -10,8 +10,8 @@ export default {
             return JSON.stringify(Object.fromEntries(formData))
         },
 
-        getAPI(requestURL, urlParams, callback) {
-            this.APIRequest(
+        async getAPI(requestURL, urlParams, callback) {
+            return await this.APIRequest(
                 "GET",
                 this.makeURL(requestURL, urlParams),
                 null,
@@ -19,8 +19,8 @@ export default {
             )
         },
 
-        postAPI(requestURL, formData, callback) {
-            this.APIRequest(
+        async postAPI(requestURL, formData, callback) {
+            return await this.APIRequest(
                 "POST",
                 requestURL,
                 this.makeJSONFromForm(formData),
@@ -28,8 +28,8 @@ export default {
             )
         },
 
-        putAPI(requestURL, urlParams, formData, callback) {
-            this.APIRequest(
+        async putAPI(requestURL, urlParams, formData, callback) {
+            return await this.APIRequest(
                 "PUT",
                 this.makeURL(requestURL, urlParams),
                 this.makeJSONFromForm(formData),
@@ -37,8 +37,8 @@ export default {
             )
         },
 
-        patchAPI(requestURL, urlParams, formData, callback) {
-            this.APIRequest(
+        async patchAPI(requestURL, urlParams, formData, callback) {
+            return await this.APIRequest(
                 "PATCH",
                 this.makeURL(requestURL, urlParams),
                 formData ? this.makeJSONFromForm(formData) : null,
@@ -46,8 +46,8 @@ export default {
             )
         },
 
-        deleteAPI(requestURL, id, callback) {
-            this.APIRequest(
+        async deleteAPI(requestURL, id, callback) {
+            return await this.APIRequest(
                 "DELETE",
                 `${requestURL}/${id}`,
                 null,
