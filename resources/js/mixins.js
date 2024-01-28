@@ -76,13 +76,13 @@ export default {
 
                 if (data.status === "error") {
                     console.error(data.data)
-                    return false
                 }
 
                 if (callback) {
                     await callback(data)
                 }
             } catch (error) {
+                alert("Unexpected error occurred, sorry!\nPlease try again later.")
                 console.error('Error:', error)
             }
         },
