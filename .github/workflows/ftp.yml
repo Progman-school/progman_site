@@ -81,7 +81,7 @@ jobs:
         run: |
           curl --get \
             --data-urlencode 'chat_id=${{vars.TELEGRAM_DEPLOY_NOTICE_RECIPIENT_ID}}' \
-            --data-urlencode 'text=✅SUCCESS in ${{github.event.repository.name}}! ${{github.event.head_commit.message}} (${{github.event.head_commit.id}})' \
+            --data-urlencode "text=✅SUCCESS in ${{github.event.repository.name}}! ${{github.event.head_commit.message}} (${{github.event.head_commit.id}})" \
             https://api.telegram.org/bot${{secrets.TELEGRAM_DEPLOY_NOTIFIER_BOT_TOKEN}}/sendMessage
 
   debug:
@@ -94,5 +94,5 @@ jobs:
         run: |
           curl --get \
             --data-urlencode 'chat_id=${{vars.TELEGRAM_DEPLOY_NOTICE_RECIPIENT_ID}}' \
-            --data-urlencode 'text=🆘FAILED in ${{github.event.repository.name}}! ${{github.event.head_commit.message}} (${{github.event.head_commit.id}})' \
+            --data-urlencode "text=🆘FAILED in ${{github.event.repository.name}}! ${{github.event.head_commit.message}} (${{github.event.head_commit.id}})" \
             https://api.telegram.org/bot${{secrets.TELEGRAM_DEPLOY_NOTIFIER_BOT_TOKEN}}/sendMessage
