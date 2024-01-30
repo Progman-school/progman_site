@@ -13,6 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/{page?}', function () {
+Route::get('/{lang?}/{page?}', function () {
     return view('index');
 });

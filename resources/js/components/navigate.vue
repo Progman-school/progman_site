@@ -12,6 +12,9 @@
 
 <script>
 import router from "../router"
+import { useMultiLanguageStore } from '../storages/multi_language_content.js'
+const multiLanguageStore = useMultiLanguageStore()
+// let currentLanguage = multiLanguageStore.currentLanguage
 
 export default {
     name: "navigate",

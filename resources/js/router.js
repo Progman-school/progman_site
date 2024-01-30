@@ -10,46 +10,51 @@ import checkCertificate from './components/pages/check_certificate.vue'
 import tmp from './components/pages/tmp.vue'
 
 const routes = [
+    // {
+    //     name: null,
+    //     path: '/',
+    //     component: hello
+    // },
     {
         name: null,
-        path: '/',
+        path: '/:lang?',
         component: hello
     },
     {
         name: null,
-        path: '/start',
+        path: '/:lang?/start',
         component: start
     },
     {
         name: 'test & start',
-        path: '/test',
+        path: '/:lang?/test',
         component: test
     },
     {
         name: 'free',
-        path: '/free',
+        path: '/:lang?/free',
         component: free
     },
     {
         name: 'conditions',
-        path: '/conditions',
+        path: '/:lang?/conditions',
         component: conditions
     },
     {
         name: 'contacts',
-        path: '/contacts',
+        path: '/:lang?/contacts',
         component: contacts
     },
     {
         name: 'check cert',
-        path: '/check_certificate',
+        path: '/:lang?/check_certificate',
         component: checkCertificate
     },
-    {
-        name: '',
-        path: '/tmp',
-        component: tmp
-    },
+    // {
+    //     name: '',
+    //     path: '/tmp',
+    //     component: tmp
+    // },
 ]
 
 const router = createRouter({
