@@ -1,23 +1,16 @@
-<script>
-import closer from '../helpers/closer.vue'
-import insertContent from '../helpers/insert-content.vue'
-export default {
-    name: "start",
-    components: {
-        closer,
-        insertContent,
-    }
-}
-</script>
-
 <script setup>
+import Closer from '../helpers/closer.vue'
+import InsertContent from '../helpers/insert-content.vue'
 import { useEventListener } from "../../storages/event_storage.js"
+import {useMultiLanguageStore} from "../../storages/multi_language_content";
+const multiLanguageStore = useMultiLanguageStore()
+
 const eventListener = useEventListener()
 const showToSale = () => {
     eventListener.call('popup_alert:show', {
         title: 'Welcome!',
         text:'{{start_page_alert}}',
-        url: '/test',
+        url: `${multiLanguageStore.currentLanguage}/test`,
         button: 'Go to the test',
     });
 }
@@ -28,15 +21,14 @@ const showToSale = () => {
     <article id="start">
         <section>
             <h2 class="major">Start learning!</h2>
-            <insert-content>start_page_info</insert-content>
+            <InsertContent>start_page_info</InsertContent>
             <br/>
             <ul class="actions" style="margin-top: 20px">
                 <li><button class="button primary" @click="showToSale" >Start test</button></li>
-                <!--<button class="button">Fast study</button>-->
             </ul>
             <br/>
         </section>
-        <closer />
+        <Closer />
     </article>
 </template>
 

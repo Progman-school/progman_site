@@ -16,17 +16,8 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-
-//Route::get('wh_set', [UserSignController::class, 'setHook']);
-//Route::get('wh_get', [UserSignController::class, 'getHookInfo']);
-//Route::post('wh_set', [UserSignController::class, 'index']);
-//
 Route::post('add_request', [RequestController::class, 'addRequest']);
-//
 Route::post('check_certificate', [CertificateController::class, 'checkCertificate']);
-//Route::get('check_session', function (\Illuminate\Http\Request $request) {
-//    return print_r($request->session()->all());
-//});
 
 Route::get('current_language', [TagController::class, 'getCurrentLanguage']);
 Route::get('all_tags', [TagController::class, 'getAllTags']);

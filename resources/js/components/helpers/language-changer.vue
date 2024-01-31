@@ -1,9 +1,3 @@
-<script>
-export default {
-    name: "language-changer",
-}
-</script>
-
 <script setup>
 import { useMultiLanguageStore } from '../../storages/multi_language_content.js'
 import {computed} from "vue";

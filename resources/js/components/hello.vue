@@ -1,3 +1,9 @@
+<script setup>
+import InsertContent from '../components/helpers/insert-content.vue'
+import Navigate from "./navigate.vue"
+import CourseCarousel from "../components/helpers/course_carousel.vue";
+</script>
+
 <template>
     <header id="header">
         <div class="logo">
@@ -6,31 +12,16 @@
             <div class="inner">
                 <h1>ProgMan school</h1>
                 <p>
-                    <insert-content>main_page_text</insert-content>
+                    <InsertContent>main_page_text</InsertContent>
                 </p>
                 <div>
-                    <course-carousel></course-carousel>
+                    <CourseCarousel></CourseCarousel>
                 </div>
             </div>
         </div>
-        <navigate></navigate>
+        <Navigate></Navigate>
     </header>
 </template>
-
-<script>
-    import insertContent from '../components/helpers/insert-content.vue'
-    import navigate from "./navigate.vue"
-    import courseCarousel from "../components/helpers/course_carousel.vue";
-
-    export default {
-        name: "hello",
-        components: {
-            insertContent,
-            navigate,
-            courseCarousel,
-        },
-    }
-</script>
 
 <style scoped>
 

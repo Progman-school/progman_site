@@ -1,14 +1,6 @@
-<script>
-import closer from '../helpers/closer.vue';
-import insertContent from '../helpers/insert-content.vue'
-
-export default {
-    name: "conditions",
-    components: {
-        closer,
-        insertContent,
-    },
-}
+<script setup>
+import Closer from '../helpers/closer.vue';
+import InsertContent from '../helpers/insert-content.vue'
 </script>
 
 <template>
@@ -17,31 +9,31 @@ export default {
         <section>
             <h4>Message from the teacher:</h4>
             <blockquote>
-                <insert-content>conditions_teacher_message</insert-content>
+                <InsertContent>conditions_teacher_message</InsertContent>
             </blockquote>
         </section>
         <hr />
         <section>
-            <insert-content>course_description_conditions</insert-content>
+            <InsertContent>course_description_conditions</InsertContent>
         </section>
         <hr/>
         <section>
-            <insert-content>course_stack_conditions</insert-content>
+            <InsertContent>course_stack_conditions</InsertContent>
         </section>
         <hr/>
         <section>
-            <insert-content>mentor_experience_conditions</insert-content>
+            <InsertContent>mentor_experience_conditions</InsertContent>
         </section>
         <div style="margin-bottom: 20px">
             <router-link :to="'/start'" >
                 <strong>
-                    <insert-content>go_to_start_link</insert-content>
+                    <InsertContent>go_to_start_link</InsertContent>
                 </strong>
             </router-link>
             <br />
             <br />
         </div>
-        <closer />
+        <Closer />
     </article>
 </template>
 

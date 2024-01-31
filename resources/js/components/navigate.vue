@@ -5,7 +5,6 @@ const multiLanguageStore = useMultiLanguageStore()
 multiLanguageStore.getCurrentLanguage()
 
 const links = router.getRoutes()
-
 </script>
 
 <template>
@@ -20,9 +19,3 @@ const links = router.getRoutes()
     </nav>
 </template>
 
-<script>
-
-export default {
-    name: "navigate",
-}
-</script>

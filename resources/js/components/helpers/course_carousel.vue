@@ -44,7 +44,7 @@ const toggleDetails = (event) => {
                             {{technology.name}}
                         </li>
                     </ul>
-                    <a @click="router.push('/test')">>  start  &lt;</a>
+                    <a @click="router.push(`${multiLanguageStore.currentLanguage}/test`)">>  start  &lt;</a>
                 </div>
             </div>
         </Slide>

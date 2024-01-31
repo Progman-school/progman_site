@@ -1,40 +1,14 @@
-<script>
-export default {
-    name: 'base-alert',
-    inheritAttrs: false,
-    // props: [
-    //     "show",
-    // ],
-    // data() {
-    //     return {
-    //         title: "",
-    //         elements: "",
-    //     }
-    // },
-    // methods: {
-    //     modalClose: () => {
-    //         this.show = false
-    //     },
-    //     scroling: () => {
-    //         window.scrollTo(0, 0)
-    //         if (window.scrollY > 0) {
-    //             requestAnimationFrame(scroling)
-    //         }
-    //     },
-    //     modalOpen: () => {
-    //         this.show = true
-    //         this.scroling()
-    //     }
-    // }
-}
-</script>
-
 <script setup>
 import {ref, defineExpose} from "vue";
 const name = 'base-alert'
 const show = ref(false)
 const title = ref("")
 const elements = ref("")
+
+defineOptions({
+    name: 'base-alert',
+    inheritAttrs: false,
+})
 
 const modalClose = () => {
     this.show = false
