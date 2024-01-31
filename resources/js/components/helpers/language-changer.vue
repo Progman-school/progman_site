@@ -7,7 +7,7 @@ export default {
 <script setup>
 import { useMultiLanguageStore } from '../../storages/multi_language_content.js'
 import {computed} from "vue";
-import {useEventListener} from "../../storages/event_storage";
+import {useEventListener} from "../../storages/event_storage"
 
 const eventListener = useEventListener()
 const multiLanguageStore = useMultiLanguageStore()
@@ -26,7 +26,7 @@ const iClass = computed({
 </script>
 
 <template>
-    <div id="langSwitcher" @click="multiLanguageStore.changeLanguage">
+    <div id="langSwitcher" @click="multiLanguageStore.switchLanguage">
         <span>{{multiLanguageStore.currentLanguage || '-- --'}}</span>
         <font-awesome-icon icon="fa-solid fa-globe" :class="iClass"></font-awesome-icon>
     </div>

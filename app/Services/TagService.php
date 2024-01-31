@@ -31,19 +31,28 @@ class TagService extends MainService
         return Session::get(self::LANG_SESSION_KEY) ?? self::DEFAULT_LANGUAGE;
     }
 
-    public static function setCurrentLanguage(string $language): void
+    /**
+     * @throws Exception
+     */
+    public static function setCurrentLanguage(string $language): string
     {
         Session::put(self::LANG_SESSION_KEY, $language);
+        if(!$currentLangKey = Session::get(self::LANG_SESSION_KEY)) {
+            throw new Exception("Can't set language to session.");
+        }
+        return $currentLangKey;
     }
 
+    /**
+     * @throws Exception
+     */
     public static function switchTagLanguage(): string {
         $currentLangKey = array_search(
             self::getCurrentLanguage(),
             self::LANG_LIST
         );
         $currentLang = self::LANG_LIST[$currentLangKey + 1] ?? self::LANG_LIST[0];
-        self::setCurrentLanguage($currentLang);
-        return $currentLang;
+        return self::setCurrentLanguage($currentLang);
     }
 
     private static function isOld(int $contentTime): bool {
@@ -54,7 +63,8 @@ class TagService extends MainService
      * @param string $name
      * @param int $time (if time === 0: get data anyway)
      * @param array $injectionContent
-     * @return array|null
+     * @return array
+     * @throws UserAlert
      */
     public static function getTagValueByName(string $name, int $time = 0, array $injectionContent = []): array
     {

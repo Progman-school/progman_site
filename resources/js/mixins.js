@@ -69,7 +69,7 @@ export default {
                     requestObject.headers["Content-Type"] = 'application/json'
                 }
                 let response = await fetch(
-                    `api/${URL}`,
+                    `${window.location.protocol}//${window.location.hostname}/api/${URL}`,
                     requestObject
                 );
                 let data = await response.json()
