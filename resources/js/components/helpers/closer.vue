@@ -1,17 +1,17 @@
+<script>
+export default {
+    name: "closer",
+}
+</script>
 <template>
     <div class="close" @click="pageClose">Close</div>
 </template>
-
-<script>
+<script setup>
     import router from '../../router.js'
-
-    export default {
-        name: "closer",
-        methods: {
-            pageClose: function () {
-                router.push('/')
-            }
-        },
+    import {useMultiLanguageStore} from "../../storages/multi_language_content"
+    const multiLanguageStore = useMultiLanguageStore()
+    const pageClose = () => {
+        router.push(`/${multiLanguageStore.currentLanguage || ''}`)
     }
 </script>
 

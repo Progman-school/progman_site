@@ -1,15 +1,15 @@
 <script setup>
-import {computed} from "vue";
-import { useMultiLanguageStore } from './storages/multi_language_content.js'
+// import {computed} from "vue";
+// import { useMultiLanguageStore } from './storages/multi_language_content.js'
 import Bottom_notice from "./components/helpers/bottom_notice.vue";
 
-const multiLanguageStore = useMultiLanguageStore()
-multiLanguageStore.getAllTagContents()
-const pagePreloading = computed({
-    get () {
-        return !Object.keys(multiLanguageStore.contentArray).length
-    },
-})
+// const multiLanguageStore = useMultiLanguageStore()
+// multiLanguageStore.getAllTagContents()
+// const pagePreloading = computed({
+//     get () {
+//         return !Object.keys(multiLanguageStore.contentArray).length
+//     },
+// })
 </script>
 <template>
     <language-changer></language-changer>
@@ -22,15 +22,15 @@ const pagePreloading = computed({
     </div>
     <bottom_notice></bottom_notice>
     <popup-alert></popup-alert>
-    <div class="site_cover" v-show="pagePreloading">
-        <div class="loader">
-            <div class="loader-inner"></div>
-            <div class="loader-inner"></div>
-            <div class="loader-inner"></div>
-            <div class="loader-inner"></div>
-            <div class="loader-inner"></div>
-        </div>
-    </div>
+<!--    <div class="site_cover" v-show="pagePreloading">-->
+<!--        <div class="loader">-->
+<!--            <div class="loader-inner"></div>-->
+<!--            <div class="loader-inner"></div>-->
+<!--            <div class="loader-inner"></div>-->
+<!--            <div class="loader-inner"></div>-->
+<!--            <div class="loader-inner"></div>-->
+<!--        </div>-->
+<!--    </div>-->
 </template>
 <script>
 import { RouterView } from 'vue-router'

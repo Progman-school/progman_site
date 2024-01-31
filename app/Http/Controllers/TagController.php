@@ -13,8 +13,18 @@ class TagController extends MainController
         return ApiHelper::createFrontAnswer(TagService::getCurrentLanguage());
     }
 
+    /**
+     * @throws Exception
+     */
     public function switchTagLanguage(Request $request):string {
         return ApiHelper::createFrontAnswer(TagService::switchTagLanguage());
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function changeTagLanguageTo(string $language):string {
+        return ApiHelper::createFrontAnswer(TagService::setCurrentLanguage($language));
     }
 
     public function getAllTags(Request $request):string {

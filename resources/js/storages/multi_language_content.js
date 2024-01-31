@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import mixins from '../mixins';
+import router from "../router";
 
 const refreshDelay = 30;
 
@@ -15,18 +16,26 @@ export const useMultiLanguageStore = defineStore({
     }),
     actions: {
         readCurrentLanguage() {
-            return this.currentLanguage;
+            return this.currentLanguage
         },
-        getCurrentLanguage() {
-            this.currentLanguage = null;
+
+        getCurrentLanguageFromApi() {
+            this.currentLanguage = null
             mixins.methods.getAPI(
                 'current_language',
                 null,
                 this.saveLanguage
             )
         },
-        changeLanguage() {
-            this.currentLanguage = null;
+
+        getCurrentLanguage() {
+            if (this.currentLanguage === null) {
+                this.getCurrentLanguageFromApi()
+            }
+        },
+
+        switchLanguage() {
+            this.currentLanguage = null
             mixins.methods.patchAPI(
                 'switch_tag_language',
                 null,
@@ -34,8 +43,32 @@ export const useMultiLanguageStore = defineStore({
                 this.saveLanguage
             );
         },
+
+        changeLanguageTo(language) {
+            this.currentLanguage = null
+            mixins.methods.patchAPI(
+                `change_language_to/${language}`,
+                null,
+                null,
+                this.saveLanguage
+            );
+        },
+
         saveLanguage(response) {
             this.currentLanguage = response.data;
+            router.isReady().then(() => {
+                if (
+                    this.currentLanguage
+                    && router.currentRoute.value.params.lang !== this.currentLanguage
+                ) {
+                    router.push({
+                        name: router.currentRoute.value.name,
+                        params: {
+                            lang: this.currentLanguage
+                        }
+                    })
+                }
+            })
         },
 
         getAllTagContents() {
