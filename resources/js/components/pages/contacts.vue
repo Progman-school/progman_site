@@ -10,24 +10,12 @@ multiLanguageStore.getContentByTag("telegram_manager_account").then(insertData =
     telegramLink.value = `tg://resolve?domain=${insertData[multiLanguageStore.currentLanguage]}`
 })
 </script>
+
 <template>
     <article id="contact">
         <h2 class="major">Contacts</h2>
         <ul class="my_social">
             <InsertContent>links_contacts</InsertContent>
-<!--            <li title="denisprogman">-->
-<!--                <a href="https://www.patreon.com/denisprogman" class="icon_links" target="_blank">-->
-<!--                    <i class="fab fa-patreon"></i>-->
-<!--                    <strong>Patreon</strong>-->
-<!--                    <span>-->
-<!--                        - &nbsp;&nbsp;Эксклюзивные материалы, готовые файлы с кодом опубликованным в различных соц сетях,-->
-<!--                        записи всех прямых эфиров и самые интересные новости в айти.-->
-<!--                        Для тех кто хочет поддержать проект ProgMan и получать вип доступ к закрытым от всех материалам!-->
-<!--                        <br />-->
-<!--                        Доступ дается за подписку всего от $1 в месяц (подписка: junior). Доступ к кодовым файлам $5 в месяц(подписка: middle).-->
-<!--                    </span>-->
-<!--                </a>-->
-<!--            </li>-->
         </ul>
         <hr />
         <div style="margin: 12px 0; text-align: center">
@@ -52,7 +40,6 @@ multiLanguageStore.getContentByTag("telegram_manager_account").then(insertData =
         <Closer />
     </article>
 </template>
-
 
 <style scoped>
 

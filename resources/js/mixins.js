@@ -1,5 +1,9 @@
 export default {
     methods: {
+        getAppUrl() {
+            return `${window.location.protocol}//${window.location.hostname}`
+        },
+
         makeURL(baseURL, params){
             return params
                 ? `${baseURL}?${(new URLSearchParams(params)).toString()}`
@@ -69,7 +73,7 @@ export default {
                     requestObject.headers["Content-Type"] = 'application/json'
                 }
                 let response = await fetch(
-                    `${window.location.protocol}//${window.location.hostname}/api/${URL}`,
+                    `${this.getAppUrl()}/api/${URL}`,
                     requestObject
                 );
                 let data = await response.json()
@@ -86,6 +90,7 @@ export default {
                 console.error('Error:', error)
             }
         },
+
         setCookie(cName, cValue, expMin) {
             let date = new Date()
             date.setTime(date.getTime() + (expMin * 60 * 1000))
@@ -101,6 +106,10 @@ export default {
                 if (val.indexOf(name) === 0) res = val.substring(name.length)
             })
             return res
+        },
+
+        getImageUrl(image) {
+            return `${this.getAppUrl()}/images/${image}`
         }
     },
 };

@@ -1,17 +1,6 @@
-<script>
-import closer from "../helpers/closer.vue";
-import insertContent from '../helpers/insert-content.vue'
-
-export default {
-    name: "test",
-    components: {
-        closer,
-        insertContent,
-    },
-}
-</script>
-
 <script setup>
+import Closer from "../helpers/closer.vue";
+import InsertContent from '../helpers/insert-content.vue'
 import mixins from "../../mixins.js";
 import { useEventListener } from "../../storages/event_storage.js"
 import {ref} from "vue";
@@ -59,7 +48,7 @@ const chooseCourse = (event) => {
     <article id="test">
         <h2 class="major">Your opportunity test!</h2>
         <p>
-            <insert-content>test_preview</insert-content>
+            <InsertContent>test_preview</InsertContent>
             <br/>
         </p>
         <section>
@@ -94,7 +83,7 @@ const chooseCourse = (event) => {
                         </div>
                     </div>
                 </content>
-                <insert-content set_class="fields">test_for_registration</insert-content>
+                <InsertContent set_class="fields">test_for_registration</InsertContent>
                 <content class="fields">
                     <div class="field">
                         <label for="uid_type">
@@ -123,7 +112,7 @@ const chooseCourse = (event) => {
                 </ul>
             </form>
         </section>
-        <closer />
+        <Closer />
     </article>
 </template>
 

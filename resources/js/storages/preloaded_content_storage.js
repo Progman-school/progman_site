@@ -7,7 +7,7 @@ export const usePreloadedDataStorage = defineStore('preloadedContent', {
     }),
     actions: {
         async getCoursesList() {
-            mixins.methods.getAPI(
+            await mixins.methods.getAPI(
                 'get_courses_list',
                 null,
                 (response) => this.courses = response.data

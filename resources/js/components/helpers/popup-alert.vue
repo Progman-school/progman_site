@@ -1,14 +1,12 @@
-<script>
-export default {
-    name: 'popup-alert',
-    inheritAttrs: false,
-}
-</script>
-
 <script setup>
 import {ref} from 'vue'
 import { useEventListener } from "../../storages/event_storage.js"
 import { useMultiLanguageStore } from '../../storages/multi_language_content.js'
+
+defineOptions({
+    name: 'popup-alert',
+    inheritAttrs: false,
+})
 
 const eventListener = useEventListener()
 const multiLanguageStore = useMultiLanguageStore()

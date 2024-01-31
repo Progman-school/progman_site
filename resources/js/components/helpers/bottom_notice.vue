@@ -2,6 +2,7 @@
 import mixins from "../../mixins.js";
 import {ref} from "vue";
 import { useEventListener } from "../../storages/event_storage.js"
+import InsertContent from '../helpers/insert-content.vue'
 
 const eventListener = useEventListener()
 const cookieKey = "cookie_alert"
@@ -26,25 +27,14 @@ create()
 <template>
     <transition mode="out-in">
         <div class="bottom_notice" v-show="show">
-            <h6><insert-content>cookie_banner_label</insert-content></h6>
+            <h6><InsertContent>cookie_banner_label</InsertContent></h6>
             <p>
-                <insert-content>cookie_banner_text</insert-content>
+                <InsertContent>cookie_banner_text</InsertContent>
             </p>
-            <button class="primary" @click="click"><insert-content>cookie_banner_button</insert-content></button>
+            <button class="primary" @click="click"><InsertContent>cookie_banner_button</InsertContent></button>
         </div>
     </transition>
 </template>
-
-<script>
-import insertContent from '../helpers/insert-content.vue'
-
-export default {
-    name: "bottom_notice",
-    components: {
-        insertContent,
-    }
-}
-</script>
 
 <style scoped>
 .bottom_notice {

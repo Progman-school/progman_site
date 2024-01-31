@@ -1,28 +1,34 @@
+<script setup>
+import mixins from '../../mixins';
+import Closer from '../helpers/closer.vue';
+import InsertContent from '../helpers/insert-content.vue'
+</script>
+
 <template>
     <article id="free">
         <h2 class="major">Useful files for free</h2>
-        <span class="image main"><img src="images/4.jpg" alt="" /></span>
+        <span class="image main"><img :src="mixins.methods.getImageUrl('4.jpg')" alt="" /></span>
         <p>
-            <insert-content set_class="not_weight">free_files_description</insert-content>
+            <InsertContent set_class="not_weight">free_files_description</InsertContent>
         </p>
         <br />
         <h4>
-            <insert-content>important_free_label</insert-content>:
+            <InsertContent>important_free_label</InsertContent>:
         </h4>
         <ul class="alt second_alt">
-            <insert-content>important_free_files</insert-content>
+            <InsertContent>important_free_files</InsertContent>
         </ul>
         <h4>
-            <insert-content>regular_free_label</insert-content>:
+            <InsertContent>regular_free_label</InsertContent>:
         </h4>
         <ul class="alt second_alt">
-            <insert-content>regular_free_files</insert-content>
+            <InsertContent>regular_free_files</InsertContent>
         </ul>
         <h4>
-            <insert-content>languages_books_free_label</insert-content>:
+            <InsertContent>languages_books_free_label</InsertContent>:
         </h4>
         <ul class="alt second_alt">
-            <insert-content>languages_books_free_files</insert-content>
+            <InsertContent>languages_books_free_files</InsertContent>
         </ul>
         <p class="footnote">
             We constantly add something new. Check this page!
@@ -30,28 +36,15 @@
         <div style="margin-bottom: 20px">
             <router-link :to="'/start'" >
                 <strong>
-                    <insert-content>go_to_start_link</insert-content>
+                    <InsertContent>go_to_start_link</InsertContent>
                 </strong>
             </router-link>
             <br />
             <br />
         </div>
-        <closer />
+        <Closer />
     </article>
 </template>
-
-<script>
-    import closer from '../helpers/closer.vue';
-    import insertContent from '../helpers/insert-content.vue'
-
-    export default {
-        name: "free",
-        components: {
-            closer,
-            insertContent,
-        }
-    }
-</script>
 
 <style scoped>
 
