@@ -107,9 +107,5 @@ export default {
             })
             return res
         },
-
-        getImageUrl(image) {
-            return `${this.getAppUrl()}/images/${image}`
-        }
     },
 };
