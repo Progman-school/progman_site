@@ -34,7 +34,7 @@ import InsertContent from '../helpers/insert-content.vue'
             We constantly add something new. Check this page!
         </p>
         <div style="margin-bottom: 20px">
-            <router-link :to="'/start'" >
+            <router-link :to="'start'" >
                 <strong>
                     <InsertContent>go_to_start_link</InsertContent>
                 </strong>

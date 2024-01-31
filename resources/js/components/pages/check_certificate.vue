@@ -56,7 +56,7 @@ const checkCertificate = (event) => {
                 </ul>
             </form>
             <div style="margin-bottom: 20px">
-                <router-link :to="'/start'" >
+                <router-link :to="'start'" >
                     <strong>
                         <InsertContent>go_to_start_link</InsertContent>
                     </strong>
