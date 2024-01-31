@@ -2,15 +2,13 @@
 import Closer from '../helpers/closer.vue'
 import InsertContent from '../helpers/insert-content.vue'
 import { useEventListener } from "../../storages/event_storage.js"
-import {useMultiLanguageStore} from "../../storages/multi_language_content";
-const multiLanguageStore = useMultiLanguageStore()
 
 const eventListener = useEventListener()
 const showToSale = () => {
     eventListener.call('popup_alert:show', {
         title: 'Welcome!',
         text:'{{start_page_alert}}',
-        url: `${multiLanguageStore.currentLanguage}/test`,
+        url: `test`,
         button: 'Go to the test',
     });
 }

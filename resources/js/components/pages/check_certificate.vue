@@ -26,6 +26,7 @@ const checkCertificate = (event) => {
 }
 
 </script>
+
 <template>
     <article id="test">
         <h2 class="major">Certificate verification</h2>
@@ -67,7 +68,6 @@ const checkCertificate = (event) => {
         </section>
         <Closer />
     </article>
-
 </template>
 
 <style scoped>

@@ -4,7 +4,6 @@ import {useMultiLanguageStore} from "../../storages/multi_language_content";
 import 'vue3-carousel/dist/carousel.css'
 import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
 import {ref} from "vue";
-import router from '../../router.js'
 
 const multiLanguageStore = useMultiLanguageStore()
 const preloadedDataStorage = usePreloadedDataStorage()
@@ -44,7 +43,9 @@ const toggleDetails = (event) => {
                             {{technology.name}}
                         </li>
                     </ul>
-                    <a @click="router.push(`${multiLanguageStore.currentLanguage}/test`)">>  start  &lt;</a>
+                    <router-link :to="`${multiLanguageStore.currentLanguage}/test`" >
+                        >  start  &lt;
+                    </router-link>
                 </div>
             </div>
         </Slide>

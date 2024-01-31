@@ -1,5 +1,4 @@
 <script setup>
-import mixins from '../../mixins';
 import Closer from '../helpers/closer.vue';
 import InsertContent from '../helpers/insert-content.vue'
 </script>
