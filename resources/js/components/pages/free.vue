@@ -7,7 +7,7 @@ import InsertContent from '../helpers/insert-content.vue'
 <template>
     <article id="free">
         <h2 class="major">Useful files for free</h2>
-        <span class="image main"><img :src="mixins.methods.getImageUrl('4.jpg')" alt="" /></span>
+        <span class="image main"><img src="/images/4.jpg" alt="" /></span>
         <p>
             <InsertContent set_class="not_weight">free_files_description</InsertContent>
         </p>
