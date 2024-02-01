@@ -19,7 +19,6 @@ class Controller extends BaseController
      */
     public static function index(?string $lang = null) {
         $localeMateTags = [];
-
         if ($lang) {
             App::setLocale($lang);
             TagService::setCurrentLanguage($lang);
