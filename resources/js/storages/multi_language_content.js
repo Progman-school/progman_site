@@ -13,6 +13,7 @@ export const useMultiLanguageStore = defineStore({
     state: () => ({
         currentLanguage: null,
         contentArray: {},
+        languageLocateMetaTags: {},
     }),
     actions: {
         readCurrentLanguage() {
@@ -41,7 +42,7 @@ export const useMultiLanguageStore = defineStore({
                 null,
                 null,
                 this.saveLanguage
-            );
+            )
         },
 
         changeLanguageTo(language) {
@@ -51,7 +52,7 @@ export const useMultiLanguageStore = defineStore({
                 null,
                 null,
                 this.saveLanguage
-            );
+            )
         },
 
         saveLanguage(response) {
@@ -68,6 +69,7 @@ export const useMultiLanguageStore = defineStore({
                         }
                     })
                 }
+                this.changeLanguageMetaTags()
             })
         },
 
@@ -118,6 +120,50 @@ export const useMultiLanguageStore = defineStore({
                 })
             }
             return result
+        },
+        changeLanguageMetaTags() {
+            if (
+                this.languageLocateMetaTags[this.currentLanguage] !== undefined
+                && this.languageLocateMetaTags[this.currentLanguage]
+            ) {
+                this.setLanguageLocateMetaData(
+                    this.currentLanguage,
+                    this.languageLocateMetaTags[this.currentLanguage]
+                )
+                return true
+            }
+            mixins.methods.getAPI(
+                'language_locate_meta_tags',
+                null,
+                (response) => {
+                    if (this.languageLocateMetaTags[this.currentLanguage] === undefined) {
+                        this.languageLocateMetaTags[this.currentLanguage] = {}
+                    }
+                    for (let key in response.data){
+                        this.languageLocateMetaTags[this.currentLanguage][key] = response.data[key] || ""
+                    }
+                    this.setLanguageLocateMetaData(
+                        this.currentLanguage,
+                        this.languageLocateMetaTags[this.currentLanguage]
+                    )
+                }
+            )
+        },
+        setLanguageLocateMetaData(language, languageLocateMetaData) {
+            document.querySelector('html')
+                .setAttribute('lang', language)
+
+            document.querySelector('meta[http-equiv="Content-Language"]')
+                .setAttribute('content', language)
+
+            document.querySelector('meta[name="description"]')
+                .setAttribute('content', languageLocateMetaData.language_locate_meta_tag_description)
+
+            document.querySelector('meta[itemprop="name"]')
+                .setAttribute('content', languageLocateMetaData.language_locate_meta_tag_itemprop_name)
+
+            document.querySelector('meta[name="keywords"]')
+                .setAttribute('content', languageLocateMetaData.language_locate_meta_tag_keywords)
         },
     }
 });

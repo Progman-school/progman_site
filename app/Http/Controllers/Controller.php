@@ -18,16 +18,13 @@ class Controller extends BaseController
      * @throws \Exception
      */
     public static function index(?string $lang = null) {
-        $localeMateTags = null;
+        $localeMateTags = [];
 
         if ($lang) {
             App::setLocale($lang);
             TagService::setCurrentLanguage($lang);
-            $localeMateTags = TagService::getTagValueByName(
-                "language_locate_meta_tags"
-            )[TagService::getCurrentLanguage()] ?? "";
+            $localeMateTags = TagService::getLanguageLocateMetaTagsContents();
         }
-
-        return view('index', ["locate_mete_tags" => $localeMateTags ?? ""]);
+        return view('index', ["locateMetaTags" => $localeMateTags]);
     }
 }
