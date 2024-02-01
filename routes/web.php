@@ -1,5 +1,6 @@
 <?php
 
+use App\Services\TagService;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +14,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/{lang?}/{page?}', function () {
-    return view('index');
+Route::get('/{lang?}/{page?}', function ($lang, $page = null) {
+//    if ($lang) {
+//        TagService::setCurrentLanguage($lang);
+//    }
+    return "check"; //view('index');
 });

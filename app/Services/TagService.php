@@ -36,6 +36,9 @@ class TagService extends MainService
      */
     public static function setCurrentLanguage(string $language): string
     {
+        if (!in_array($language, self::LANG_LIST)) {
+            throw new Exception("Language '{$language}' is not supported.");
+        }
         Session::put(self::LANG_SESSION_KEY, $language);
         if(!$currentLangKey = Session::get(self::LANG_SESSION_KEY)) {
             throw new Exception("Can't set language to session.");
