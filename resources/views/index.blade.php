@@ -9,8 +9,11 @@
     <meta name="msapplication-TileImage" content="images/icons/ms-icon-144x144.png">
     <meta name="theme-color" content="#000000">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    {!! $locate_mete_tags !!}
-
+    <!-- Locate meta tags -->
+    <meta http-equiv="Content-Language" content="{{ str_replace('_', '-', app()->getLocale()) }}" />
+    <meta name="description" content="{{ $locateMetaTags["language_locate_meta_tag_description"] ?? "" }}" />
+    <meta itemprop="name" content="{{ $locateMetaTags["language_locate_meta_tag_itemprop_name"] ?? "" }}" />
+    <meta name="keywords" content="{{ $locateMetaTags["language_locate_meta_tag_keywords"] ?? "" }}" />
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-X8WG6JNVG2"></script>
     <script>

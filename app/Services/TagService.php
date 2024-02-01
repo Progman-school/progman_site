@@ -161,4 +161,20 @@ class TagService extends MainService
         }
         return $answer;
     }
+
+    /**
+     * @throws UserAlert
+     */
+    public static function getLanguageLocateMetaTagsContents(): array {
+        $locateMetaTags = [
+            "language_locate_meta_tag_description",
+            "language_locate_meta_tag_itemprop_name",
+            "language_locate_meta_tag_keywords",
+        ];
+        $localeMateTags = [];
+        foreach ($locateMetaTags as $tag) {
+            $localeMateTags[$tag] = self::getTagValueByName($tag)[self::getCurrentLanguage()] ?? null;
+        }
+        return $localeMateTags;
+    }
 }

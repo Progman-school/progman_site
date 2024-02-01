@@ -22,6 +22,7 @@ Route::post('check_certificate', [CertificateController::class, 'checkCertificat
 Route::get('current_language', [TagController::class, 'getCurrentLanguage']);
 Route::get('all_tags', [TagController::class, 'getAllTags']);
 Route::get('tag_value_by_name', [TagController::class, 'getTagValueByName']);
+Route::get('language_locate_meta_tags', [TagController::class, 'getLanguageLocateMetaTagsContents']);
 Route::patch('switch_tag_language', [TagController::class, 'switchTagLanguage']);
 Route::patch('change_language_to/{language}', [TagController::class, 'changeTagLanguageTo']);
 

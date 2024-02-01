@@ -87,7 +87,7 @@ export default {
                 }
             } catch (error) {
                 alert("Unexpected error occurred, sorry!\nPlease try again later.")
-                console.error('Error:', error)
+                console.error(`Error:${error}`)
             }
         },
 

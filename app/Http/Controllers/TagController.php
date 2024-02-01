@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\UserAlert;
 use App\Helpers\ApiHelper;
 use App\Services\TagService;
 use Exception;
@@ -37,5 +38,13 @@ class TagController extends MainController
     public function getTagValueByName(Request $request): string
     {
         return ApiHelper::createFrontAnswer(TagService::getTagValueByName($request->tag, $request->timeStamp));
+    }
+
+    /**
+     * @throws UserAlert
+     */
+    public function getLanguageLocateMetaTagsContents(Request $request): string
+    {
+        return ApiHelper::createFrontAnswer(TagService::getLanguageLocateMetaTagsContents());
     }
 }
