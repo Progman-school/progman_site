@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Controller;
 use App\Services\TagService;
 use Illuminate\Support\Facades\Route;
 
@@ -14,9 +15,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/{lang?}/{page?}', function ($lang, $page = null) {
-//    if ($lang) {
-//        TagService::setCurrentLanguage($lang);
-//    }
-    return "check"; //view('index');
-});
+Route::get('/{lang?}/{page?}', function ($lang = null, $page = null) {
+    return Controller::index($lang);
+})
+    ->where('lang', implode('|', TagService::LANG_LIST))
+    ->where('page', '.*');
+
