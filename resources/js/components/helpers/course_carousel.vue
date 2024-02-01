@@ -35,7 +35,7 @@ const toggleDetails = (event) => {
         <Slide v-for="course in preloadedDataStorage.courses" :key="course.id">
             <div class="carousel__item">
                 <h5 @click="toggleDetails">{{course.name}}</h5>
-                <p class="short_details">{{course['description_' + multiLanguageStore.currentLanguage].slice(0, 20)}}</p>
+                <p class="short_details">{{course['description_' + multiLanguageStore.currentLanguage] ? course['description_' + multiLanguageStore.currentLanguage].slice(0, 20) : "" }}</p>
                 <div class="full_details" style="display: none">
                     <p>{{course['description_' + multiLanguageStore.currentLanguage]}}</p>
                     <ul>
