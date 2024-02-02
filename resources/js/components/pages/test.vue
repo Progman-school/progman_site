@@ -4,12 +4,12 @@ import InsertContent from '../helpers/insert-content.vue'
 import mixins from "../../mixins.js";
 import { useEventListener } from "../../storages/event_storage.js"
 import {ref} from "vue";
-import {usePreloadedDataStorage} from "../../storages/preloaded_content_storage";
 import {useMultiLanguageStore} from "../../storages/multi_language_content";
+import {usePreloadedDataStorage} from "../../storages/preloaded_content_storage";
+import router from "../../router";
 const multiLanguageStore = useMultiLanguageStore()
 const eventListener = useEventListener()
 const preloadedData = usePreloadedDataStorage()
-preloadedData.getCoursesList();
 const showLoginAlert = (preLoginResult) => {
     eventListener.call('popup_alert:show', {
         title: '{{test_passed_alert_title}}',
@@ -37,10 +37,22 @@ const changeRegistrationType = (event) => {
 }
 
 const chosenCourse = ref(null)
+const urlCourseId = ref(null)
 const chooseCourse = (event) => {
-    chosenCourse.value = preloadedData.courses[event.target.value]
-    chosenCourse.value.description = chosenCourse.value['description_' + multiLanguageStore.currentLanguage]
+    setCourse(event.target.value)
 }
+
+function setCourse(courseId) {
+    if (courseId) {
+        chosenCourse.value = preloadedData.courses[courseId]
+    }
+}
+preloadedData.getCoursesList().then(() => {
+    urlCourseId.value = router.currentRoute.value.query.course ?? ""
+    if (router.currentRoute.value.query.course) {
+        setCourse(router.currentRoute.value.query.course)
+    }
+})
 
 </script>
 
@@ -59,9 +71,9 @@ const chooseCourse = (event) => {
                         <label for="course">
                             Choose the course that you are interesting in:
                         </label>
-                        <select id="course" name="course_id" @change="chooseCourse">
-                            <option value="" selected disabled>Choose the course</option>
-                            <option v-for="course in preloadedData.courses" :value=course.id :title=course.level>
+                        <select id="course" name="course_id" v-model="urlCourseId" @change="chooseCourse">
+                            <option v-if="!urlCourseId" value="" selected disabled>Select course</option>
+                            <option v-for="course in preloadedData.courses" :value=course.id :title=course.level :selected="urlCourseId === course.id">
                                 {{course.name}}
                             </option>
                         </select>
@@ -72,7 +84,7 @@ const chooseCourse = (event) => {
                                 <b>Type:&nbsp;&nbsp;{{chosenCourse.type}}</b>
                             </div>
                             <p>
-                                {{chosenCourse.description || 'No description :('}}
+                                {{chosenCourse['description_' + multiLanguageStore.currentLanguage] || 'No description :('}}
                             </p>
                             <h6>Technologies:</h6>
                             <ul>
