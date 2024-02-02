@@ -3,7 +3,8 @@ import {usePreloadedDataStorage} from "../../storages/preloaded_content_storage"
 import {useMultiLanguageStore} from "../../storages/multi_language_content";
 import 'vue3-carousel/dist/carousel.css'
 import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
-import {ref} from "vue";
+import {computed, ref} from "vue";
+import mixins from "../../mixins";
 
 const multiLanguageStore = useMultiLanguageStore()
 const preloadedDataStorage = usePreloadedDataStorage()
@@ -27,11 +28,16 @@ const toggleDetails = (event) => {
     shortDetails.style.display = shortDetails.style.display === "none" ? "block" : "none"
     fullDetails.style.display = fullDetails.style.display === "none" ? "block" : "none"
 }
+const getItemsToShow = computed({
+    get () {
+        return mixins.methods.isMobileDevice() ? 3.25 : 3.95
+    },
+})
 
 </script>
 
 <template>
-    <Carousel :autoplay=autoPlay :itemsToShow="3.32" :wrapAround="true" :transition="600">
+    <Carousel :autoplay=autoPlay :itemsToShow="getItemsToShow" :wrapAround="true" :transition="600">
         <Slide v-for="course in preloadedDataStorage.courses" :key="course.id">
             <div class="carousel__item">
                 <h5 @click="toggleDetails">{{course.name}}</h5>
@@ -54,13 +60,13 @@ const toggleDetails = (event) => {
 
 <style scoped>
 .carousel__item {
+    width: 150px;
     background: rgba(1, 3, 4, 0.4);
     border-right: black 1px solid;
     border-left: black 1px solid;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     color: #000;
     text-align: center;
-    margin: 5px;
 }
 .carousel__item p {
     color: white;
@@ -121,7 +127,7 @@ const toggleDetails = (event) => {
 }
 
 .carousel__slide {
-    padding: 20px;
+    padding: 20px 0;
 }
 
 .carousel__viewport {
@@ -137,7 +143,7 @@ const toggleDetails = (event) => {
 }
 
 .carousel__slide {
-    opacity: 0.8;
+    opacity: 0.3;
     transform: rotateY(-20deg) scale(0.9);
 }
 
@@ -146,17 +152,17 @@ const toggleDetails = (event) => {
 }
 
 .carousel__slide--prev {
-    opacity: 1;
-    transform: rotateY(-10deg) scale(0.95);
+    opacity: .65;
+    transform: rotateY(-20deg) scale(0.9);
 }
 
 .carousel__slide--next {
-    opacity: 1;
-    transform: rotateY(10deg) scale(0.95);
+    opacity: .65;
+    transform: rotateY(20deg) scale(0.95);
 }
 
 .carousel__slide--active {
     opacity: 1;
-    transform: rotateY(0) scale(1.3);
+    transform: rotateY(0) scale(1.5);
 }
 </style>
