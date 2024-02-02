@@ -241,11 +241,11 @@ img {
 
 .button-green,
 .button-success {
-    background-color: #48bb78;
-    border-bottom: 8px solid #48bb78;
-    border-left: 18px solid #48bb78;
-    border-right: 18px solid #48bb78;
-    border-top: 8px solid #48bb78;
+    background-color: #58cc02ff;
+    border-bottom: 8px solid #58cc02ff;
+    border-left: 18px solid #58cc02ff;
+    border-right: 18px solid #58cc02ff;
+    border-top: 8px solid #58cc02ff;
 }
 
 .button-red,

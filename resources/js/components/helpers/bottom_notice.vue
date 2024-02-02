@@ -61,12 +61,12 @@ create()
     float: right;
 }
 .bottom_notice a {
-    border-bottom: dotted 1px rgb(21 143 36 / 76%);
-    color: #50aa60;
+    border-bottom: dotted 1px rgb(88 204 2 / 76%);
+    color: #58cc02ff;
     font-weight: 200;
 }
 .bottom_notice a:hover {
-    border-bottom: dotted 1px rgb(21 143 36 / 100%);
-    color: #55d26c;
+    border-bottom: dotted 1px rgb(88 204 2 / 100%);
+    color: #58cc02ff;
 }
 </style>

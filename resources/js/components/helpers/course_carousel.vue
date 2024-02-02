@@ -20,13 +20,11 @@ const toggleDetails = (event) => {
     if (!event.target.parentElement.parentElement.classList.contains("carousel__slide--active")) {
         return false
     }
-    event.target.parentElement.parentElement.parentElement.querySelectorAll(".short_details, .full_details").forEach((element) => {
+    event.target.parentElement.parentElement.parentElement.querySelectorAll(".full_details").forEach((element) => {
         element.style.display = element.style.display === "none" ? "block" : "none"
         element.style.display = element.style.display === "none" ? "block" : "none"
     })
-    const shortDetails = event.target.parentElement.querySelector(".short_details")
     const fullDetails = event.target.parentElement.querySelector(".full_details")
-    shortDetails.style.display = shortDetails.style.display === "none" ? "block" : "none"
     fullDetails.style.display = fullDetails.style.display === "none" ? "block" : "none"
 }
 const getItemsToShow = computed({
@@ -42,7 +40,6 @@ const getItemsToShow = computed({
         <Slide v-for="course in preloadedDataStorage.courses" :key="course.id">
             <div class="carousel__item" :title="course['description_' + multiLanguageStore.currentLanguage]">
                 <h5 @click="toggleDetails">{{course.name}}</h5>
-                <p class="short_details">{{course['description_' + multiLanguageStore.currentLanguage] ? course['description_' + multiLanguageStore.currentLanguage].slice(0, 20) : "" }}</p>
                 <div class="full_details" style="display: none">
                     <ul>
                         <li v-for="technology in course.technologies" :title=technology.description>
@@ -50,7 +47,7 @@ const getItemsToShow = computed({
                         </li>
                     </ul>
                 </div>
-                <button @click="router.push(`${multiLanguageStore.currentLanguage}/test`)">START</button>
+                <button @click="router.push(`${multiLanguageStore.currentLanguage}/test?course=${course.id}`)">START</button>
             </div>
         </Slide>
     </Carousel>
@@ -65,6 +62,17 @@ const getItemsToShow = computed({
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     color: #000;
     text-align: center;
+    padding-bottom: 6px;
+}
+.carousel__item button {
+    line-height: normal;
+    height: auto;
+    padding: 2px 10px;
+}
+.carousel__item button:hover {
+    color: #58cc02ff !important;
+    border-color: #58cc02ff !important;
+    cursor: pointer;
 }
 .carousel__item p {
     color: white;
@@ -76,10 +84,6 @@ const getItemsToShow = computed({
     text-transform: none !important;
 }
 
-.full_details {
-    overflow-y: scroll;
-    height: 120px !important;
-}
 .carousel__item h5 {
     margin: 5px 0 !important;
     padding: 0 2px !important;
@@ -91,7 +95,7 @@ const getItemsToShow = computed({
     text-transform: capitalize;
     font-size: 12px;
     margin-bottom: 10px;
-    color: #50aa60;
+    color: #58cc02ff;
 }
 .carousel__item a:hover {
     text-decoration: underline;
@@ -100,7 +104,11 @@ const getItemsToShow = computed({
 .carousel__slide--active .carousel__item h5:hover {
     text-decoration: underline;
     cursor: pointer;
-    color: #50aa60;
+    color: #58cc02ff;
+}
+.full_details {
+    max-height: 45px;
+    overflow-y: scroll;
 }
 .carousel__item ul {
     list-style: none;
@@ -108,7 +116,7 @@ const getItemsToShow = computed({
     grid-template-columns: repeat(3,1fr);
     grid-gap: 2px;
     padding: 0 6px;
-    margin: 0;
+    margin: 10px 0;
 }
 .carousel__item ul li {
     color: white;
@@ -120,7 +128,7 @@ const getItemsToShow = computed({
     align-items: center;
 }
 .carousel__item ul li:hover {
-    color: #35c44e;
+    color: #58cc02ff;
     text-decoration: underline;
 }
 
