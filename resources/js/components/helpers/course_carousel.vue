@@ -5,6 +5,7 @@ import 'vue3-carousel/dist/carousel.css'
 import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
 import {computed, ref} from "vue";
 import mixins from "../../mixins";
+import router from "../../router";
 
 const multiLanguageStore = useMultiLanguageStore()
 const preloadedDataStorage = usePreloadedDataStorage()
@@ -39,20 +40,17 @@ const getItemsToShow = computed({
 <template>
     <Carousel :autoplay=autoPlay :itemsToShow="getItemsToShow" :wrapAround="true" :transition="600">
         <Slide v-for="course in preloadedDataStorage.courses" :key="course.id">
-            <div class="carousel__item">
+            <div class="carousel__item" :title="course['description_' + multiLanguageStore.currentLanguage]">
                 <h5 @click="toggleDetails">{{course.name}}</h5>
                 <p class="short_details">{{course['description_' + multiLanguageStore.currentLanguage] ? course['description_' + multiLanguageStore.currentLanguage].slice(0, 20) : "" }}</p>
                 <div class="full_details" style="display: none">
-                    <p>{{course['description_' + multiLanguageStore.currentLanguage]}}</p>
                     <ul>
                         <li v-for="technology in course.technologies" :title=technology.description>
                             {{technology.name}}
                         </li>
                     </ul>
-                    <router-link :to="`${multiLanguageStore.currentLanguage}/test`" >
-                        >  start  &lt;
-                    </router-link>
                 </div>
+                <button @click="router.push(`${multiLanguageStore.currentLanguage}/test`)">START</button>
             </div>
         </Slide>
     </Carousel>
