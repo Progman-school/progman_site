@@ -105,6 +105,7 @@ const getItemsToShow = computed({
     text-decoration: underline;
     cursor: pointer;
     color: #58cc02ff;
+    z-index: 2;
 }
 .full_details {
     max-height: 45px;
