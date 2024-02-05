@@ -73,9 +73,9 @@ jobs:
         id: ftp_deploy
         uses: SamKirkland/FTP-Deploy-Action@4.3.3
         with:
-          server: ${{ vars.TEST_FTP_STAGE_HOST }}
-          username: ${{ vars.TEST_FTP_STAGE_FTP_USER }}
-          password: ${{ secrets.TEST_FTP_STAGE_FTP_PASSWORD }}
+          server: ${{ vars.PROD_FTP_HOST }}
+          username: ${{ vars.PROD_MAIN_SITE_FTP_USER }}
+          password: ${{ secrets.PROD_MAIN_SITE_FTP_PASSWORD }}
 
       - name: Sanding the result notification through Telegram
         run: |
