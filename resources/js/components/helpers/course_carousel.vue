@@ -37,7 +37,7 @@ const getItemsToShow = computed({
 
 <template>
     <Carousel :autoplay=autoPlay :itemsToShow="getItemsToShow" :wrapAround="true" :transition="600">
-        <Slide v-if="" v-for="course in preloadedDataStorage.courses" :key="course.id">
+        <Slide v-for="course in preloadedDataStorage.courses" :key="course.id">
             <div class="carousel__item" :title="course['description_' + multiLanguageStore.currentLanguage]">
                 <h5 @click="toggleDetails">{{course.name}}</h5>
                 <div class="full_details" style="display: none">
