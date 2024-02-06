@@ -14,15 +14,14 @@
     <meta name="description" content="{{ $locateMetaTags["language_locate_meta_tag_description"] ?? "" }}" />
     <meta itemprop="name" content="{{ $locateMetaTags["language_locate_meta_tag_itemprop_name"] ?? "" }}" />
     <meta name="keywords" content="{{ $locateMetaTags["language_locate_meta_tag_keywords"] ?? "" }}" />
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-X8WG6JNVG2"></script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BXB21SWDYD"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-        gtag('config', 'G-X8WG6JNVG2');
+        gtag('config', 'G-BXB21SWDYD');
     </script>
-
     <!-- Fonts -->
     <link href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,500,0,0" />
