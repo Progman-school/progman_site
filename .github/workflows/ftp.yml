@@ -57,7 +57,6 @@ jobs:
           echo MAIL_PORT=${{ vars.MAIL_PORT }} >> .env
           echo MAIL_USERNAME=${{ vars.MAIL_USERNAME }} >> .env
           echo MAIL_PASSWORD=${{ secrets.MAIL_PASSWORD }} >> .env
-          echo MAIL_NOREPLY_FROM_ADDRESS=${{ vars.MAIL_NOREPLY_FROM_ADDRESS }} >> .env
           echo MAIL_FROM_ADDRESS=${{ vars.MAIL_USERNAME }} >> .env
           cat .env
       - name: 🔨 Build Project
