@@ -19,7 +19,6 @@ class EmailServiceSdk
     protected string $noReplyAddress;
 
     function __construct(Request $request = null){
-        $this->noReplyAddress = config("mail.from.noreply_address");
         $this->managerAddress = config("mail.from.address");;
         $this->request = $request;
     }
