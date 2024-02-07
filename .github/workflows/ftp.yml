@@ -52,7 +52,6 @@ jobs:
           echo TELEGRAM_ADMIN_CHAT_ID=${{ vars.TELEGRAM_ADMIN_CHAT_ID }} >> .env
           echo TELEGRAM_CONTACT_MANAGER_LOGIN=${{ vars.TELEGRAM_CONTACT_MANAGER_LOGIN }} >> .env
           echo TELEGRAM_ADMIN_ACCOUNTS_LIST=${{ vars.TELEGRAM_ADMIN_ACCOUNTS_LIST }} >> .env
-
           echo MAIL_HOST=${{ vars.MAIL_HOST }} >> .env
           echo MAIL_PORT=${{ vars.MAIL_PORT }} >> .env
           echo MAIL_USERNAME=${{ vars.MAIL_USERNAME }} >> .env
