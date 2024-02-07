@@ -34,7 +34,6 @@ class ConfirmApplication extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            from: config('mail.from.noreply_address'),
             subject: 'Confirm Application',
         );
     }
