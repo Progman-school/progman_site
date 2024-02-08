@@ -26,9 +26,20 @@ class TagService extends MainService
 
     private const REPLACEABLE_TAG_PATTERN = "/\{\{(\w+)\}\}/ui";
 
+    /**
+     * @throws Exception
+     */
     public static function getCurrentLanguage(): string
     {
-        return Session::get(self::LANG_SESSION_KEY) ?? self::DEFAULT_LANGUAGE;
+        $lang = Session::get(self::LANG_SESSION_KEY);
+        if ($lang) {
+            return $lang;
+        }
+        $browserLang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
+        self::setCurrentLanguage(
+            in_array($browserLang, self::LANG_LIST) ? $browserLang : self::DEFAULT_LANGUAGE
+        );
+        return Session::get(self::LANG_SESSION_KEY);
     }
 
     /**
