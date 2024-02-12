@@ -52,6 +52,10 @@ const chooseCourse = (event) => {
 function setCourse(courseId) {
     if (courseId) {
         chosenCourse.value = preloadedData.courses[courseId]
+        router.push(`${multiLanguageStore.currentLanguage}/test?course=${courseId}`)
+    } else {
+        chosenCourse.value = null
+        router.push(`${multiLanguageStore.currentLanguage}/test`)
     }
 }
 preloadedData.getCoursesList().then(() => {
