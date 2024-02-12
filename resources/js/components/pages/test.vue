@@ -94,7 +94,7 @@ preloadedData.getCoursesList().then(() => {
                         <div class="field_details" v-if="chosenCourse">
                             <h4>Details:</h4>
                             <div>
-                                <b>Level:&nbsp;&nbsp;{{chosenCourse.level}}</b>
+                                <b>Start from:&nbsp;&nbsp;{{chosenCourse.level}}</b>
                                 <b class="longer_param">Type:&nbsp;&nbsp;{{chosenCourse.type}}</b>
                                 <b>Hours:&nbsp;&nbsp;~{{chosenCourse.hours}}</b>
                             </div>
