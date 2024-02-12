@@ -65,7 +65,7 @@ preloadedData.getCoursesList().then(() => {
 
 <template>
     <article id="test">
-        <h2 class="major">Your opportunity test!</h2>
+        <h2 class="major">Get your chance!</h2>
         <p>
             <InsertContent>test_preview</InsertContent>
             <br/>
@@ -75,7 +75,7 @@ preloadedData.getCoursesList().then(() => {
                 <content class="fields">
                     <div class="field">
                         <label for="course">
-                            Choose the course that you are interesting in:
+                            Choose your course:
                         </label>
                         <select id="course" name="course_id" v-model="urlCourseId" @change="chooseCourse">
                             <option v-if="!urlCourseId" value="" selected disabled>Select course</option>
