@@ -47,7 +47,7 @@ const getItemsToShow = computed({
                         </li>
                     </ul>
                 </div>
-                <button @click="router.push(`test?course=${course.id}`)">START</button>
+                <button @click="router.push(`${multiLanguageStore.currentLanguage}/test?course=${course.id}`)">START</button>
             </div>
         </Slide>
     </Carousel>

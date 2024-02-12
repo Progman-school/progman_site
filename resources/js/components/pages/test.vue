@@ -52,14 +52,14 @@ const chooseCourse = (event) => {
 function setCourse(courseId) {
     if (courseId) {
         chosenCourse.value = preloadedData.courses[courseId]
-        router.push(`${multiLanguageStore.currentLanguage}/test?course=${courseId}`)
+        router.push(`test?course=${courseId}`)
         chosenCourse.value.hours = 0
-        for (let technology in chosenCourse.value.technologies) {
+        for (let technology of chosenCourse.value.technologies) {
             chosenCourse.value.hours += technology.pivot.hours
         }
     } else {
         chosenCourse.value = null
-        router.push(`${multiLanguageStore.currentLanguage}/test`)
+        router.push(`test`)
     }
 }
 preloadedData.getCoursesList().then(() => {
