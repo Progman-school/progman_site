@@ -38,6 +38,13 @@ const changeRegistrationType = (event) => {
 
 const chosenCourse = ref(null)
 const urlCourseId = ref(null)
+const isShowedTestForm = ref(false)
+
+const showTestForm = (event) => {
+    event.preventDefault()
+    isShowedTestForm.value = true
+}
+
 const chooseCourse = (event) => {
     setCourse(event.target.value)
 }
@@ -64,7 +71,6 @@ preloadedData.getCoursesList().then(() => {
             <br/>
         </p>
         <section>
-            <h3 class="major">Answer the question:</h3>
             <form id="test_form" @submit="saveTestData">
                 <content class="fields">
                     <div class="field">
@@ -95,8 +101,16 @@ preloadedData.getCoursesList().then(() => {
                         </div>
                     </div>
                 </content>
-                <InsertContent set_class="fields">test_for_registration</InsertContent>
-                <content class="fields">
+                <div class="order_course_button" v-if="chosenCourse && !isShowedTestForm">
+                    <button type="submit" class="primary" @click="showTestForm">
+                        <InsertContent>first_free_class_order_button</InsertContent>
+                    </button>
+                </div>
+                <h3 class="major" v-if="isShowedTestForm">
+                    <InsertContent>test_form_head_title</InsertContent>
+                </h3>
+                <InsertContent  v-if="isShowedTestForm" set_class="fields">test_for_registration</InsertContent>
+                <content class="fields" v-if="isShowedTestForm">
                     <div class="field">
                         <label for="uid_type">
                             Select where would you like to receive your test results and advices:
@@ -119,7 +133,7 @@ preloadedData.getCoursesList().then(() => {
                         </div>
                     </div>
                 </content>
-                <ul class="actions">
+                <ul class="actions" v-if="isShowedTestForm">
                     <li><button type="submit" class="primary">Finish the test</button></li>
                 </ul>
             </form>
