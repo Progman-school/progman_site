@@ -95,7 +95,7 @@ preloadedData.getCoursesList().then(() => {
                             <h4>Details:</h4>
                             <div>
                                 <b>Level:&nbsp;&nbsp;{{chosenCourse.level}}</b>
-                                <b>Type:&nbsp;&nbsp;{{chosenCourse.type}}</b>
+                                <b class="longer_param">Type:&nbsp;&nbsp;{{chosenCourse.type}}</b>
                                 <b>Hours:&nbsp;&nbsp;~{{chosenCourse.hours}}</b>
                             </div>
                             <p>
@@ -163,11 +163,23 @@ preloadedData.getCoursesList().then(() => {
 }
 
 .field_details > div {
-    padding: 0;
+    padding: 2px 10px;
     border: none;
     display: flex;
     justify-content: space-around;
+    flex-wrap: wrap;
+    background: #9ef68633;
 }
+.field_details > div > b {
+    padding: 0 5px;
+}
+
+@media (max-width: 760px) {
+    .field_details > div > b[class="longer_param"] {
+        order: 3;
+    }
+}
+
 .field_details > p {
     margin: 20px 0;
     font-style: italic;
