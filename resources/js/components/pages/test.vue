@@ -95,8 +95,8 @@ preloadedData.getCoursesList().then(() => {
                             <h4>Details:</h4>
                             <div>
                                 <b>Level:&nbsp;&nbsp;{{chosenCourse.level}}</b>
-                                <b>Hours:&nbsp;&nbsp;~{{chosenCourse.hours}}</b>
                                 <b>Type:&nbsp;&nbsp;{{chosenCourse.type}}</b>
+                                <b>Hours:&nbsp;&nbsp;~{{chosenCourse.hours}}</b>
                             </div>
                             <p>
                                 {{chosenCourse['description_' + multiLanguageStore.currentLanguage] || 'No description :('}}
