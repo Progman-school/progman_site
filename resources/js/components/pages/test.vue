@@ -197,5 +197,9 @@ preloadedData.getCoursesList().then(() => {
     border: none;
     padding-left: 2px;
 }
+.order_course_button {
+    text-align: center;
+    margin-bottom: 20px;
+}
 
 </style>
