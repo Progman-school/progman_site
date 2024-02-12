@@ -53,6 +53,10 @@ function setCourse(courseId) {
     if (courseId) {
         chosenCourse.value = preloadedData.courses[courseId]
         router.push(`${multiLanguageStore.currentLanguage}/test?course=${courseId}`)
+        chosenCourse.value.hours = 0
+        for (let technology in chosenCourse.value.technologies) {
+            chosenCourse.value.hours += technology.pivot.hours
+        }
     } else {
         chosenCourse.value = null
         router.push(`${multiLanguageStore.currentLanguage}/test`)
@@ -91,6 +95,7 @@ preloadedData.getCoursesList().then(() => {
                             <h4>Details:</h4>
                             <div>
                                 <b>Level:&nbsp;&nbsp;{{chosenCourse.level}}</b>
+                                <b>Hours:&nbsp;&nbsp;~{{chosenCourse.hours}}</b>
                                 <b>Type:&nbsp;&nbsp;{{chosenCourse.type}}</b>
                             </div>
                             <p>
