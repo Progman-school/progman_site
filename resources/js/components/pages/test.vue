@@ -88,7 +88,7 @@ preloadedData.getCoursesList().then(() => {
                 <content class="fields">
                     <div class="field">
                         <label for="course">
-                            Choose your course:
+                            Your course:
                         </label>
                         <select id="course" name="course_id" v-model="urlCourseId" @change="chooseCourse">
                             <option v-if="!urlCourseId" value="" selected disabled>Select course</option>
