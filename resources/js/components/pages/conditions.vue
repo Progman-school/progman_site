@@ -18,10 +18,6 @@ import InsertContent from '../helpers/insert-content.vue'
         </section>
         <hr/>
         <section>
-            <InsertContent>course_stack_conditions</InsertContent>
-        </section>
-        <hr/>
-        <section>
             <InsertContent>mentor_experience_conditions</InsertContent>
         </section>
         <div style="margin-bottom: 20px">
