@@ -15,6 +15,13 @@ import InsertContent from '../helpers/insert-content.vue'
         <hr />
         <section>
             <InsertContent>course_description_conditions</InsertContent>
+            <div class="goto_test_button">
+                <a href="test">
+                    <button class="primary">
+                        TEST & START NOW
+                    </button>
+                </a>
+            </div>
         </section>
         <hr/>
         <section>
@@ -34,5 +41,8 @@ import InsertContent from '../helpers/insert-content.vue'
 </template>
 
 <style scoped>
-
+.goto_test_button {
+    text-align: center;
+    margin: 20px auto;
+}
 </style>
