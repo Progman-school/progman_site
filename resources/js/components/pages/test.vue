@@ -39,6 +39,7 @@ const changeRegistrationType = (event) => {
 const chosenCourse = ref(null)
 const urlCourseId = ref(null)
 const isShowedTestForm = ref(false)
+const isPrivacyPolicyConfirmed = ref(false)
 
 const showTestForm = (event) => {
     event.preventDefault()
@@ -47,6 +48,10 @@ const showTestForm = (event) => {
 
 const chooseCourse = (event) => {
     setCourse(event.target.value)
+}
+
+const confirmPrivacyPolicy = (event) => {
+    isPrivacyPolicyConfirmed.value = event.target.checked
 }
 
 function setCourse(courseId) {
@@ -122,7 +127,7 @@ preloadedData.getCoursesList().then(() => {
                 <content class="fields" v-if="isShowedTestForm">
                     <div class="field">
                         <label for="uid_type">
-                            Select where would you like to receive your test results and advices:
+                            Type of registration:
                         </label>
                         <select id="uid_type" name="uid_type" @change="changeRegistrationType">
                             <option value="email" selected>E-Mail address</option>
@@ -140,10 +145,16 @@ preloadedData.getCoursesList().then(() => {
                         <div v-if="!showEmailField" style="border: none">
                             <b>Important! Make sure that you have installed Telegram messenger on this device, or choose Email</b>
                         </div>
+                        <div class="field">
+                            <input type="checkbox" id="privacy_policy" value="1" @change="confirmPrivacyPolicy">
+                            <label for="privacy_policy">
+                                <InsertContent>test_privacy_policy_link</InsertContent>
+                            </label>
+                        </div>
                     </div>
                 </content>
                 <ul class="actions" v-if="isShowedTestForm">
-                    <li><button type="submit" class="primary">Finish the test</button></li>
+                    <li><button type="submit" class="primary" :disabled="!isPrivacyPolicyConfirmed">Finish the test</button></li>
                 </ul>
             </form>
         </section>
