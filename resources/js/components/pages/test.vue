@@ -48,7 +48,6 @@ const showTestForm = (event) => {
 
 const chooseCourse = (event) => {
     setCourse(event.target.value)
-    event.target.classList.add('chosen_course')
 }
 
 const confirmPrivacyPolicy = (event) => {
@@ -91,7 +90,7 @@ preloadedData.getCoursesList().then(() => {
                         <label for="course">
                             Your course:
                         </label>
-                        <select id="course" name="course_id" v-model="urlCourseId" @change="chooseCourse">
+                        <select id="course" name="course_id" :class="urlCourseId ? 'chosen_course' : ''" v-model="urlCourseId" @change="chooseCourse">
                             <option v-if="!urlCourseId" value="" selected disabled>Select course</option>
                             <option v-for="course in preloadedData.courses" :value=course.id :title=course.level :selected="urlCourseId === course.id">
                                 {{course.name}}
