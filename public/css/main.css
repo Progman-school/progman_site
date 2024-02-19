@@ -143,7 +143,7 @@ a {
 }
 
 a:hover {
-    border-bottom-color: #98dfb6;
+    border-bottom-color: #58cc02ff;
 }
 
 strong, b {
@@ -1331,6 +1331,8 @@ body.is-preload #bg:before {
 
 #header nav ul li a:hover {
     background-color: rgba(255, 255, 255, 0.075);
+    color: #58cc02ff;
+    cursor: pointer;
 }
 
 #header nav ul li a:active {
@@ -1644,7 +1646,7 @@ body.is-preload #footer {
 
 .important_text {
     font-weight: bold;
-    color: #0bbf5d;
+    color: #58cc02ff;
 }
 
 #langSwitcher {
@@ -1662,6 +1664,9 @@ body.is-preload #footer {
 #langSwitcher:hover {
     border-color: rgba(255, 255, 255, 0.8);
     border-style: dashed;
+}
+#langSwitcher span:hover {
+    color: #58cc02ff;
 }
 
 #langSwitcher span {
