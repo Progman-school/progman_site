@@ -48,6 +48,7 @@ const showTestForm = (event) => {
 
 const chooseCourse = (event) => {
     setCourse(event.target.value)
+    event.target.classList.add('chosen_course')
 }
 
 const confirmPrivacyPolicy = (event) => {
@@ -211,6 +212,10 @@ preloadedData.getCoursesList().then(() => {
 .order_course_button {
     text-align: center;
     margin-bottom: 20px;
+}
+.chosen_course {
+    color: #58cc02ff;
+    font-weight: bold;
 }
 
 </style>
