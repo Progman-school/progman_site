@@ -8,6 +8,7 @@ use App\sdks\EmailServiceSdk;
 use Illuminate\Http\Request;
 use App\Models\Request as UserRequest;
 use Illuminate\Support\Facades\Mail;
+use function PHPUnit\Framework\stringContains;
 
 class UserRequestPreSavingService
 {
@@ -83,7 +84,7 @@ class UserRequestPreSavingService
     }
 
     protected static function testScoreDescription(int $scorePoints):string {
-        if ($scorePoints < 20) {
+        if ($scorePoints < 25) {
             $descriptionText = '{{bad_test_description}}';
         }
         elseif ($scorePoints <= 35) {
@@ -103,39 +104,59 @@ class UserRequestPreSavingService
 
     protected static function calculateTestScore(array $testData): int{
         unset($testData['city'], $testData['sex']);
-        $score = 10;
-        $maxScore = 35;
+        $score = 1;
         foreach ($testData as $keyItem => $testItem) {
             if ($keyItem == 'age') {
                 if ($testItem > 14 && $testItem <= 17) {
-                    $score += 2;
+                    $score *= 0.5;
                 }
                 elseif ($testItem > 17 && $testItem <= 24) {
-                    $score += 1;
+                    $score *= 1;
                 }
                 elseif ($testItem > 24 && $testItem <= 35) {
-                    $score += 4;
+                    $score *= 0.9;
                 }
                 elseif ($testItem > 35) {
-                    $score += 3;
+                    $score *= 0.7;
+                }
+                continue;
+            }
+            if ($keyItem == "know_html") {
+                if (str_starts_with('yes', $testItem)) {
+                    $score *= 1;
+                }
+                else {
+                    $score *= 0.7;
                 }
                 continue;
             }
             if ($keyItem == 'project_idea') {
                 $wordsCount = count(explode(' ', $testItem));
                 if ($wordsCount <= 5) {
-                    $score += 1;
+                    $score *= 0.5;
                 }
                 elseif ($wordsCount < 35) {
-                    $score += 5;
+                    $score *= 1;
                 }
                 elseif ($wordsCount > 35) {
-                    $score += 3;
+                    $score *= 0.9;
                 }
+            }
+            if ($keyItem == 'occupation') {
+                $score += ((int) substr($testItem, -1)) / 10;
+            }
+            if(str_starts_with($keyItem, 'skill_')) {
+                $score += ((int) substr($testItem, -1)) / 10;
+            }
+            if($keyItem == 'target') {
+                $score *= (1 + ((int) substr($testItem, -1)) / 10);
+            }
+            if($keyItem == 'how_doing') {
+                $score += ((int) substr($testItem, -1)) / 10;
             }
         }
 
-        return round($score/$maxScore*100, 1);
+        return round($score*100, 1);
     }
 
     protected static function getRequestHash(Request $request): string {
