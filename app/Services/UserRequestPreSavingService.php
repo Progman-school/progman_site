@@ -93,7 +93,7 @@ class UserRequestPreSavingService
         elseif ($scorePoints <= 59) {
             $descriptionText = '{{good_test_description}}';
         }
-        elseif ($scorePoints <= 79) {
+        elseif ($scorePoints <= 80) {
             $descriptionText = '{{great_test_description}}';
         }
         else {
@@ -104,7 +104,7 @@ class UserRequestPreSavingService
 
     protected static function calculateTestScore(array $testData): int{
         unset($testData['city'], $testData['sex']);
-        $score = 1;
+        $score = 0.75;
         foreach ($testData as $keyItem => $testItem) {
             if ($keyItem == 'age') {
                 if ($testItem > 14 && $testItem <= 17) {
