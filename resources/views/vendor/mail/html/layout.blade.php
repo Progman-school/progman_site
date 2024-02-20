@@ -22,6 +22,13 @@ width: 100% !important;
 width: 100% !important;
 }
 }
+b {
+    color: #1b1f22;
+}
+.important_text {
+    font-weight: bold;
+    color: #58cc02ff;
+}
 </style>
 </head>
 <body>
