@@ -84,16 +84,16 @@ class UserRequestPreSavingService
     }
 
     protected static function testScoreDescription(int $scorePoints):string {
-        if ($scorePoints < 25) {
+        if ($scorePoints < 30) {
             $descriptionText = '{{bad_test_description}}';
         }
-        elseif ($scorePoints <= 35) {
+        elseif ($scorePoints <= 45) {
             $descriptionText = '{{satisfactory_test_description}}';
         }
-        elseif ($scorePoints <= 59) {
+        elseif ($scorePoints <= 69) {
             $descriptionText = '{{good_test_description}}';
         }
-        elseif ($scorePoints <= 80) {
+        elseif ($scorePoints <= 85) {
             $descriptionText = '{{great_test_description}}';
         }
         else {
@@ -104,7 +104,7 @@ class UserRequestPreSavingService
 
     protected static function calculateTestScore(array $testData): int{
         unset($testData['city'], $testData['sex']);
-        $score = 0.75;
+        $score = 0.45;
         foreach ($testData as $keyItem => $testItem) {
             if ($keyItem == 'age') {
                 if ($testItem > 14 && $testItem <= 17) {
