@@ -33,7 +33,7 @@ const sendSupportMessage = (event) => {
         (response) => {
             eventListener.call('popup_alert:show', {
                 title: response.status,
-                text: response.data.replace("\n", "<br />")
+                text: '<b>Thank you!</b><br/><br/>' + response.data.replace("\n", "<br/>")
             });
             event.target.reset()
             isSupportMessengerOpen.value = false

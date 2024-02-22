@@ -31,8 +31,7 @@ class SupportMessengerService
             throw new UserAlert("Error, we can not receive your message. Please, contact to manager!");
         }
 
-        return "Thank you!\n\n"
-            . TagService::getTagValueByName("support_request_success_status")[TagService::getCurrentLanguage()];
+        return TagService::getTagValueByName("support_request_success_status")[TagService::getCurrentLanguage()];
     }
 
     public static function switchSupportRequestStatus(string $status): string
