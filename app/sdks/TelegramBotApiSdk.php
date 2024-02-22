@@ -55,12 +55,16 @@ class TelegramBotApiSdk
     public function sendMessage(
         string $text,
         string $chatId,
-        array $keyboardArray = null
+        array $keyboardArray = null,
+        array $extraOptions = null,
     ): mixed {
         $options['text'] = $text;
         $options['chat_id'] = $chatId;
         if ($keyboardArray) {
             $options['reply_markup'] = $this->makeInlineKeyboard($keyboardArray);
+        }
+        if ($extraOptions) {
+            $options = array_merge($options, $extraOptions);
         }
         return $this->getTelegramApi('sendMessage', $options);
     }
@@ -84,11 +88,12 @@ class TelegramBotApiSdk
         );
     }
 
-    public function sendMessageToAdminChat(string $text, array $keyboardArray = null) {
+    public function sendMessageToAdminChat(string $text, array $keyboardArray = null, array $extraOptions = null) {
         return $this->sendMessage(
             $text,
             $this->adminChatId,
-            $keyboardArray
+            $keyboardArray,
+            $extraOptions
         );
     }
 

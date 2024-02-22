@@ -16,17 +16,18 @@ class SupportMessengerService
     public static function sendSupportRequestMessageToAdminChat(string $senderEmail, string $message, $currentUrl): string
     {
         $telegramRequestService = new TelegramRequestService();
-        $messageText = "📧Support request!\n\nEmail: {$senderEmail}\nSite URL: {$currentUrl}\n\nText\n{$message}\n\n";
+        $messageText = "📧 Support message!\n\nEmail: {$senderEmail}\nSite URL: {$currentUrl}\n\nText\n{$message}";
         $result = $telegramRequestService->sendMessageToAdminChat(
             $messageText,
-            self::SUPPORT_MESSAGE_STATUS_KEYBOARDS[self::NEW_SUPPORT_REQUEST_STATUS]
+            self::SUPPORT_MESSAGE_STATUS_KEYBOARDS[self::NEW_SUPPORT_REQUEST_STATUS],
+            ['link_preview_options' => '{"is_disabled": true}'],
         );
 
         if (!isset($result["ok"])) {
             throw new UserAlert("Error, we can not receive your message. Please, contact to manager.");
         }
 
-        return "Your message has been sent to the support team. We will contact you soon!";
+        return "Thank you!\nWe've received your message and contact you soon trough email!";
     }
 
     public static function switchSupportRequestStatus(string $status): string
