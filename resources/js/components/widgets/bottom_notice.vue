@@ -2,7 +2,7 @@
 import mixins from "../../mixins.js";
 import {ref} from "vue";
 import { useEventListener } from "../../storages/event_storage.js"
-import InsertContent from '../helpers/insert-content.vue'
+import InsertContent from './/insert-content.vue'
 
 const eventListener = useEventListener()
 const cookieKey = "cookie_alert"

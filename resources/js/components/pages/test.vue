@@ -1,6 +1,6 @@
 <script setup>
-import Closer from "../helpers/closer.vue";
-import InsertContent from '../helpers/insert-content.vue'
+import Closer from "../widgets/closer.vue";
+import InsertContent from '../widgets/insert-content.vue'
 import mixins from "../../mixins.js";
 import { useEventListener } from "../../storages/event_storage.js"
 import {ref} from "vue";

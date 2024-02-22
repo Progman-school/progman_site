@@ -1,5 +1,5 @@
 <script>
-import closer from '../helpers/closer.vue'
+import closer from '../widgets/closer.vue'
 export default {
     name: "tmp",
     components: {
