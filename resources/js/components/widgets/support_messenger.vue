@@ -46,40 +46,42 @@ const sendSupportMessage = (event) => {
         <div>?</div>
         <span>HELP</span>
     </div>
-    <div class="support_messenger" v-show="isSupportMessengerOpen">
-        <div class="support_messenger__header">
-            <div class="support_messenger__header__title">
-                <h3><InsertContent>support_messenger_title</InsertContent></h3>
-            </div>
-            <div class="close" @click="isSupportMessengerOpen = false"></div>
-        </div>
-        <div class="support_messenger__body">
-            <div class="support_messenger__body__message">
-                <p><InsertContent>support_messenger_text</InsertContent></p>
-            </div>
-            <form class="support_messenger__form" @submit="sendSupportMessage">
-                <div>
-                    <label for="email">Email</label>
-                    <input type="email" name="email" id="email" :placeholder="supportMessengerEmailPlaceholder[multiLanguageStore.currentLanguage]" required>
+    <transition name="slide-fade" mode="out-in">
+        <div class="support_messenger" v-show="isSupportMessengerOpen">
+            <div class="support_messenger__header">
+                <div class="support_messenger__header__title">
+                    <h3><InsertContent>support_messenger_title</InsertContent></h3>
                 </div>
-                <div>
-                    <label for="message">Message</label>
-                    <textarea name="message" id="message" cols="30" rows="5" :placeholder="supportMessengerMessagePlaceholder[multiLanguageStore.currentLanguage]" minlength="5" maxlength="2000" required></textarea>
+                <div class="close" @click="isSupportMessengerOpen = false"></div>
+            </div>
+            <div class="support_messenger__body">
+                <div class="support_messenger__body__message">
+                    <p><InsertContent>support_messenger_text</InsertContent></p>
                 </div>
-                <div>
-                    <button type="submit" title="Send the message">
-                        <InsertContent>support_messenger_button</InsertContent>
-                    </button>
-                    <a :href="telegramLink" @click="isSupportMessengerOpen = false" title="Go to Telegram chat">
-                        <button type="button" class="primary">
-                            <font-awesome-icon icon="fab fa-telegram"></font-awesome-icon>
-                            Telegram
+                <form class="support_messenger__form" @submit="sendSupportMessage">
+                    <div>
+                        <label for="email">Email</label>
+                        <input type="email" name="email" id="email" :placeholder="supportMessengerEmailPlaceholder[multiLanguageStore.currentLanguage]" required>
+                    </div>
+                    <div>
+                        <label for="message">Message</label>
+                        <textarea name="message" id="message" cols="30" rows="5" :placeholder="supportMessengerMessagePlaceholder[multiLanguageStore.currentLanguage]" minlength="5" maxlength="2000" required></textarea>
+                    </div>
+                    <div>
+                        <button type="submit" title="Send the message">
+                            <InsertContent>support_messenger_button</InsertContent>
                         </button>
-                    </a>
-                </div>
-            </form>
+                        <a :href="telegramLink" @click="isSupportMessengerOpen = false" title="Go to Telegram chat">
+                            <button type="button" class="primary">
+                                <font-awesome-icon icon="fab fa-telegram"></font-awesome-icon>
+                                Telegram
+                            </button>
+                        </a>
+                    </div>
+                </form>
+            </div>
         </div>
-    </div>
+    </transition>
 </template>
 
 <style scoped>
