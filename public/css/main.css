@@ -1651,16 +1651,17 @@ body.is-preload #footer {
 
 #langSwitcher {
     position: absolute;
-    z-index: 3;
+    z-index: 4;
     right: 20px;
     width: 80px;
     padding: 4px 0;
     text-align: center;
     font-size: 22px;
     color: white;
-    background: rgba(72, 255, 0, .05);
+    background: rgb(42 148 1 / 22%);;
     border: rgba(255, 255, 255, .2) 1px solid;
     cursor: pointer;
+    backdrop-filter: blur(5px);
 }
 
 #langSwitcher:hover {
