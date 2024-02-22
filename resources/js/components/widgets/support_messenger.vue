@@ -1,10 +1,25 @@
 <script setup>
 import { ref } from 'vue'
+import mixins from "../../mixins";
+import {useEventListener} from "../../storages/event_storage";
+import router from "../../router";
+const eventListener = useEventListener()
 const isSupportMessengerOpen = ref(false)
 const sendSupportMessage = (event) => {
     event.preventDefault()
-    alert("It dose not work yet. Sorry!")
-    console.log('sendSupportMessage')
+    const formData = new FormData(event.target)
+    formData.append("current_url", router.currentRoute.value.path)
+    mixins.methods.postAPI(
+        'support_request_message',
+        formData,
+        (response) => {
+            eventListener.call('popup_alert:show', {
+                title: response.status,
+                text: response.data,
+            });
+            event.target.reset()
+            isSupportMessengerOpen.value = false
+        })
     return false
 }
 </script>
@@ -53,6 +68,7 @@ const sendSupportMessage = (event) => {
         border: rgba(255, 255, 255, .2) 1px solid;
         backdrop-filter: blur(5px);
         -webkit-backdrop-filter: blur(5px);
+        letter-spacing: 0.2rem;
     }
     .support_messenger__header {
         display: flex;
@@ -102,12 +118,11 @@ const sendSupportMessage = (event) => {
         z-index: 3;
         bottom: 20px;
         right: 20px;
-        padding: 40px;
         background: rgba(72, 255, 0, .05);
         border: rgba(255, 255, 255, .2) 1px solid;
         cursor: pointer;
-        width: 75px;
-        height: 75px;
+        width: 82px;
+        height: 82px;
         display: flex;
         flex-direction: column;
         justify-content: center;

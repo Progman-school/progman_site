@@ -22,11 +22,11 @@ class TelegramBotApiSdk
 
     protected array $adminsList;
 
-    function __construct(Request $request){
+    function __construct(?Request $request = null) {
         $this->token = config("services.telegram.bot_token");
         $this->adminChatId = config("services.telegram.admin_chat_id");
         $this->adminsList = config("services.telegram.admins_list");;
-        $this->request = $request;
+        $this->request = $request ?? new Request();
     }
 
     public function getTelegramApi(string $method, array $options = null): mixed {
