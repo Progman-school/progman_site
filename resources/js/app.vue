@@ -2,6 +2,7 @@
 // import {computed} from "vue";
 // import { useMultiLanguageStore } from './storages/multi_language_content.js'
 import Bottom_notice from "./components/widgets/bottom_notice.vue";
+import SupportMessenger from "./components/widgets/support_messenger.vue";
 
 // const multiLanguageStore = useMultiLanguageStore()
 // multiLanguageStore.getAllTagContents()
@@ -31,6 +32,7 @@ import Bottom_notice from "./components/widgets/bottom_notice.vue";
 <!--            <div class="loader-inner"></div>-->
 <!--        </div>-->
 <!--    </div>-->
+    <SupportMessenger></SupportMessenger>
 </template>
 <script>
 import { RouterView } from 'vue-router'
