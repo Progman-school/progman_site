@@ -3,6 +3,7 @@
 use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\PreloadedContentController;
 use App\Http\Controllers\RequestController;
+use App\Http\Controllers\SupportMessengerController;
 use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\Route;
 
@@ -28,5 +29,5 @@ Route::patch('change_language_to/{language}', [TagController::class, 'changeTagL
 
 Route::get('get_courses_list', [PreloadedContentController::class, 'getCoursesList']);
 
-
+Route::post("support_request_message", [SupportMessengerController::class, 'supportRequestMessage']);
 

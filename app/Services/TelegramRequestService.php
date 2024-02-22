@@ -79,6 +79,17 @@ class TelegramRequestService extends TelegramBotApiSdk
                     $callbackQuery["data"]
                 );
                 break;
+
+                case SupportMessengerService::NEW_SUPPORT_REQUEST_STATUS:
+                case SupportMessengerService::PROCESSED_SUPPORT_REQUEST_STATUS:
+                    $this->editKeyboardOfMessage(
+                        $callbackQuery["message"]["chat"]["id"],
+                        $callbackQuery["message"]["message_id"],
+                        SupportMessengerService::SUPPORT_MESSAGE_STATUS_KEYBOARDS[
+                            SupportMessengerService::switchSupportRequestStatus($callbackQuery["data"])
+                        ]
+                    );
+                    break;
             default:
                return false;
         }
