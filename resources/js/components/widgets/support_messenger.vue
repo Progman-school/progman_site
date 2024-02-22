@@ -3,8 +3,8 @@ import { ref } from 'vue'
 import mixins from "../../mixins";
 import {useEventListener} from "../../storages/event_storage";
 import {useMultiLanguageStore} from "../../storages/multi_language_content"
-const multiLanguageStore = useMultiLanguageStore();
 
+const multiLanguageStore = useMultiLanguageStore();
 const eventListener = useEventListener()
 const isSupportMessengerOpen = ref(false)
 const telegramLink = ref("")
@@ -15,15 +15,16 @@ multiLanguageStore.getContentByTag("telegram_manager_account").then(insertData =
 
 const sendSupportMessage = (event) => {
     event.preventDefault()
+    const currentUrl = window.location.href
     const formData = new FormData(event.target)
-    formData.append("current_url", window.location.href)
+    formData.append("current_url", currentUrl)
     mixins.methods.postAPI(
         'support_request_message',
         formData,
         (response) => {
             eventListener.call('popup_alert:show', {
                 title: response.status,
-                text: response.data,
+                text: response.data.replace("\n", "<br />")
             });
             event.target.reset()
             isSupportMessengerOpen.value = false
@@ -82,7 +83,6 @@ const sendSupportMessage = (event) => {
         border: rgba(255, 255, 255, .2) 1px solid;
         backdrop-filter: blur(5px);
         -webkit-backdrop-filter: blur(5px);
-        letter-spacing: 0.2rem;
     }
     .support_messenger__header {
         display: flex;
@@ -131,12 +131,14 @@ const sendSupportMessage = (event) => {
     .support_messenger__form > div:last-child button:first-child {
         background-color: snow !important;
         color: #1b1f22 !important;
+        font-weight: bold;
     }
 
     .support_messenger__form > div:last-child button:last-child {
         background-color: transparent !important;
         color: white !important;
         letter-spacing: normal;
+        font-weight: normal;
     }
 
     .support_messenger__form button {
@@ -158,6 +160,7 @@ const sendSupportMessage = (event) => {
         align-items: center;
         backdrop-filter: blur(5px);
         -webkit-backdrop-filter: blur(5px);
+        letter-spacing: 0.2rem;
     }
 
     .support_floating_button:hover{
