@@ -2,13 +2,21 @@
 import { ref } from 'vue'
 import mixins from "../../mixins";
 import {useEventListener} from "../../storages/event_storage";
-import router from "../../router";
+import {useMultiLanguageStore} from "../../storages/multi_language_content"
+const multiLanguageStore = useMultiLanguageStore();
+
 const eventListener = useEventListener()
 const isSupportMessengerOpen = ref(false)
+const telegramLink = ref("")
+
+multiLanguageStore.getContentByTag("telegram_manager_account").then(insertData => {
+    telegramLink.value = `tg://resolve?domain=${insertData[multiLanguageStore.currentLanguage]}`
+})
+
 const sendSupportMessage = (event) => {
     event.preventDefault()
     const formData = new FormData(event.target)
-    formData.append("current_url", router.currentRoute.value.path)
+    formData.append("current_url", window.location.href)
     mixins.methods.postAPI(
         'support_request_message',
         formData,
@@ -49,7 +57,13 @@ const sendSupportMessage = (event) => {
                     <textarea name="message" id="message" cols="30" rows="5" placeholder="Your text" minlength="5" maxlength="2000" required></textarea>
                 </div>
                 <div>
-                    <button type="submit">Send</button>
+                    <button type="submit" title="Send the message">Send</button>
+                    <a :href="telegramLink" @click="isSupportMessengerOpen = false" title="Go to Telegram chat">
+                        <button type="button" class="primary">
+                            <font-awesome-icon icon="fab fa-telegram"></font-awesome-icon>
+                            Telegram
+                        </button>
+                    </a>
                 </div>
             </form>
         </div>
@@ -110,6 +124,21 @@ const sendSupportMessage = (event) => {
     .support_messenger__form > div {
         margin-bottom: 10px;
     }
+    .support_messenger__form > div:last-child {
+        display: flex;
+        justify-content: space-between;
+    }
+    .support_messenger__form > div:last-child button:first-child {
+        background-color: snow !important;
+        color: #1b1f22 !important;
+    }
+
+    .support_messenger__form > div:last-child button:last-child {
+        background-color: transparent !important;
+        color: white !important;
+        letter-spacing: normal;
+    }
+
     .support_messenger__form button {
         margin-top: 5px;
     }
