@@ -1,7 +1,7 @@
 <script setup>
 // import {computed} from "vue";
 // import { useMultiLanguageStore } from './storages/multi_language_content.js'
-import Bottom_notice from "./components/helpers/bottom_notice.vue";
+import Bottom_notice from "./components/widgets/bottom_notice.vue";
 
 // const multiLanguageStore = useMultiLanguageStore()
 // multiLanguageStore.getAllTagContents()
@@ -34,8 +34,8 @@ import Bottom_notice from "./components/helpers/bottom_notice.vue";
 </template>
 <script>
 import { RouterView } from 'vue-router'
-import popupAlert from './components/helpers/popup-alert.vue'
-import languageChanger from './components/helpers/language-changer.vue';
+import popupAlert from './components/widgets/popup-alert.vue'
+import languageChanger from './components/widgets/language-changer.vue';
 
 export default {
     name: "app",

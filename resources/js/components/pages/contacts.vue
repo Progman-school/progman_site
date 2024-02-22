@@ -1,8 +1,8 @@
 <script setup>
 import {ref} from 'vue'
 
-import Closer from '../helpers/closer.vue'
-import InsertContent from '../helpers/insert-content.vue'
+import Closer from '../widgets/closer.vue'
+import InsertContent from '../widgets/insert-content.vue'
 import {useMultiLanguageStore} from "../../storages/multi_language_content"
 const multiLanguageStore = useMultiLanguageStore();
 const telegramLink = ref("")
