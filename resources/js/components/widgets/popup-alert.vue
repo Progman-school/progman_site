@@ -43,26 +43,28 @@ created()
 </script>
 
 <template>
-    <div class="popup_cover" v-show="show" @click.self="modalClose">
-        <div id="popup_alert_box" ref="alertBox">
-            <div class="popup_close" @click="modalClose"></div>
-            <div class="popup_content">
-                <strong>{{props.title}}</strong>
-                <div class="alert_elements">
-                    <p v-html="props.text"></p>
-                    <div class="popup_keys_box" v-if="props.template" v-html="props.template"></div>
-                    <div class="popup_keys_box" v-if="props.button">
-                        <router-link class="button_links" :to="props.url" v-if="props.url">
-                            <button @click="modalClose">{{props.button}}</button>
-                        </router-link>
-                        <a class="button_links" :href="props.href" v-if="props.href">
-                            <button @click="modalClose">{{props.button}}</button>
-                        </a>
+    <transition name="slide-fade" mode="out-in">
+        <div class="popup_cover" v-show="show" @click.self="modalClose">
+            <div id="popup_alert_box" ref="alertBox">
+                <div class="popup_close" @click="modalClose"></div>
+                <div class="popup_content">
+                    <strong>{{props.title}}</strong>
+                    <div class="alert_elements">
+                        <p v-html="props.text"></p>
+                        <div class="popup_keys_box" v-if="props.template" v-html="props.template"></div>
+                        <div class="popup_keys_box" v-if="props.button">
+                            <router-link class="button_links" :to="props.url" v-if="props.url">
+                                <button @click="modalClose">{{props.button}}</button>
+                            </router-link>
+                            <a class="button_links" :href="props.href" v-if="props.href">
+                                <button @click="modalClose">{{props.button}}</button>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </transition>
 </template>
 
 <style scoped>
