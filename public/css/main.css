@@ -1522,7 +1522,7 @@ body.is-preload #header .content .inner {
     opacity: 1;
 }
 
-#main article .close {
+.close {
     display: block;
     position: absolute;
     top: 0;
@@ -1535,7 +1535,7 @@ body.is-preload #header .content .inner {
     white-space: nowrap;
 }
 
-#main article .close:before {
+.close:before {
     -moz-transition: background-color 0.2s ease-in-out;
     -webkit-transition: background-color 0.2s ease-in-out;
     -ms-transition: background-color 0.2s ease-in-out;
@@ -1554,16 +1554,16 @@ body.is-preload #header .content .inner {
     background-repeat: no-repeat;
 }
 
-#main article .close:hover:before {
+.close:hover:before {
     background-color: rgba(255, 255, 255, 0.075);
 }
 
-#main article .close:active:before {
+.close:active:before {
     background-color: rgba(255, 255, 255, 0.175);
 }
 
 @media screen and (max-width: 760px) {
-    #main article .close:before {
+    .close:before {
         top: 0.875rem;
         left: 0.875rem;
         width: 2.25rem;

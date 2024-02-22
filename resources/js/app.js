@@ -9,10 +9,9 @@ import { useMultiLanguageStore } from './storages/multi_language_content.js'
 /* import font awesome */
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { faGlobe } from '@fortawesome/free-solid-svg-icons'
-// import {  } from '@fortawesome/free-regular-svg-icons'
+import { faGlobe, faCircleQuestion } from '@fortawesome/free-solid-svg-icons'
 import { faTelegram } from '@fortawesome/free-brands-svg-icons'
-library.add(faGlobe, faTelegram)
+library.add(faGlobe, faTelegram, faCircleQuestion)
 
 const pinia = createPinia()
 const vueApp = createApp(app)
