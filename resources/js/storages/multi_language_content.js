@@ -111,6 +111,11 @@ export const useMultiLanguageStore = defineStore({
             )
             return this.contentArray[tag]
         },
+        async getCurrentLanguageContentByTag(tag, ifOldOny = true) {
+            let content = await this.getContentByTag(tag, ifOldOny)
+            return content[this.currentLanguage]
+
+        },
         async replaceContent(content, ifOldOny = true) {
             let result = content;
             let insert = /^\{\{([\w]+)\}\}$/ui.exec(content)
