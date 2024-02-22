@@ -3,14 +3,23 @@ import { ref } from 'vue'
 import mixins from "../../mixins";
 import {useEventListener} from "../../storages/event_storage";
 import {useMultiLanguageStore} from "../../storages/multi_language_content"
+import InsertContent from '../widgets/insert-content.vue'
 
 const multiLanguageStore = useMultiLanguageStore();
 const eventListener = useEventListener()
 const isSupportMessengerOpen = ref(false)
 const telegramLink = ref("")
+const supportMessengerEmailPlaceholder = ref("")
+const supportMessengerMessagePlaceholder = ref("")
 
 multiLanguageStore.getContentByTag("telegram_manager_account").then(insertData => {
     telegramLink.value = `tg://resolve?domain=${insertData[multiLanguageStore.currentLanguage]}`
+})
+multiLanguageStore.getContentByTag("support_messenger_email_placeholder").then(insertData => {
+    supportMessengerEmailPlaceholder.value = insertData
+})
+multiLanguageStore.getContentByTag("support_messenger_message_placeholder").then(insertData => {
+    supportMessengerMessagePlaceholder.value = insertData
 })
 
 const sendSupportMessage = (event) => {
@@ -40,25 +49,27 @@ const sendSupportMessage = (event) => {
     <div class="support_messenger" v-show="isSupportMessengerOpen">
         <div class="support_messenger__header">
             <div class="support_messenger__header__title">
-                <h3>Support</h3>
+                <h3><InsertContent>support_messenger_title</InsertContent></h3>
             </div>
             <div class="close" @click="isSupportMessengerOpen = false"></div>
         </div>
         <div class="support_messenger__body">
             <div class="support_messenger__body__message">
-                <p>How can we help you?</p>
+                <p><InsertContent>support_messenger_text</InsertContent></p>
             </div>
             <form class="support_messenger__form" @submit="sendSupportMessage">
                 <div>
                     <label for="email">Email</label>
-                    <input type="email" name="email" id="email" placeholder="Your contact email" required>
+                    <input type="email" name="email" id="email" :placeholder="supportMessengerEmailPlaceholder[multiLanguageStore.currentLanguage]" required>
                 </div>
                 <div>
                     <label for="message">Message</label>
-                    <textarea name="message" id="message" cols="30" rows="5" placeholder="Your text" minlength="5" maxlength="2000" required></textarea>
+                    <textarea name="message" id="message" cols="30" rows="5" :placeholder="supportMessengerMessagePlaceholder[multiLanguageStore.currentLanguage]" minlength="5" maxlength="2000" required></textarea>
                 </div>
                 <div>
-                    <button type="submit" title="Send the message">Send</button>
+                    <button type="submit" title="Send the message">
+                        <InsertContent>support_messenger_button</InsertContent>
+                    </button>
                     <a :href="telegramLink" @click="isSupportMessengerOpen = false" title="Go to Telegram chat">
                         <button type="button" class="primary">
                             <font-awesome-icon icon="fab fa-telegram"></font-awesome-icon>

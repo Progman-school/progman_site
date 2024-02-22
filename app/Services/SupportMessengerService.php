@@ -13,6 +13,10 @@ class SupportMessengerService
         self::PROCESSED_SUPPORT_REQUEST_STATUS => ['✅ Answered ✅' => self::NEW_SUPPORT_REQUEST_STATUS],
     ];
 
+    /**
+     * @throws UserAlert
+     * @throws \Exception
+     */
     public static function sendSupportRequestMessageToAdminChat(string $senderEmail, string $message, $currentUrl): string
     {
         $telegramRequestService = new TelegramRequestService();
@@ -24,10 +28,11 @@ class SupportMessengerService
         );
 
         if (!isset($result["ok"])) {
-            throw new UserAlert("Error, we can not receive your message. Please, contact to manager.");
+            throw new UserAlert("Error, we can not receive your message. Please, contact to manager!");
         }
 
-        return "Thank you!\nWe've received your message and contact you soon trough email!";
+        return "Thank you!\n\n"
+            . TagService::getTagValueByName("support_request_success_status")[TagService::getCurrentLanguage()];
     }
 
     public static function switchSupportRequestStatus(string $status): string
