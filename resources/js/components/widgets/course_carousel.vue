@@ -105,7 +105,6 @@ const getItemsToShow = computed({
     text-decoration: underline;
     cursor: pointer;
     color: #58cc02ff;
-    z-index: 2;
 }
 .full_details {
     max-height: 45px;
@@ -155,6 +154,7 @@ const getItemsToShow = computed({
 }
 
 .carousel__slide--active ~ .carousel__slide {
+    z-index: 3;
     transform: rotateY(20deg) scale(0.9);
 }
 

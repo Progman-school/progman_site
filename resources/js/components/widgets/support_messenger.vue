@@ -74,14 +74,14 @@ const sendSupportMessage = (event) => {
 <style scoped>
     .support_messenger {
         position: fixed;
-        z-index: 3;
+        z-index: 5;
         bottom: 10px;
         right: 10px;
         width: 300px;
         height: 360px;
-        background: rgba(72, 255, 0, .05);
+        background: rgba(51, 175, 1, 0.1);
         border: rgba(255, 255, 255, .2) 1px solid;
-        backdrop-filter: blur(5px);
+        backdrop-filter: blur(6px);
         -webkit-backdrop-filter: blur(5px);
     }
     .support_messenger__header {
@@ -146,7 +146,7 @@ const sendSupportMessage = (event) => {
     }
     .support_floating_button {
         position: fixed;
-        z-index: 3;
+        z-index: 5;
         bottom: 20px;
         right: 20px;
         background: rgba(72, 255, 0, .05);
@@ -158,8 +158,8 @@ const sendSupportMessage = (event) => {
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        backdrop-filter: blur(5px);
-        -webkit-backdrop-filter: blur(5px);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
         letter-spacing: 0.2rem;
     }
 
@@ -170,6 +170,7 @@ const sendSupportMessage = (event) => {
     }
 
     .support_floating_button div {
+        padding: 2px 5px;
         font-weight: bold;
         font-size: 25px;
         animation: flip-with-rotate 5s ease-in-out infinite;
@@ -177,18 +178,18 @@ const sendSupportMessage = (event) => {
 
     @keyframes flip-with-rotate {
         0% {
-            transform: rotateY(0);
+            transform: perspective(10px) scaleX(1);
         }
 
         15% {
             color: #58cc02;
-            transform: rotateY(180deg);
+            transform: perspective(10px) scaleX(-1);
         }
         30% {
-            transform: rotateY(0);
+            transform: perspective(10px) scaleX(1);
         }
         100% {
-            transform: rotateY(0);
+            transform: perspective(10px) scaleX(1);
         }
     }
 </style>
