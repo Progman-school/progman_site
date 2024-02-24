@@ -121,6 +121,10 @@ class TagService extends MainService
         return $tagDataWithValues;
     }
 
+    public static function getTagValueByCurrentLanguage(string $name): ?string {
+        return self::getTagValueByName($name)[self::getCurrentLanguage()];
+    }
+
     public static function setDefaultLanguageForNulls(array &$tagList): array {
         $langList = [];
         foreach ($tagList as $tag => &$oneTagData) {

@@ -21,6 +21,11 @@ class UserService
         if ($userRequest->type == "telegram") {
             $serviceUid = $request["message"]["from"]["id"];
             $serviceLogin = $request["message"]["from"]["username"] ?? null;
+            if (!$serviceLogin) {
+                throw new UserAlert(
+                    TagService::getTagValueByCurrentLanguage("undefined_telegram_username_user_error")
+                );
+            }
         } elseif ($userRequest->type == "email") {
             $serviceUid = $userRequest->uid;
             $serviceLogin = $userRequest->uid;
