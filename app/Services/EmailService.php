@@ -36,31 +36,29 @@ class EmailService extends EmailServiceSdk
 
         UidService::createUid(
             $userRequest->type,
-            $this->request["contact"],
-            $this->request["contact"],
+            $userRequest->contact,
+            $userRequest->contact,
             $confirmedUser->id,
             json_encode($this->request->toArray(), JSON_UNESCAPED_UNICODE)
         );
 
         $applicationDataArray = json_decode($userRequest->application_data, true);
         $confirmedData = [];
-        $confirmedData["Email"] = $this->request["contact"];
+        $confirmedData["Email"] = $userRequest->contact;
         $confirmedData["First name"] = $userName[0] ?? "-";
         $confirmedUser["Last name"] = $userName[1] ?? "-";
 
-        $result = $this->telegramService->editMessageInAdminChat(UserRequestService::createRequestMessageForAdminChat(
-            $userRequest,
-            $confirmedData,
-            array_diff_key($applicationDataArray, array_flip(["uid_type", "name", "contact"])),
-            $userRequest->getRepeatsCount(),
-            $userRequest->getRepeatsCount()
-        ),
+        $result = $this->telegramService->editMessageInAdminChat(
             $userRequest->admin_message_id,
-            TelegramService::REQUEST_STATUS_KEYBOARDS[UserRequest::CONFIRMED_STATUS]
+            UserRequestService::createRequestMessageForAdminChat(
+                $userRequest,
+                array_diff_key($applicationDataArray, array_flip(["uid_type", "name", "contact"])),
+                $confirmedData,
+                $userRequest->getRepeatsCount(),
+                $userRequest->getRepeatsCount()
+            ),
+            TelegramService::REQUEST_STATUS_KEYBOARDS[$userRequest->status]
         );
-
-        $userRequest->admin_message_id = $result["result"]["message_id"];
-        $userRequest->save();
 
         $userMessage = TagService::getTagValueByName(
                 "thanks_for_registration_message",

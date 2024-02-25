@@ -153,20 +153,17 @@ class TelegramService extends TelegramBotApiSdk
         $confirmedData["First name"] = $request["message"]["from"]["first_name"] ?? "-";
         $confirmedUser["Last name"] = $request["message"]["from"]["last_name"] ?? "-";
 
-        $result = $this->editMessageInAdminChat(UserRequestService::createRequestMessageForAdminChat(
+        $result = $this->editMessageInAdminChat(
+            $userRequest->admin_message_id,
+            UserRequestService::createRequestMessageForAdminChat(
                 $userRequest,
-                $confirmedData,
                 array_diff_key($applicationDataArray, array_flip(["uid_type", "name", "contact"])),
+                $confirmedData,
                 $userRequest->getRepeatsCount(),
                 $userRequest->getRepeatsCount()
             ),
-            $userRequest->admin_message_id,
-            self::REQUEST_STATUS_KEYBOARDS[UserRequest::CONFIRMED_STATUS]
+            TelegramService::REQUEST_STATUS_KEYBOARDS[$userRequest->status]
         );
-
-
-        $userRequest->admin_message_id = $result["result"]["message_id"];
-        $userRequest->save();
 
         $userMessage .= "\n\n" . TagService::getTagValueByName(
             "thanks_for_registration_message",
