@@ -246,6 +246,12 @@ class UserRequestService
             );
         }
 
+        if ($userRequest->status == UserRequest::PROCESSED_STATUS) {
+            throw new UserAlert(
+                TagService::getTagValueByName("warning_request_is_already_confirmed")[TagService::getCurrentLanguage()]
+            );
+        }
+
         $userRequest->status = UserRequest::CONFIRMED_STATUS;
         $userRequest->save();
         return $userRequest;
