@@ -26,10 +26,12 @@ class UserRequestService
         $userRequest->test_score = $score;
         $userRequest->application_data = json_encode($request->input(), JSON_UNESCAPED_UNICODE);
         $userRequest->type = $request->uid_type;
+        $userRequest->contact = $request->contact;
+        $userRequest->name = $request->name;
         $userRequest->hash = self::getRequestHash($request);
         $userRequest->language = TagService::getCurrentLanguage();
+        $userRequest->status = UserRequest::RECEIVED_STATUS;
         $userRequest->save();
-        $userRequest->id = $userRequest->getKey();
 
         $return = [
             'hash_link' => null,
@@ -57,7 +59,7 @@ class UserRequestService
                 $return['hash_link'] = "tg://resolve?domain=" . config("services.telegram.bot_login") .
                     "&" . self::CONFIRM_URL_PARAM . "={$userRequest->type}-{$userRequest->hash}";
         } elseif ($userRequest->type == "email") {
-            Mail::to($request->email)->send(new ConfirmApplication(
+            Mail::to($request->contact)->send(new ConfirmApplication(
                 "https://{$_SERVER['HTTP_HOST']}/" . EmailServiceSdk::API_ROUT . EmailServiceSdk::API_ENTRYPOINT .
                 "?" . http_build_query([
                     "action" => "confirm_request",
@@ -69,11 +71,12 @@ class UserRequestService
         }
 
         $telegramService = new TelegramService();
-        $result = $telegramService->sendMessageToAdminChat(UserRequestService::createRequestMessageForAdminChat(
-            $userRequest,
-            array_diff_key($request->toArray(), array_flip(["uid_type", "name", "contact"]))
-        ),
-            TelegramService::REQUEST_STATUS_KEYBOARDS[UserRequest::RECEIVED_STATUS]
+        $result = $telegramService->sendMessageToAdminChat(
+            UserRequestService::createRequestMessageForAdminChat(
+                $userRequest,
+                array_diff_key($request->toArray(), array_flip(["uid_type", "name", "contact"]))
+            ),
+            TelegramService::REQUEST_STATUS_KEYBOARDS[$userRequest->status]
         );
 
         $userRequest->admin_message_id = $result["result"]["message_id"];
@@ -198,8 +201,8 @@ class UserRequestService
         $message .= "Contact: {$userRequest->contact}\n\n";
 
         $message .= "Created: " . date("m/d/Y H:i:s", strtotime($userRequest->created_at)) . "\n";
-        $message .= "Updated: " . $userRequest->updated_at ? date("m/d/Y H:i:s", strtotime($userRequest->updated_at)) : "-" . "\n";
-        $message .= "Status: {$userRequest->id}\n\n";
+        $message .= "Updated: " . ($userRequest->updated_at ? date("m/d/Y H:i:s", strtotime($userRequest->updated_at)) : "-") . "\n";
+        $message .= "Status: {$userRequest->status}\n\n";
 
         if ($confirmedData) {
             $message .= "CONFIRMED DATA:\n";
@@ -243,7 +246,8 @@ class UserRequestService
             );
         }
 
-        $userRequest->status = UserRequest::RECEIVED_STATUS;
+        $userRequest->status = UserRequest::CONFIRMED_STATUS;
+        $userRequest->save();
         return $userRequest;
     }
 }

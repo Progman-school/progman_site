@@ -42,7 +42,7 @@ class Request extends Model
     private function getRepeats()
     {
         return self::where('contact', $this->contact)
-            ->andWhere('course_id', $this->courseId);
+            ->where('course_id', $this->courseId);
     }
 
     public function getRepeatsCount(): int
