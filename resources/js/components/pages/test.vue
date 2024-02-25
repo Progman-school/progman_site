@@ -143,7 +143,7 @@ preloadedData.getCoursesList().then(() => {
                             <input type="text" id="name" name="name" placeholder="Elon Mask" maxlength="60" required>
                         </div>
                         <div v-if="!showEmailField" style="border: none">
-                            <b>Important! Make sure that you have installed Telegram messenger on this device, or choose Email</b>
+                            <b><InsertContent>telegram_registration_choosing_warning</InsertContent></b>
                         </div>
                         <div class="field">
                             <input type="checkbox" id="privacy_policy" value="1" @change="confirmPrivacyPolicy">
