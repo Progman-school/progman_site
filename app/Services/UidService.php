@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Exceptions\UserAlert;
 use App\Models\Uids\Uid;
 use App\Models\Uids\UidInterface;
 use Exception;
@@ -16,12 +17,11 @@ class UidService
     public static function createUid(
         string $uidType,
         string $serviceUid,
-        string $serviceLogin,
+        ?string $serviceLogin,
         int $userId,
         string $data,
         ): UidInterface
     {
-
         if (!in_array($uidType, self::AVAILABLE_TYPES)) {
             throw new Exception("Unexpected uid type '{$uidType}'");
         }

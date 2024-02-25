@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\UserAlert;
 use App\Helpers\AppHelper;
-use App\Services\TelegramRequestService;
+use App\Services\TelegramService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -16,7 +16,7 @@ class TelegramApiController extends MainController
      */
     public function entry(Request $request): bool
     {
-        $telegramApiRequestManageService = new TelegramRequestService($request);
+        $telegramApiRequestManageService = new TelegramService($request);
 
         if ($request->get("callback_query")) {
             return $telegramApiRequestManageService->manageEntryCallbackQuery();
@@ -35,7 +35,7 @@ class TelegramApiController extends MainController
 
     public function setHook(Request $request): ?string
     {
-        $telegramApiRequestManageService = new TelegramRequestService($request);
+        $telegramApiRequestManageService = new TelegramService($request);
         $set = $request->get("setWebhook");
         if (is_null($set)) {
             abort(404);

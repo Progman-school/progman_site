@@ -77,7 +77,7 @@ class TelegramBotApiSdk
         $options['chat_id'] = $chatId;
         $options['message_id'] = $messageId;
         $options['reply_markup'] = $this->makeInlineKeyboard($newKeyboardArray);
-        return $this->getTelegramApi('editMessageReplyMarkup', $options);
+        return $this->getTelegramApi('editKeyboardOfMessage', $options);
     }
 
     public function sendEchoMessage(string $text, array $keyboardArray = null): mixed {
@@ -92,6 +92,29 @@ class TelegramBotApiSdk
         return $this->sendMessage(
             $text,
             $this->adminChatId,
+            $keyboardArray,
+            $extraOptions
+        );
+    }
+
+    public function editMessageByChatId(string $chatId, int $messageId, string $text, array $keyboardArray = null, array $extraOptions = null) {
+        $options['chat_id'] = $chatId;
+        $options['message_id'] = $messageId;
+        $options['text'] = $text;
+        if ($keyboardArray) {
+            $options['reply_markup'] = $this->makeInlineKeyboard($keyboardArray);
+        }
+        if ($extraOptions) {
+            $options = array_merge($options, $extraOptions);
+        }
+        return $this->getTelegramApi('editMessageText', $options);
+    }
+
+    public function editMessageInAdminChat(int $messageId, string $text, array $keyboardArray = null, array $extraOptions = null) {
+        return $this->editMessageByChatId(
+            $this->adminChatId,
+            $messageId,
+            $text,
             $keyboardArray,
             $extraOptions
         );

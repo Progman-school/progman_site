@@ -31,9 +31,9 @@ const saveTestData = (form) => {
     )
 }
 
-const showEmailField = ref(true)
+const showEmailField = ref('email')
 const changeRegistrationType = (event) => {
-    showEmailField.value = event.target.value === "email"
+    showEmailField.value = event.target.value
 }
 
 const chosenCourse = ref(null)
@@ -134,16 +134,20 @@ preloadedData.getCoursesList().then(() => {
                             <option value="telegram">Telegram messenger</option>
                         </select>
                         <br/>
-                        <div v-if="showEmailField" style="border: none">
-                            <label for="email">Your E-mail:</label>
-                            <input type="email" id="email" name="email" placeholder="your-real@email.com" required>
+                        <div v-if="showEmailField === 'email'" style="border: none">
+                            <label for="email_contact">Your E-mail:</label>
+                            <input type="email" id="email_contact" name="contact" placeholder="your-real@email.com" required>
                         </div>
-                        <div v-if="showEmailField" style="border: none">
+                        <div v-if="showEmailField === 'telegram'" style="border: none">
+                            <b><InsertContent>telegram_registration_choosing_warning</InsertContent></b>
+                        </div>
+                        <div v-if="showEmailField === 'telegram'" style="border: none">
+                            <label for="telegram_contact">Your Telegram username or phone number:</label>
+                            <input type="text" id="telegram_contact" name="contact" placeholder="@my_telegram / +07778889911" maxlength="60" required>
+                        </div>
+                        <div style="border: none">
                             <label for="name">Your name:</label>
                             <input type="text" id="name" name="name" placeholder="Elon Mask" maxlength="60" required>
-                        </div>
-                        <div v-if="!showEmailField" style="border: none">
-                            <b><InsertContent>telegram_registration_choosing_warning</InsertContent></b>
                         </div>
                         <div class="field">
                             <input type="checkbox" id="privacy_policy" value="1" @change="confirmPrivacyPolicy">
