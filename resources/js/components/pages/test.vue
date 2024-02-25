@@ -138,8 +138,8 @@ preloadedData.getCoursesList().then(() => {
                             <label for="email_contact">Your E-mail:</label>
                             <input type="email" id="email_contact" name="contact" placeholder="your-real@email.com" required>
                         </div>
-                        <div v-if="showEmailField === 'telegram'" style="border: none">
-                            <b><InsertContent>telegram_registration_choosing_warning</InsertContent></b>
+                        <div v-if="showEmailField === 'telegram'" style="border: none; font-style: italic;font-size: 14px;">
+                            <InsertContent>telegram_registration_choosing_warning</InsertContent>
                         </div>
                         <div v-if="showEmailField === 'telegram'" style="border: none">
                             <label for="telegram_contact">Your Telegram username or phone number:</label>
