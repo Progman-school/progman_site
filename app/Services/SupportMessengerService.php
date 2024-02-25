@@ -19,7 +19,7 @@ class SupportMessengerService
      */
     public static function sendSupportRequestMessageToAdminChat(string $senderEmail, string $message, $currentUrl): string
     {
-        $telegramRequestService = new TelegramRequestService();
+        $telegramRequestService = new TelegramService();
         $messageText = "📧 Support message!\n\nEmail: {$senderEmail}\nSite URL: {$currentUrl}\n\nText\n{$message}";
         $result = $telegramRequestService->sendMessageToAdminChat(
             $messageText,

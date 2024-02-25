@@ -5,16 +5,22 @@ namespace App\Services;
 use App\Exceptions\UserAlert;
 use App\Mail\ConfirmApplication;
 use App\sdks\EmailServiceSdk;
+use Exception;
 use Illuminate\Http\Request;
 use App\Models\Request as UserRequest;
 use Illuminate\Support\Facades\Mail;
-use function PHPUnit\Framework\stringContains;
 
-class UserRequestPreSavingService
+class UserRequestService
 {
     const CONFIRM_URL_PARAM = "start";
+    const REQUEST_DELAY_DAYS = 3;
+    const MAX_REQUEST_REPEATS = 3;
 
     public static function addRequest(Request $request): ?array {
+        if (!in_array($request->uid_type, UidService::AVAILABLE_TYPES)) {
+            throw new Exception("Unexpected uid type '{$request->uid_type}'");
+        }
+
         $score = self::calculateTestScore($request->toArray());
         $userRequest = new UserRequest();
         $userRequest->test_score = $score;
@@ -61,6 +67,18 @@ class UserRequestPreSavingService
                 self::generateAlertText($userRequest)
             ));
         }
+
+        $telegramService = new TelegramService();
+        $result = $telegramService->sendMessageToAdminChat(UserRequestService::createRequestMessageForAdminChat(
+            $userRequest,
+            array_diff_key($request->toArray(), array_flip(["uid_type", "name", "contact"]))
+        ),
+            TelegramService::REQUEST_STATUS_KEYBOARDS[UserRequest::RECEIVED_STATUS]
+        );
+
+        $userRequest->admin_message_id = $result["result"]["message_id"];
+        $userRequest->save();
+
         return $return;
     }
 
@@ -163,5 +181,69 @@ class UserRequestPreSavingService
         return md5(
             UserRequest::all()->count() - 1 . '-' . print_r($request->toArray(), 1). '=' . microtime()
         );
+    }
+
+    public static function createRequestMessageForAdminChat(
+        UserRequest $userRequest,
+        array $testData,
+        array $confirmedData = null,
+        int $requestsCount = null,
+        string $firstRequest = null
+    ): string
+    {
+        $message = "Request! ({$userRequest->type} type)\n";
+        $message .= "№: {$userRequest->id}\n";
+        $message .= "Lang: {$userRequest->language}\n";
+        $message .= "Name: {$userRequest->name}\n";
+        $message .= "Contact: {$userRequest->contact}\n\n";
+
+        $message .= "Created: " . date("m/d/Y H:i:s", strtotime($userRequest->created_at)) . "\n";
+        $message .= "Updated: " . $userRequest->updated_at ? date("m/d/Y H:i:s", strtotime($userRequest->updated_at)) : "-" . "\n";
+        $message .= "Status: {$userRequest->id}\n\n";
+
+        if ($confirmedData) {
+            $message .= "CONFIRMED DATA:\n";
+            foreach ($confirmedData as $keyContactItem => $contactItem) {
+                $message .= "$keyContactItem: $contactItem\n";
+            }
+            $message .= "\n";
+        }
+
+        if ($requestsCount && $requestsCount > 1) {
+            $message .= "REPEATER: {$requestsCount}\n\n";
+            $message .= "first request: " . ($firstRequest ? date("d.m.Y", strtotime($firstRequest)) : "none") . "\n";
+        }
+
+        $message .= "TEST: \n";
+        foreach ($testData as $keyTestItem => $testItem) {
+            $message .= "$keyTestItem: $testItem\n";
+        }
+        $message .= "\nTEST SCORE: {$userRequest->test_score}\n";
+        return $message;
+    }
+
+    /**
+     * @throws UserAlert
+     * @throws Exception
+     */
+    public static function confirmUserRequest(string $hashString): UserRequest
+    {
+        $hashData = explode("-", $hashString);
+        $userRequest = UserRequest::where(["type" => $hashData[0], "hash" => $hashData[1]])->first();
+        if (!$userRequest?->id) {
+            throw new UserAlert(
+                TagService::getTagValueByName("invalid_command_from_site_error")[TagService::getCurrentLanguage()]
+            );
+        }
+
+        TagService::setCurrentLanguage($userRequest->language);
+        if ($userRequest->status == UserRequest::CONFIRMED_STATUS) {
+            throw new UserAlert(
+                TagService::getTagValueByName("warning_request_is_already_confirmed")[TagService::getCurrentLanguage()]
+            );
+        }
+
+        $userRequest->status = UserRequest::RECEIVED_STATUS;
+        return $userRequest;
     }
 }
