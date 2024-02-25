@@ -77,7 +77,7 @@ class TelegramService extends TelegramBotApiSdk
             case UserRequest::PROCESSED_STATUS:
                 $this->setRequestStatus(
                     $callbackQuery["message"]["message_id"],
-                    $callbackQuery["data"]
+                    (str_contains($callbackQuery["message"]["text"], "Status: " . UserRequest::CONFIRMED_STATUS) &&  $callbackQuery["data"] !== UserRequest::PROCESSED_STATUS) ?  UserRequest::CONFIRMED_STATUS : $callbackQuery["data"]
                 );
                 break;
 

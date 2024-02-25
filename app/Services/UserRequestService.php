@@ -125,7 +125,7 @@ class UserRequestService
 
     protected static function calculateTestScore(array $testData): int{
         unset($testData['city'], $testData['sex']);
-        $score = 0.5;
+        $score = 0.45;
         foreach ($testData as $keyItem => $testItem) {
             if ($keyItem == 'age') {
                 if ($testItem > 14 && $testItem <= 17) {
