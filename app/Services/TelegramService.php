@@ -131,7 +131,7 @@ class TelegramService extends TelegramBotApiSdk
         }
         UidService::createUid(
             $userRequest->type,
-            $request["message"]["from"]["username"]['id'],
+            $request["message"]["from"]['id'],
             $serviceLogin,
             $confirmedUser->id,
             json_encode($request->toArray(), JSON_UNESCAPED_UNICODE)

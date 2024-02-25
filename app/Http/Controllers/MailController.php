@@ -18,14 +18,18 @@ class MailController extends MainController
         }
         $emailRequestService = new EmailService($request);
 
-        return match ($request->action) {
-            "confirm_request" => redirect(
-                EmailService::API_ROUT . EmailService::API_ENTRYPOINT .
-                "?action=show_confirm_result&text=" . urlencode($emailRequestService->confirmRequest())
-            ),
-            "show_confirm_result" => $emailRequestService->showResultPage(urldecode($request->text) ?? abort(404)),
-            default => abort(404),
-        };
+        try {
+            return match ($request->action) {
+                "confirm_request" => redirect(
+                    EmailService::API_ROUT . EmailService::API_ENTRYPOINT .
+                    "?action=show_confirm_result&text=" . urlencode($emailRequestService->confirmRequest())
+                ),
+                "show_confirm_result" => $emailRequestService->showResultPage(urldecode($request->text) ?? abort(404)),
+                default => abort(404),
+            };
+        } catch (UserAlert $e) {
+            return $emailRequestService->showResultPage($e->getMessage() ?? abort(404));
+        }
     }
 
 }

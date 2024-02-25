@@ -10,14 +10,13 @@ use App\Models\Request as UserRequest;
 
 class UserService
 {
-
     /**
      * @throws Exception
      */
     public static function addOrGetUserByRequest(
         UserRequest $userRequest,
-        string $firstName = "",
-        string $lastName = ""
+        ?string $firstName = null,
+        ?string $lastName = null
     ): User
     {
         /** @var User $checkUser */
