@@ -36,6 +36,7 @@ const getItemsToShow = computed({
 </script>
 
 <template>
+    <h3 v-html="multiLanguageStore.getContentByTag('course_carousel_widget_title')"></h3>
     <Carousel :autoplay=autoPlay :itemsToShow="getItemsToShow" :wrapAround="true" :transition="600">
         <Slide v-for="course in preloadedDataStorage.courses" :key="course.id">
             <div class="carousel__item" :title="course['description_' + multiLanguageStore.currentLanguage]">
