@@ -77,7 +77,7 @@ class TelegramBotApiSdk
         $options['chat_id'] = $chatId;
         $options['message_id'] = $messageId;
         $options['reply_markup'] = $this->makeInlineKeyboard($newKeyboardArray);
-        return $this->getTelegramApi('editKeyboardOfMessage', $options);
+        return $this->getTelegramApi('editMessageReplyMarkup', $options);
     }
 
     public function sendEchoMessage(string $text, array $keyboardArray = null): mixed {
