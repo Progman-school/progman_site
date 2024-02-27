@@ -1,11 +1,11 @@
 <p align="center">
-    <a href="https://progman.site" target="_blank">
-        <img src="https://raw.githubusercontent.com/Progman-school/public_art/main/PNG/progman_logo__green_shine.png" width="400" alt="Laravel Logo">
-    </a>
-</p>
-<a href="https://progman.site">
-    <h1 align="center">ProgMan school website</h1>
+<a href="https://progman.site" target="_blank">
+<img src="https://raw.githubusercontent.com/Progman-school/public_art/main/PNG/progman_logo__green_shine.png" width="400" alt="Laravel Logo">
 </a>
+<a href="https://progman.site" target="_blank">
+<h1 align="center">ProgMan school website</h1>
+</a>
+</p>
 
 ### About the project 
 **ProgMan school** is my side educational project to mentor/train the programming junior and aspiring developers in my free time, as a hobby.
