@@ -23,6 +23,7 @@ It is used along with an additional AdminPanel project, but works independently 
 - Fast support widget across the website
 - The courses program preview, using the carousel slider ant the interactive test page.
 - The info and contacts pages
+- Database re-builder - The old DB to new one (feature has been required after a significant change in the OOP model and database structure to preserve an existed data)
 
 ### The used technologies
 #### Backend:
@@ -37,4 +38,3 @@ It is used along with an additional AdminPanel project, but works independently 
 - Nginx webserver configuration (also works with Apache)
 
 <h3 align="center">2019 - 2024 ©</h3>
-###
