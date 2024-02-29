@@ -17,6 +17,13 @@ class Coupon extends Model
         self::GENERATED_METHOD
     ];
 
+    const ONLINE_AREA_TYPE= "online";
+    const OFFLINE_AREA_TYPE= "offline";
+    const AREA_TYPES = [
+        self::ONLINE_AREA_TYPE,
+        self::OFFLINE_AREA_TYPE
+    ];
+
 
     public $timestamps = false;
 
@@ -40,6 +47,7 @@ class Coupon extends Model
         'area_type',
         'area',
         'placement_id',
+        'is_active',
     ];
 
     protected $hidden = [
