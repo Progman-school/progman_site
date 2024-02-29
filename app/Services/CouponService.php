@@ -10,7 +10,7 @@ class CouponService
     public static function checkCoupon(string $serialNumber, string $typeId = null): array
     {
         $coupon = Coupon::where('serial_number', $serialNumber)
-            ->where('type_id', $typeId)
+            ->where('coupon_type_id', $typeId)
             ->with('type', 'unit')
             ->first();
 
