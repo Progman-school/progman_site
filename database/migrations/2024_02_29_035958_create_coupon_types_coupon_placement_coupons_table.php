@@ -45,7 +45,7 @@ return new class extends Migration
                 $table->foreignId('coupon_type_id')->constrained('coupon_types');
                 $table->timestamp('created_at')->useCurrent();
                 $table->timestamp('updated_at')->useCurrentOnUpdate()->nullable(true)->default(null);
-                $table->timestamp('expired_at')->nullable(false);
+                $table->timestamp('expired_at');
                 $table->integer('value');
                 $table->foreignId('coupon_unit_id')->constrained('coupon_units');
                 $table->integer('max_times')->default(1);
