@@ -31,7 +31,6 @@ class CouponUnit extends Model
     ];
 
     protected $hidden = [
-
     ];
 
     public function coupons(): HasMany

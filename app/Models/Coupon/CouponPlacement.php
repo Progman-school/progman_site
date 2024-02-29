@@ -20,7 +20,6 @@ class CouponPlacement extends Model
     ];
 
     protected $hidden = [
-//        'pivot'
     ];
 
     public function coupons(): HasMany

@@ -25,7 +25,7 @@ return new class extends Migration
             $table->id();
             $table->string('name', 128)->unique();
             $table->string('symbol', 128)->unique();
-            $table->enum('symbol_placement', ['before', 'after'])->default('after');
+            $table->enum('symbol_placement', Coupon\CouponUnit::SYMBOL_PLACEMENTS)->default('after');
             $table->string('formula', 512);
         });
 
