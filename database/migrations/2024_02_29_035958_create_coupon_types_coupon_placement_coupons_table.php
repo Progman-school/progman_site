@@ -50,9 +50,10 @@ return new class extends Migration
             $table->foreignId('coupon_unit_id')->constrained('coupon_units');
             $table->integer('max_times')->default(1);
             $table->integer('used_times')->default(0)->nullable(false);
-            $table->enum('area_type', ['online', 'offline']);
+            $table->enum('area_type', Coupon::AREA_TYPES);
             $table->string('area', 512);
             $table->foreignId('placement_id')->constrained('coupon_placements');
+            $table->boolean('is_active')->default(true);
         });
     }
 
