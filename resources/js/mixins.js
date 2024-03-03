@@ -64,7 +64,7 @@ export default {
                 const requestObject = {
                     method: method,
                     headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'Content-Type': 'application/x-www-submit_form-urlencoded',
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                     }
                 }
