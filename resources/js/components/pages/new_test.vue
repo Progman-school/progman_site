@@ -4,35 +4,10 @@ import InsertContent from '../widgets/insert-content.vue'
 import SubmitForm from "../widgets/submit_form.vue"
 import CourseSelectorFormItem from "../widgets/submit_form/course_selector_form_item.vue"
 import RegistrationFormFields from "../widgets/submit_form/registration_form_fields.vue"
-
-
-import mixins from "../../mixins.js";
-import { useEventListener } from "../../storages/event_storage.js"
-import {onMounted, onUpdated, ref} from "vue";
+import {ref} from "vue";
 import {useMultiLanguageStore} from "../../storages/multi_language_content";
-import router from "../../router";
+
 const multiLanguageStore = useMultiLanguageStore()
-
-const eventListener = useEventListener()
-
-const saveTestData = (form) => {
-    form.preventDefault()
-    const formData = new FormData(form.target)
-    mixins.methods.postAPI(
-        'add_request',
-        formData,
-        () => {
-            eventListener.call('popup_alert:show', {
-                title: '{{test_passed_alert_title}}',
-                text: preLoginResult.data.alert_text,
-                href: preLoginResult.data.hash_link,
-                url: null,
-                button: '{{test_passed_alert_tg_button}}',
-            });
-            document.getElementById('test_form').reset()
-        }
-    )
-}
 
 const isShowedTestForm = ref(false)
 const showTestForm = (event) => {
@@ -40,25 +15,15 @@ const showTestForm = (event) => {
     isShowedTestForm.value = true
 }
 
-const courseId = ref(null)
-
-function setCourse(data) {
-    const currentRout = router.currentRoute.value.path
-    if (data) {
-        router.push(`${currentRout}?course=${data.id}`)
-        courseId.value = data.id
-    } else {
-        router.push(currentRout)
-    }
+const isVisibleOrderCourseButton = ref(false)
+const showOrderCourseButton = (data) => {
+    isVisibleOrderCourseButton.value = data
 }
-onMounted(() => {
-    if (router.isReady()) {
-        if (router.currentRoute.value.query.course) {
-            console.log(router.currentRoute.value.query.course)
-            courseId.value = router.currentRoute.value.query.course
-        }
-    }
-})
+
+const isDisabledForm = ref(true)
+const changeFormDisability = (data) => {
+    isDisabledForm.value = data
+}
 
 </script>
 
@@ -70,9 +35,9 @@ onMounted(() => {
             <br/>
         </p>
         <section>
-            <SubmitForm :method="saveTestData" submit_button_text="Finish the test" is_disabled="!isPrivacyPolicyConfirmed">
-                <CourseSelectorFormItem :openedCourseId="courseId" @onSelect="setCourse" />
-                <div class="order_course_button" v-if="courseId && !isShowedTestForm">
+            <SubmitForm :action="'add_request'" :submit_button_text="'Finish the test'" :is_disabled="isDisabledForm">
+                <CourseSelectorFormItem urlParamName="course" @onSelect="showOrderCourseButton" />
+                <div class="order_course_button" v-if="isVisibleOrderCourseButton && !isShowedTestForm">
                     <button type="submit" class="primary" @click="showTestForm">
                         <InsertContent>first_free_class_order_button</InsertContent>
                     </button>
@@ -81,7 +46,7 @@ onMounted(() => {
                     <InsertContent>test_form_head_title</InsertContent>
                 </h3>
                 <InsertContent  v-if="isShowedTestForm" set_class="fields">test_for_registration</InsertContent>
-                <RegistrationFormFields v-if="isShowedTestForm" v-model:isPrivacyPolicyConfirmed="isPrivacyPolicyConfirmed">
+                <RegistrationFormFields v-if="isShowedTestForm" @onPrivacyPolicyConfirmed="changeFormDisability">
                     <InsertContent>test_privacy_policy_link</InsertContent>
                 </RegistrationFormFields>
             </SubmitForm>

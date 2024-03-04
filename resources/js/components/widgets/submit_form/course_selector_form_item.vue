@@ -2,41 +2,55 @@
 import {ref} from "vue";
 import {usePreloadedDataStorage} from "../../../storages/preloaded_content_storage";
 import {useMultiLanguageStore} from "../../../storages/multi_language_content";
+import router from "../../../router";
+
+const ON_SELECT_EMIT = 'onSelect'
 
 const props = defineProps({
     openedCourseId: {
         type: Number,
         default: null
+    },
+    urlParamName: {
+        type: String,
+        default: 'course'
     }
 })
 
 const multiLanguageStore = useMultiLanguageStore()
-const emit = defineEmits(['onSelect'])
+const emit = defineEmits([ON_SELECT_EMIT])
 const selectedCourse = ref(null)
+const preloadedData = usePreloadedDataStorage()
 
-function setCourse(courseId) {
-    if (courseId) {
-        selectedCourse.value = preloadedData.courses[courseId]
+preloadedData.getCoursesList().then(() => {
+    router.isReady().then(() => {
+        const urlCourseId = router.currentRoute.value.query[props.urlParamName] ?? null
+        const requestedCourse = preloadedData.courses[urlCourseId] ?? preloadedData[props.openedCourseId] ?? null
+        if (requestedCourse) {
+            setCourse(requestedCourse)
+        }
+    })
+})
+
+function setCourse(course) {
+    const currentRout = router.currentRoute.value.path
+    if (course && course?.id) {
+        router.push(`${currentRout}?${props.urlParamName}=${course.id}`)
+        selectedCourse.value = course
         selectedCourse.value.hours = 0
         for (let technology of selectedCourse.value.technologies) {
             selectedCourse.value.hours += technology.pivot.hours
         }
     } else {
+        router.push(currentRout)
         selectedCourse.value = null
     }
-    emit('onSelect', selectedCourse.value)
+    emit(ON_SELECT_EMIT, selectedCourse.value)
 }
 
 const selectCourse = (event) => {
-    setCourse(event.target.value)
+    setCourse(preloadedData.courses[event.target.value])
 }
-
-const preloadedData = usePreloadedDataStorage()
-preloadedData.getCoursesList().then(() => {
-    if (props.openedCourseId) {
-        setCourse(props.openedCourseId)
-    }
-})
 
 </script>
 
@@ -45,9 +59,9 @@ preloadedData.getCoursesList().then(() => {
         <label for="course">
             Your course:
         </label>
-        <select id="course" name="course_id" :class="selectedCourse ? 'selected_course' : ''" v-model="props.openedCourseId" @change="selectCourse">
-            <option v-if="!props.openedCourseId" value="" selected disabled>Select course</option>
-            <option v-for="course in preloadedData.courses" :value=course.id :title=course.level :selected="props.openedCourseId === course.id">
+        <select id="course" name="course_id" :class="selectedCourse ? 'selected_course' : ''" @change="selectCourse">
+            <option v-if="!selectedCourse" value="" selected disabled>Select course</option>
+            <option v-for="course in preloadedData.courses" :value=course.id :title=course.level :selected="selectedCourse?.id === course.id">
                 {{course.name}}
             </option>
         </select>

@@ -1,6 +1,7 @@
 <script setup>
 import InsertContent from '../insert-content.vue'
 import {ref} from "vue";
+const emit = defineEmits(['onPrivacyPolicyConfirmed'])
 
 const showEmailField = ref('email')
 const changeRegistrationType = (event) => {
@@ -10,6 +11,7 @@ const changeRegistrationType = (event) => {
 const isPrivacyPolicyConfirmed = ref(false)
 const confirmPrivacyPolicy = (event) => {
     isPrivacyPolicyConfirmed.value = event.target.checked
+    emit('onPrivacyPolicyConfirmed', isPrivacyPolicyConfirmed.value)
 }
 
 </script>
