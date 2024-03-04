@@ -1,18 +1,25 @@
 <script setup>
 import Closer from "../widgets/closer.vue";
 import InsertContent from '../widgets/insert-content.vue'
-import SubmitForm from "../widgets/submit_form.vue"
-import CourseInfoSelectionForForm from "../widgets/submit_form/course_info_selection_for_form.vue"
-import RegistrationFormFields from "../widgets/submit_form/registration_form_fields.vue"
-
-
 import mixins from "../../mixins.js";
 import { useEventListener } from "../../storages/event_storage.js"
 import {ref} from "vue";
 import {useMultiLanguageStore} from "../../storages/multi_language_content";
+import {usePreloadedDataStorage} from "../../storages/preloaded_content_storage";
+import router from "../../router";
 const multiLanguageStore = useMultiLanguageStore()
-
 const eventListener = useEventListener()
+const preloadedData = usePreloadedDataStorage()
+const showLoginAlert = (preLoginResult) => {
+    eventListener.call('popup_alert:show', {
+        title: '{{test_passed_alert_title}}',
+        text: preLoginResult.data.alert_text,
+        href: preLoginResult.data.hash_link,
+        url: null,
+        button: '{{test_passed_alert_tg_button}}',
+    });
+    document.getElementById('test_form').reset()
+}
 
 const saveTestData = (form) => {
     form.preventDefault()
@@ -20,26 +27,52 @@ const saveTestData = (form) => {
     mixins.methods.postAPI(
         'add_request',
         formData,
-        () => {
-            eventListener.call('popup_alert:show', {
-                title: '{{test_passed_alert_title}}',
-                text: preLoginResult.data.alert_text,
-                href: preLoginResult.data.hash_link,
-                url: null,
-                button: '{{test_passed_alert_tg_button}}',
-            });
-            document.getElementById('test_form').reset()
-        }
+        showLoginAlert
     )
 }
 
+const showEmailField = ref('email')
+const changeRegistrationType = (event) => {
+    showEmailField.value = event.target.value
+}
+
+const chosenCourse = ref(null)
+const urlCourseId = ref(null)
 const isShowedTestForm = ref(false)
+const isPrivacyPolicyConfirmed = ref(false)
 
 const showTestForm = (event) => {
     event.preventDefault()
     isShowedTestForm.value = true
 }
 
+const chooseCourse = (event) => {
+    setCourse(event.target.value)
+}
+
+const confirmPrivacyPolicy = (event) => {
+    isPrivacyPolicyConfirmed.value = event.target.checked
+}
+
+function setCourse(courseId) {
+    if (courseId) {
+        chosenCourse.value = preloadedData.courses[courseId]
+        router.push(`test?course=${courseId}`)
+        chosenCourse.value.hours = 0
+        for (let technology of chosenCourse.value.technologies) {
+            chosenCourse.value.hours += technology.pivot.hours
+        }
+    } else {
+        chosenCourse.value = null
+        router.push(`test`)
+    }
+}
+preloadedData.getCoursesList().then(() => {
+    urlCourseId.value = router.currentRoute.value.query.course ?? ""
+    if (router.currentRoute.value.query.course) {
+        setCourse(router.currentRoute.value.query.course)
+    }
+})
 
 </script>
 
@@ -51,8 +84,37 @@ const showTestForm = (event) => {
             <br/>
         </p>
         <section>
-            <SubmitForm :method="saveTestData" submit_button_text="Finish the test" is_disabled="!isPrivacyPolicyConfirmed">
-                <CourseInfoSelectionForForm v-model="coisenCourse" />
+            <form id="test_form" @submit="saveTestData">
+                <content class="fields">
+                    <div class="field">
+                        <label for="course">
+                            Your course:
+                        </label>
+                        <select id="course" name="course_id" :class="urlCourseId ? 'chosen_course' : ''" v-model="urlCourseId" @change="chooseCourse">
+                            <option v-if="!urlCourseId" value="" selected disabled>Select course</option>
+                            <option v-for="course in preloadedData.courses" :value=course.id :title=course.level :selected="urlCourseId === course.id">
+                                {{course.name}}
+                            </option>
+                        </select>
+                        <div class="field_details" v-if="chosenCourse">
+                            <h4>Details:</h4>
+                            <div>
+                                <b>Start from:&nbsp;&nbsp;{{chosenCourse.level}}</b>
+                                <b class="longer_param">Type:&nbsp;&nbsp;{{chosenCourse.type}}</b>
+                                <b>Hours:&nbsp;&nbsp;~{{chosenCourse.hours}}</b>
+                            </div>
+                            <p>
+                                {{chosenCourse['description_' + multiLanguageStore.currentLanguage] || 'No description :('}}
+                            </p>
+                            <h6>Technologies:</h6>
+                            <ul>
+                                <li v-for="technology in chosenCourse.technologies" :title=technology.description>
+                                    <b>{{technology.name}}</b> (~{{technology.pivot.hours}}h)
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </content>
                 <div class="order_course_button" v-if="chosenCourse && !isShowedTestForm">
                     <button type="submit" class="primary" @click="showTestForm">
                         <InsertContent>first_free_class_order_button</InsertContent>
@@ -62,16 +124,50 @@ const showTestForm = (event) => {
                     <InsertContent>test_form_head_title</InsertContent>
                 </h3>
                 <InsertContent  v-if="isShowedTestForm" set_class="fields">test_for_registration</InsertContent>
-                <RegistrationFormFields v-if="isShowedTestForm" v-model:isPrivacyPolicyConfirmed="isPrivacyPolicyConfirmed">
-                    <InsertContent>test_privacy_policy_link</InsertContent>
-                </RegistrationFormFields>
-            </SubmitForm>
+                <content class="fields" v-if="isShowedTestForm">
+                    <div class="field">
+                        <label for="uid_type">
+                            Type of registration:
+                        </label>
+                        <select id="uid_type" name="uid_type" @change="changeRegistrationType">
+                            <option value="email" selected>E-Mail address</option>
+                            <option value="telegram">Telegram messenger</option>
+                        </select>
+                        <br/>
+                        <div v-if="showEmailField === 'email'" style="border: none">
+                            <label for="email_contact">Your E-mail:</label>
+                            <input type="email" id="email_contact" name="contact" placeholder="your-real@email.com" required>
+                        </div>
+                        <div v-if="showEmailField === 'telegram'" style="border: none; font-style: italic;font-size: 14px;">
+                            <InsertContent>telegram_registration_choosing_warning</InsertContent>
+                        </div>
+                        <div v-if="showEmailField === 'telegram'" style="border: none">
+                            <label for="telegram_contact">Your Telegram username or phone number:</label>
+                            <input type="text" id="telegram_contact" name="contact" placeholder="@my_telegram / +07778889911" maxlength="60" required>
+                        </div>
+                        <div style="border: none">
+                            <label for="name">Your name:</label>
+                            <input type="text" id="name" name="name" placeholder="Elon Mask" maxlength="60" required>
+                        </div>
+                        <div class="field">
+                            <input type="checkbox" id="privacy_policy" value="1" @change="confirmPrivacyPolicy">
+                            <label for="privacy_policy">
+                                <InsertContent>test_privacy_policy_link</InsertContent>
+                            </label>
+                        </div>
+                    </div>
+                </content>
+                <ul class="actions" v-if="isShowedTestForm">
+                    <li><button type="submit" class="primary" :disabled="!isPrivacyPolicyConfirmed">Finish the test</button></li>
+                </ul>
+            </form>
         </section>
         <Closer />
     </article>
 </template>
 
 <style scoped>
+
 .field_details {
     padding: 0 !important;
     border: none !important;
@@ -119,6 +215,10 @@ const showTestForm = (event) => {
 .order_course_button {
     text-align: center;
     margin-bottom: 20px;
+}
+.chosen_course {
+    color: #58cc02ff;
+    font-weight: bold;
 }
 
 </style>
