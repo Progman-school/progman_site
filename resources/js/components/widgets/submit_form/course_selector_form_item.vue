@@ -1,40 +1,40 @@
 <script setup>
-import router from "../../../router";
 import {ref} from "vue";
 import {usePreloadedDataStorage} from "../../../storages/preloaded_content_storage";
 import {useMultiLanguageStore} from "../../../storages/multi_language_content";
 
-const props =  defineProps({
-    chosenCourse: null,
+const props = defineProps({
+    openedCourseId: {
+        type: Number,
+        default: null
+    }
 })
+
+const multiLanguageStore = useMultiLanguageStore()
+const emit = defineEmits(['onSelect'])
+const selectedCourse = ref(null)
 
 function setCourse(courseId) {
     if (courseId) {
-        attrs.chosenCourse.value = preloadedData.courses[courseId]
-        router.push(`new_test?course=${courseId}`)
-        attrs.chosenCourse.value.hours = 0
-        for (let technology of attrs.chosenCourse.value.technologies) {
-            attrs.chosenCourse.value.hours += technology.pivot.hours
+        selectedCourse.value = preloadedData.courses[courseId]
+        selectedCourse.value.hours = 0
+        for (let technology of selectedCourse.value.technologies) {
+            selectedCourse.value.hours += technology.pivot.hours
         }
     } else {
-        attrs.chosenCourse.value = null
-        router.push(`new_test`)
+        selectedCourse.value = null
     }
+    emit('onSelect', selectedCourse.value)
 }
 
-const multiLanguageStore = useMultiLanguageStore()
-
-
-const chooseCourse = (event) => {
+const selectCourse = (event) => {
     setCourse(event.target.value)
 }
 
 const preloadedData = usePreloadedDataStorage()
-const urlCourseId = ref(null)
 preloadedData.getCoursesList().then(() => {
-    urlCourseId.value = router.currentRoute.value.query.course ?? ""
-    if (router.currentRoute.value.query.course) {
-        setCourse(router.currentRoute.value.query.course)
+    if (props.openedCourseId) {
+        setCourse(props.openedCourseId)
     }
 })
 
@@ -45,25 +45,25 @@ preloadedData.getCoursesList().then(() => {
         <label for="course">
             Your course:
         </label>
-        <select id="course" name="course_id" :class="urlCourseId ? 'chosen_course' : ''" v-model="urlCourseId" @change="chooseCourse">
-            <option v-if="!urlCourseId" value="" selected disabled>Select course</option>
-            <option v-for="course in preloadedData.courses" :value=course.id :title=course.level :selected="urlCourseId === course.id">
+        <select id="course" name="course_id" :class="selectedCourse ? 'selected_course' : ''" v-model="props.openedCourseId" @change="selectCourse">
+            <option v-if="!props.openedCourseId" value="" selected disabled>Select course</option>
+            <option v-for="course in preloadedData.courses" :value=course.id :title=course.level :selected="props.openedCourseId === course.id">
                 {{course.name}}
             </option>
         </select>
-        <div class="curse_details" v-if="chosenCourse">
+        <div class="curse_details" v-if="selectedCourse">
             <h4>Details:</h4>
             <div>
-                <b>Start from:&nbsp;&nbsp;{{chosenCourse.level}}</b>
-                <b class="longer_param">Type:&nbsp;&nbsp;{{chosenCourse.type}}</b>
-                <b>Hours:&nbsp;&nbsp;~{{chosenCourse.hours}}</b>
+                <b>Start from:&nbsp;&nbsp;{{ selectedCourse.level }}</b>
+                <b class="longer_param">Type:&nbsp;&nbsp;{{ selectedCourse.type }}</b>
+                <b>Hours:&nbsp;&nbsp;~{{ selectedCourse.hours }}</b>
             </div>
             <p>
-                {{chosenCourse['description_' + multiLanguageStore.currentLanguage] || 'No description :('}}
+                {{ selectedCourse['description_' + multiLanguageStore.currentLanguage] || 'No description :(' }}
             </p>
             <h6>Technologies:</h6>
             <ul>
-                <li v-for="technology in chosenCourse.technologies" :title=technology.description>
+                <li v-for="technology in selectedCourse.technologies" :title=technology.description>
                     <b>{{technology.name}}</b> (~{{technology.pivot.hours}}h)
                 </li>
             </ul>
@@ -118,7 +118,7 @@ preloadedData.getCoursesList().then(() => {
     padding-left: 2px;
 }
 
-.chosen_course {
+.selected_course {
     color: #58cc02ff;
     font-weight: bold;
 }

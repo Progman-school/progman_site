@@ -2,14 +2,15 @@
 import Closer from "../widgets/closer.vue";
 import InsertContent from '../widgets/insert-content.vue'
 import SubmitForm from "../widgets/submit_form.vue"
-import CourseInfoSelectionForForm from "../widgets/submit_form/course_info_selection_for_form.vue"
+import CourseSelectorFormItem from "../widgets/submit_form/course_selector_form_item.vue"
 import RegistrationFormFields from "../widgets/submit_form/registration_form_fields.vue"
 
 
 import mixins from "../../mixins.js";
 import { useEventListener } from "../../storages/event_storage.js"
-import {ref} from "vue";
+import {onMounted, onUpdated, ref} from "vue";
 import {useMultiLanguageStore} from "../../storages/multi_language_content";
+import router from "../../router";
 const multiLanguageStore = useMultiLanguageStore()
 
 const eventListener = useEventListener()
@@ -39,8 +40,25 @@ const showTestForm = (event) => {
     isShowedTestForm.value = true
 }
 
-const chosenCourse = ref(null)
+const courseId = ref(null)
 
+function setCourse(data) {
+    const currentRout = router.currentRoute.value.path
+    if (data) {
+        router.push(`${currentRout}?course=${data.id}`)
+        courseId.value = data.id
+    } else {
+        router.push(currentRout)
+    }
+}
+onMounted(() => {
+    if (router.isReady()) {
+        if (router.currentRoute.value.query.course) {
+            console.log(router.currentRoute.value.query.course)
+            courseId.value = router.currentRoute.value.query.course
+        }
+    }
+})
 
 </script>
 
@@ -53,8 +71,8 @@ const chosenCourse = ref(null)
         </p>
         <section>
             <SubmitForm :method="saveTestData" submit_button_text="Finish the test" is_disabled="!isPrivacyPolicyConfirmed">
-                <CourseInfoSelectionForForm chosenCourse="chosenCourse" />
-                <div class="order_course_button" v-if="chosenCourse && !isShowedTestForm">
+                <CourseSelectorFormItem :openedCourseId="courseId" @onSelect="setCourse" />
+                <div class="order_course_button" v-if="courseId && !isShowedTestForm">
                     <button type="submit" class="primary" @click="showTestForm">
                         <InsertContent>first_free_class_order_button</InsertContent>
                     </button>
