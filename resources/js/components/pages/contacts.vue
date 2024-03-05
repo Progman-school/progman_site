@@ -2,7 +2,7 @@
 import {ref} from 'vue'
 
 import Closer from '../widgets/closer.vue'
-import InsertContent from '../widgets/insert-content.vue'
+import InsertContent from '../widgets/insert_content.vue'
 import {useMultiLanguageStore} from "../../storages/multi_language_content"
 const multiLanguageStore = useMultiLanguageStore();
 const telegramLink = ref("")

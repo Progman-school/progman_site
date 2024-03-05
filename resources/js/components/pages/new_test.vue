@@ -1,6 +1,6 @@
 <script setup>
 import Closer from "../widgets/closer.vue"
-import InsertContent from '../widgets/insert-content.vue'
+import InsertContent from '../widgets/insert_content.vue'
 import SubmitForm from "../widgets/submit_form.vue"
 import CourseSelectorFormField from "../widgets/submit_form/course_selector_form_field.vue"
 import RegistrationFormFields from "../widgets/submit_form/registration_form_fields.vue"

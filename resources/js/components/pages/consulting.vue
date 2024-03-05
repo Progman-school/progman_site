@@ -1,6 +1,6 @@
 <script setup>
 import Closer from "../widgets/closer.vue"
-import InsertContent from '../widgets/insert-content.vue'
+import InsertContent from '../widgets/insert_content.vue'
 import SubmitForm from "../widgets/submit_form.vue"
 import CourseSelectorFormField from "../widgets/submit_form/course_selector_form_field.vue"
 import RegistrationFormFields from "../widgets/submit_form/registration_form_fields.vue"
@@ -62,7 +62,7 @@ const changeFormDisability = (data) => {
                     <input type="text" name="city" id="city" minlength="3" placeholder="Your current city (country into the brackets)" required/>
                 </div>
                 <div class="field">
-                    <label for="details">Describe your main idea(project) which you want to make by programming:</label>
+                    <label for="details">Cover message:</label>
                     <textarea name="details" id="details" minlength="10" maxlength="500" placeholder="Any additional wishes or questions (optional)" rows="3"></textarea>
                 </div>
                 <RegistrationFormFields @onPrivacyPolicyConfirmed="changeFormDisability">

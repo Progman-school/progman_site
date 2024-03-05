@@ -1,5 +1,5 @@
 <script setup>
-import InsertContent from './widgets/insert-content.vue'
+import InsertContent from './widgets/insert_content.vue'
 import Navigate from "./navigate.vue"
 import CourseCarousel from "./widgets/course_carousel.vue";
 </script>

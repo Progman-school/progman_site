@@ -3,12 +3,20 @@ defineProps({
     isVisible: {
         type: Boolean,
         default: false
+    },
+    transitionName: {
+        type: String,
+        default: 'slide-fade'
+    },
+    transitionMode: {
+        type: String,
+        default: 'out-in'
     }
 })
 </script>
 
 <template>
-    <transition name="slide-fade" mode="out-in">
+    <transition :name="transitionName" :mode="transitionMode">
         <div class="widget_preloader" v-show="isVisible">
             <span></span>
             <span></span>

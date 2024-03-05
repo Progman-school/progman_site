@@ -28,8 +28,8 @@ created()
 </script>
 
 <template>
-    <InlinePreloader :is-visible="!langContent" />
-    <transition mode="out-in">
+    <InlinePreloader :is-visible="!langContent" transition-name="null" />
+    <transition name="slide-fade" mode="out-in">
         <content :class="set_class" v-html="langContent" v-show="langContent"></content>
     </transition>
 </template>

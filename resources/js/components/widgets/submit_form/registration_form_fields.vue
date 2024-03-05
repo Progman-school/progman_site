@@ -1,5 +1,5 @@
 <script setup>
-import InsertContent from '../insert-content.vue'
+import InsertContent from '../insert_content.vue'
 import {ref} from "vue";
 const emit = defineEmits(['onPrivacyPolicyConfirmed'])
 
