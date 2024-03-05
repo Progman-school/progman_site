@@ -29,7 +29,7 @@ const changeFormDisability = (data) => {
 </script>
 
 <template>
-    <article id="test">
+    <article>
         <h2 class="major">Get your chance!</h2>
         <p>
             <InsertContent>test_preview</InsertContent>
@@ -37,10 +37,9 @@ const changeFormDisability = (data) => {
         </p>
         <section>
             <SubmitForm
-                :action="'add_request'"
-                :submit_button_text="'Finish the test'"
+                :action="'add_study_plan_request'"
                 :is_disabled="isDisabledForm"
-                submit_button_name="Finish the test"
+                submit_button_name="Get my plan"
                 :isVisibleSubmitButton="isShowedTest"
             >
                 <CourseSelectorFormField urlParamName="course" @onSelect="showOrderCourseButton" />
@@ -69,6 +68,10 @@ const changeFormDisability = (data) => {
                 <div class="field" v-if="isShowedTest">
                     <label for="age">Your age (full years count):</label>
                     <input type="number" id="age" name="age" min="7" max="70" placeholder="number" required>
+                </div>
+                <div class="field" v-if="isShowedTest">
+                    <label for="details">Describe your the project that you want to make:</label>
+                    <textarea name="details" id="details" minlength="10" maxlength="1500" placeholder="The name of the project?, what functions is it going to have etc?.." rows="3"></textarea>
                 </div>
                 <RegistrationFormFields v-if="isShowedTest" @onPrivacyPolicyConfirmed="changeFormDisability">
                     <InsertContent>test_privacy_policy_link</InsertContent>

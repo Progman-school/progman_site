@@ -447,6 +447,7 @@ select {
 
 textarea {
     padding: 0.75rem 1rem;
+    resize: vertical;
 }
 
 input[type="checkbox"],

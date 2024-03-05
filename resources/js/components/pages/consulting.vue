@@ -29,7 +29,7 @@ const changeFormDisability = (data) => {
 </script>
 
 <template>
-    <article id="test">
+    <article>
         <h2 class="major">Get consultation</h2>
         <p>
             How does it happen? You can ask me a question, and I will answer it.
@@ -39,29 +39,33 @@ const changeFormDisability = (data) => {
         </p>
         <section>
             <SubmitForm
-                :action="'add_request'"
-                :submit_button_text="'Finish the test'"
+                :action="'add_consulting_request'"
                 :is_disabled="isDisabledForm"
-                submit_button_name="Finish the test"
+                submit_button_name="Send request"
                 :isVisibleSubmitButton="true"
             >
                 <div class="field">
-                    <label for="city">Where are you from?</label>
-                    <input type="text" name="city" id="city" minlength="3" placeholder="Your current city (country into the brackets)" required/>
-                </div>
-                <WeekDaysFormField>What days is better for you:</WeekDaysFormField>
-                <div class="field" v-if="isShowedTest">
                     <label>How many hours do you need:</label>
                     <input type="radio" id="hours_1" name="hours" value=1 required>
                     <label for="hours_1">One</label>
                     <input type="radio" id="hours_2" name="hours" value=2>
                     <label for="hours_2">Two</label>
+                    <div>
+                        <label>Price: <strong class="important_text">$30</strong></label>
+                        <label for="coupon">Doy you have a coupon?</label>
+                        <input type="text" name="coupon" id="coupon" minlength="5" placeholder="COUPON-CODE" required/>
+                    </div>
+                </div>
+                <WeekDaysFormField>What days is better for you:</WeekDaysFormField>
+                <div class="field">
+                    <label for="city">Where are you from?</label>
+                    <input type="text" name="city" id="city" minlength="3" placeholder="Your current city (country into the brackets)" required/>
                 </div>
                 <div class="field">
-                    <label for="age">Your age (full years count):</label>
-                    <input type="number" id="age" name="age" min="6" max="70" placeholder="number" required>
+                    <label for="details">Describe your main idea(project) which you want to make by programming:</label>
+                    <textarea name="details" id="details" minlength="10" maxlength="500" placeholder="Any additional wishes or questions (optional)" rows="3"></textarea>
                 </div>
-                <RegistrationFormFields v-if="isShowedTest" @onPrivacyPolicyConfirmed="changeFormDisability">
+                <RegistrationFormFields @onPrivacyPolicyConfirmed="changeFormDisability">
                     <InsertContent>test_privacy_policy_link</InsertContent>
                 </RegistrationFormFields>
             </SubmitForm>
