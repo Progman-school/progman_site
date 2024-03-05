@@ -11,7 +11,7 @@ defineProps({
         type: String,
         default: 'Send'
     },
-    isVisible: {
+    isVisibleSubmitButton: {
         type: Boolean,
         default: false
     },
@@ -47,7 +47,7 @@ const submitForm = (form) => {
         <content class="fields">
             <slot></slot>
         </content>
-        <ul class="actions" v-if="isVisible">
+        <ul class="actions" v-show="isVisibleSubmitButton">
             <li>
                 <button type="submit" class="primary" :disabled="is_disabled">
                     {{submit_button_name}}
@@ -58,5 +58,8 @@ const submitForm = (form) => {
 </template>
 
 <style scoped>
-
+.actions {
+    margin-top: 20px;
+    margin-bottom: 40px;
+}
 </style>

@@ -17,15 +17,14 @@ const confirmPrivacyPolicy = (event) => {
 </script>
 
 <template>
-    <div class="field">
-        <label for="uid_type">
-            Type of registration:
-        </label>
-        <select id="uid_type" name="uid_type" @change="changeRegistrationType">
-            <option value="email" selected>E-Mail address</option>
-            <option value="telegram">Telegram messenger</option>
-        </select>
-        <br/>
+    <div class="field registration_fields">
+        <div>
+            <label for="uid_type">Type of registration:</label>
+            <select id="uid_type" name="uid_type" @change="changeRegistrationType">
+                <option value="email" selected>E-Mail address</option>
+                <option value="telegram">Telegram messenger</option>
+            </select>
+        </div>
         <div v-if="showEmailField === 'email'" style="border: none">
             <label for="email_contact">Your E-mail:</label>
             <input type="email" id="email_contact" name="contact" placeholder="your-real@email.com" required>
@@ -41,7 +40,7 @@ const confirmPrivacyPolicy = (event) => {
             <label for="name">Your name:</label>
             <input type="text" id="name" name="name" placeholder="Elon Mask" maxlength="60" required>
         </div>
-        <div class="field">
+        <div class="privacy_policy_sing_field">
             <input type="checkbox" id="privacy_policy" value="1" @change="confirmPrivacyPolicy">
             <label for="privacy_policy">
                 <slot></slot>
@@ -51,5 +50,11 @@ const confirmPrivacyPolicy = (event) => {
 </template>
 
 <style scoped>
-
+.privacy_policy_sing_field {
+    margin-top: 10px;
+    margin-bottom: 0 !important;
+}
+.registration_fields > div {
+    margin-bottom: 20px;
+}
 </style>

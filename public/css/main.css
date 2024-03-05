@@ -156,7 +156,6 @@ em, i {
 }
 
 p {
-    margin: 0 0 2rem 0;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -180,7 +179,7 @@ h1.major, h2.major, h3.major, h4.major, h5.major, h6.major {
     width: -ms-max-content;
     width: max-content;
     padding-bottom: 0.5rem;
-    margin: 0 0 2rem 0;
+    margin: 2rem 0 1rem 0;
 }
 
 h1 {
@@ -301,16 +300,6 @@ form > :last-child {
 }
 
 form > .fields {
-    display: -moz-flex;
-    display: -webkit-flex;
-    display: -ms-flex;
-    display: flex;
-    -moz-flex-wrap: wrap;
-    -webkit-flex-wrap: wrap;
-    -ms-flex-wrap: wrap;
-    flex-wrap: wrap;
-    width: calc(100% + 3rem);
-    margin: -1.5rem 0 2rem -1.5rem;
 }
 
 form > .fields > .field {
@@ -322,8 +311,6 @@ form > .fields > .field {
     -webkit-flex-shrink: 0;
     -ms-flex-shrink: 0;
     flex-shrink: 0;
-    padding: 1.5rem 0 0 1.5rem;
-    width: calc(100% - 1.5rem);
 }
 
 form > .fields > .field.half {
@@ -750,7 +737,6 @@ ul.actions {
     display: -webkit-flex;
     display: -ms-flex;
     display: flex;
-    cursor: default;
     list-style: none;
     margin-left: -1rem;
     padding-left: 0;
@@ -1617,8 +1603,8 @@ body.is-preload #footer {
 }
 
 
-.fields:nth-child(n) div {
-    padding-bottom: 40px;
+.fields:nth-child(n) > div {
+    padding: 30px 0;
     border-bottom: #4e555b 1px solid;
 }
 
