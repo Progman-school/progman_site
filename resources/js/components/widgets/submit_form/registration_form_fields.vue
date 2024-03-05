@@ -19,7 +19,7 @@ const confirmPrivacyPolicy = (event) => {
 <template>
     <div class="field registration_fields">
         <div>
-            <label for="uid_type">Type of registration:</label>
+            <label for="uid_type">Contact type:</label>
             <select id="uid_type" name="uid_type" @change="changeRegistrationType">
                 <option value="email" selected>E-Mail address</option>
                 <option value="telegram">Telegram messenger</option>
@@ -50,6 +50,10 @@ const confirmPrivacyPolicy = (event) => {
 </template>
 
 <style scoped>
+.registration_fields select{
+    color: #58cc02;
+    font-weight: bold;
+}
 .privacy_policy_sing_field {
     margin-top: 10px;
     margin-bottom: 0 !important;
