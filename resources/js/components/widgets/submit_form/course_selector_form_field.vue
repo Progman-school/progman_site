@@ -3,6 +3,7 @@ import {ref} from "vue";
 import {usePreloadedDataStorage} from "../../../storages/preloaded_content_storage";
 import {useMultiLanguageStore} from "../../../storages/multi_language_content";
 import router from "../../../router";
+import InlinePreloader from '../inline_preloader.vue'
 
 const ON_SELECT_EMIT = 'onSelect'
 
@@ -21,6 +22,7 @@ const multiLanguageStore = useMultiLanguageStore()
 const emit = defineEmits([ON_SELECT_EMIT])
 const selectedCourse = ref(null)
 const preloadedData = usePreloadedDataStorage()
+const isWidgetReady = ref(false)
 
 preloadedData.getCoursesList().then(() => {
     router.isReady().then(() => {
@@ -30,22 +32,26 @@ preloadedData.getCoursesList().then(() => {
             setCourse(requestedCourse)
         }
     })
+    isWidgetReady.value = true
 })
 
 function setCourse(course) {
-    const currentRout = router.currentRoute.value.path
-    if (course && course?.id) {
-        router.push(`${currentRout}?${props.urlParamName}=${course.id}`)
-        selectedCourse.value = course
-        selectedCourse.value.hours = 0
-        for (let technology of selectedCourse.value.technologies) {
-            selectedCourse.value.hours += technology.pivot.hours
+    selectedCourse.value = null
+    setTimeout(() => {
+        const currentRout = router.currentRoute.value.path
+        if (course && course?.id) {
+            router.push(`${currentRout}?${props.urlParamName}=${course.id}`)
+            selectedCourse.value = course
+            selectedCourse.value.hours = 0
+            for (let technology of selectedCourse.value.technologies) {
+                selectedCourse.value.hours += technology.pivot.hours
+            }
+        } else {
+            router.push(currentRout)
+            selectedCourse.value = null
         }
-    } else {
-        router.push(currentRout)
-        selectedCourse.value = null
-    }
-    emit(ON_SELECT_EMIT, selectedCourse.value)
+        emit(ON_SELECT_EMIT, selectedCourse.value)
+    }, 300)
 }
 
 const selectCourse = (event) => {
@@ -55,7 +61,8 @@ const selectCourse = (event) => {
 </script>
 
 <template>
-    <div class="field">
+    <InlinePreloader :isVisible="!isWidgetReady" />
+    <div class="field" v-show="isWidgetReady">
         <label for="course">
             Your course:
         </label>
@@ -65,23 +72,25 @@ const selectCourse = (event) => {
                 {{course.name}}
             </option>
         </select>
-        <div class="curse_details" v-if="selectedCourse">
-            <h4>Details:</h4>
-            <div>
-                <b>Start from:&nbsp;&nbsp;{{ selectedCourse.level }}</b>
-                <b class="longer_param">Type:&nbsp;&nbsp;{{ selectedCourse.type }}</b>
-                <b>Hours:&nbsp;&nbsp;~{{ selectedCourse.hours }}</b>
+        <transition name="slide-fade" mode="out-in">
+            <div class="curse_details" v-show="selectedCourse">
+                <h4>Details:</h4>
+                <div>
+                    <b>Start from:&nbsp;&nbsp;{{ selectedCourse.level }}</b>
+                    <b class="longer_param">Type:&nbsp;&nbsp;{{ selectedCourse.type }}</b>
+                    <b>Hours:&nbsp;&nbsp;~{{ selectedCourse.hours }}</b>
+                </div>
+                <p>
+                    {{ selectedCourse['description_' + multiLanguageStore.currentLanguage] || 'No description :(' }}
+                </p>
+                <h6>Technologies:</h6>
+                <ul>
+                    <li v-for="technology in selectedCourse.technologies" :title=technology.description>
+                        <b>{{technology.name}}</b> (~{{technology.pivot.hours}}h)
+                    </li>
+                </ul>
             </div>
-            <p>
-                {{ selectedCourse['description_' + multiLanguageStore.currentLanguage] || 'No description :(' }}
-            </p>
-            <h6>Technologies:</h6>
-            <ul>
-                <li v-for="technology in selectedCourse.technologies" :title=technology.description>
-                    <b>{{technology.name}}</b> (~{{technology.pivot.hours}}h)
-                </li>
-            </ul>
-        </div>
+        </transition>
     </div>
 </template>
 
