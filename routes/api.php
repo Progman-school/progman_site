@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CertificateController;
+use App\Http\Controllers\CouponController;
 use App\Http\Controllers\PreloadedContentController;
 use App\Http\Controllers\RequestController;
 use App\Http\Controllers\SupportMessengerController;
@@ -31,3 +32,5 @@ Route::get('get_courses_list', [PreloadedContentController::class, 'getCoursesLi
 
 Route::post("support_request_message", [SupportMessengerController::class, 'supportRequestMessage']);
 
+Route::get('check_coupon/any/{serialNumber}', [CouponController::class, 'checkCoupon']);
+Route::get('check_coupon/{type}/{serialNumber}', [CouponController::class, 'checkCouponType']);

@@ -2,30 +2,37 @@
 import Closer from "../widgets/closer.vue"
 import InsertContent from '../widgets/insert_content.vue'
 import SubmitForm from "../widgets/submit_form.vue"
-import CourseSelectorFormField from "../widgets/submit_form/course_selector_form_field.vue"
 import RegistrationFormFields from "../widgets/submit_form/registration_form_fields.vue"
 import {ref} from "vue"
 import {useMultiLanguageStore} from "../../storages/multi_language_content"
 import WeekDaysFormField from "../widgets/submit_form/weekday_checkbox_set_form_item.vue"
+import mixins from "../../mixins";
+
+const COUPON_TYPE = 'consulting'
 
 const multiLanguageStore = useMultiLanguageStore()
-
-const isShowedTest = ref(false)
-const showTestForm = (event) => {
-    event.preventDefault()
-    isShowedTest.value = true
-}
-
-const isVisibleOrderCourseButton = ref(false)
-const showOrderCourseButton = (data) => {
-    isVisibleOrderCourseButton.value = data
-}
+const priceNumber = ref(30)
 
 const isDisabledForm = ref(true)
 const changeFormDisability = (data) => {
     isDisabledForm.value = !data
 }
 
+const checkCouponInServer = (event) => {
+    event.target.classList.remove('important_text')
+    if (event.target.value < 5) {
+        return false
+    }
+    mixins.methods.getAPI(`check_coupon/${COUPON_TYPE}/${event.target.value}`).then((response) => {
+        if (response.data){
+            alert(`Coupon ${event.target.value} is valid`)
+            event.target.classList.add('important_text')
+            console.log(response.data)
+        } else {
+            alert(`Coupon ${event.target.value} is invalid`)
+        }
+    })
+}
 </script>
 
 <template>
@@ -46,14 +53,24 @@ const changeFormDisability = (data) => {
             >
                 <div class="field">
                     <label>How many hours do you need:</label>
-                    <input type="radio" id="hours_1" name="hours" value=1 required>
-                    <label for="hours_1">One</label>
-                    <input type="radio" id="hours_2" name="hours" value=2>
-                    <label for="hours_2">Two</label>
-                    <div>
-                        <label>Price: <strong class="important_text">$30</strong></label>
-                        <label for="coupon">Doy you have a coupon?</label>
-                        <input type="text" name="coupon" id="coupon" minlength="5" placeholder="COUPON-CODE" required/>
+                    <div class="price_builder">
+                        <div>
+                            <div>
+                                <input type="radio" id="hours_1" name="hours" value=1 required>
+                                <label for="hours_1">One</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="hours_2" name="hours" value=2>
+                                <label for="hours_2">Two</label>
+                            </div>
+                        </div>
+                        <div>
+                            <label>Price: <strong class="important_text">$<span v-text="priceNumber"></span></strong></label>
+                            <div>
+                                <label for="coupon">Doy you have a coupon?</label>
+                                <input type="text" name="coupon" id="coupon" minlength="5" placeholder="COUPON-CODE" @input="checkCouponInServer" required/>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <WeekDaysFormField>What days is better for you:</WeekDaysFormField>
@@ -81,6 +98,16 @@ const changeFormDisability = (data) => {
 .test_title{
     color: #58cc02ff;
     margin-top: 20px;
+}
+.price_builder {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.price_builder > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 </style>
 
