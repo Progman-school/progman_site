@@ -12,6 +12,7 @@ class CouponService
 
     public static function checkCoupon(string $serialNumber, string $typeName = null): array
     {
+        $serialNumber = strtoupper(trim($serialNumber));
         if ($typeName === null) {
             $coupon = Coupon::where(self::COUPON_NUMBER_KEY, $serialNumber)
                 ->where('is_active', true)
