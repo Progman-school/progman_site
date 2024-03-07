@@ -1,17 +1,11 @@
 <script setup>
-// import {computed} from "vue";
-// import { useMultiLanguageStore } from './storages/multi_language_content.js'
 import Bottom_notice from "./components/widgets/bottom_notice.vue";
 import SupportMessenger from "./components/widgets/support_messenger.vue";
-
-// const multiLanguageStore = useMultiLanguageStore()
-// multiLanguageStore.getAllTagContents()
-// const pagePreloading = computed({
-//     get () {
-//         return !Object.keys(multiLanguageStore.contentArray).length
-//     },
-// })
+import { RouterView } from 'vue-router'
+import PopupAlert from './components/widgets/popup-alert.vue'
+import LanguageChanger from './components/widgets/language-changer.vue';
 </script>
+
 <template>
     <language-changer></language-changer>
     <div id="main">
@@ -23,31 +17,8 @@ import SupportMessenger from "./components/widgets/support_messenger.vue";
     </div>
     <bottom_notice></bottom_notice>
     <popup-alert></popup-alert>
-<!--    <div class="site_cover" v-show="pagePreloading">-->
-<!--        <div class="loader">-->
-<!--            <div class="loader-inner"></div>-->
-<!--            <div class="loader-inner"></div>-->
-<!--            <div class="loader-inner"></div>-->
-<!--            <div class="loader-inner"></div>-->
-<!--            <div class="loader-inner"></div>-->
-<!--        </div>-->
-<!--    </div>-->
     <SupportMessenger></SupportMessenger>
 </template>
-<script>
-import { RouterView } from 'vue-router'
-import popupAlert from './components/widgets/popup-alert.vue'
-import languageChanger from './components/widgets/language-changer.vue';
-
-export default {
-    name: "app",
-    RouterView,
-    components: {
-        popupAlert,
-        languageChanger,
-    },
-}
-</script>
 
 <style>
 .v-enter-from,

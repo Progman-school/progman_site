@@ -15,7 +15,7 @@ class CouponService
         if ($typeName === null) {
             $coupon = Coupon::where(self::COUPON_NUMBER_KEY, $serialNumber)
                 ->where('is_active', true)
-                ->with('type', 'unit')
+                ->with('couponUnit')
                 ->first();
         } else {
             $couponType = CouponType::where('name', $typeName)->first();
@@ -25,7 +25,7 @@ class CouponService
             $coupon = Coupon::where(self::COUPON_NUMBER_KEY, $serialNumber)
                 ->where('is_active', true)
                 ->where('coupon_type_id', $couponType->id)
-                ->with('type', 'unit')
+                ->with('couponUnit')
                 ->first();
         }
 
@@ -38,7 +38,7 @@ class CouponService
         if ($coupon->max_times !== null && $coupon->used_times >= $coupon->max_times) {
             throw new UserAlert('The coupon is used up, and not available anymore!');
         }
-
+        $coupon->ttt = $coupon->type;
         return $coupon->toArray();
     }
 

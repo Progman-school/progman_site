@@ -54,12 +54,12 @@ class Coupon extends Model
     protected $hidden = [
     ];
 
-    public function type(): BelongsTo
+    public function couponType(): BelongsTo
     {
         return $this->belongsTo(CouponType::class);
     }
 
-    public function unit(): BelongsTo
+    public function couponUnit(): BelongsTo
     {
         return $this->belongsTo(CouponUnit::class);
     }

@@ -86,7 +86,10 @@ export default {
                     await callback(data)
                 }
             } catch (error) {
-                alert("The internet connection problem! Sorry.\nPlease try again later or reload the page.")
+                callback({
+                    status: 'error',
+                    data: "The internet connection problem! Sorry.\nPlease try again later or reload the page."
+                })
                 console.error(`Error:${error}`)
             }
         },

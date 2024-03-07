@@ -3,36 +3,35 @@ import Closer from "../widgets/closer.vue"
 import InsertContent from '../widgets/insert_content.vue'
 import SubmitForm from "../widgets/submit_form.vue"
 import RegistrationFormFields from "../widgets/submit_form/registration_form_fields.vue"
-import {ref} from "vue"
+import {ref, computed} from "vue"
 import {useMultiLanguageStore} from "../../storages/multi_language_content"
 import WeekDaysFormField from "../widgets/submit_form/weekday_checkbox_set_form_item.vue"
-import mixins from "../../mixins";
+import CouponDiscounter from "../widgets/coupon_discounter.vue"
 
 const COUPON_TYPE = 'consulting'
 
 const multiLanguageStore = useMultiLanguageStore()
-const priceNumber = ref(30)
+
+const amountHours = ref(1)
+const hourPrice = ref(1)
 
 const isDisabledForm = ref(true)
 const changeFormDisability = (data) => {
     isDisabledForm.value = !data
 }
 
-const checkCouponInServer = (event) => {
-    event.target.classList.remove('important_text')
-    if (event.target.value < 5) {
-        return false
+const valueRestriction = (event) => {
+    if (Number(event.target.value) <= Number(event.target.min)) {
+        event.target.value = Number(event.target.min)
     }
-    mixins.methods.getAPI(`check_coupon/${COUPON_TYPE}/${event.target.value}`).then((response) => {
-        if (response.data){
-            alert(`Coupon ${event.target.value} is valid`)
-            event.target.classList.add('important_text')
-            console.log(response.data)
-        } else {
-            alert(`Coupon ${event.target.value} is invalid`)
-        }
-    })
+    if (Number(event.target.value) >= Number(event.target.max)) {
+        event.target.value = Number(event.target.max)
+    }
 }
+
+multiLanguageStore.getContentByTag("full_private_course_price").then(insertData => {
+    hourPrice.value = insertData[multiLanguageStore.currentLanguage]
+})
 </script>
 
 <template>
@@ -56,21 +55,23 @@ const checkCouponInServer = (event) => {
                     <div class="price_builder">
                         <div>
                             <div>
-                                <input type="radio" id="hours_1" name="hours" value=1 required>
+                                <input type="radio" id="hours_1" name="hours" value=1 v-model="amountHours" required>
                                 <label for="hours_1">One</label>
                             </div>
                             <div>
-                                <input type="radio" id="hours_2" name="hours" value=2>
+                                <input type="radio" id="hours_2" name="hours" v-model="amountHours" value=2>
                                 <label for="hours_2">Two</label>
                             </div>
-                        </div>
-                        <div>
-                            <label>Price: <strong class="important_text">$<span v-text="priceNumber"></span></strong></label>
-                            <div>
-                                <label for="coupon">Doy you have a coupon?</label>
-                                <input type="text" name="coupon" id="coupon" minlength="5" placeholder="COUPON-CODE" @input="checkCouponInServer" required/>
+                            <div v-if="amountHours < 3">
+                                <input type="radio" id="hours_more" name="hours" value="3" v-model="amountHours">
+                                <label for="hours_more">More</label>
+                            </div>
+                            <div v-if="amountHours >= 3">
+                                <label for="hours_number">Your number</label>
+                                <input type="number" id="hours_number" name="hours" value=3 min=2 max=50 v-model="amountHours" @input="valueRestriction">
                             </div>
                         </div>
+                        <CouponDiscounter :couponType="COUPON_TYPE" :unit-amount="amountHours" :unit-price="hourPrice" />
                     </div>
                 </div>
                 <WeekDaysFormField>What days is better for you:</WeekDaysFormField>
@@ -108,6 +109,16 @@ const checkCouponInServer = (event) => {
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+.price_builder > div:first-child {
+    align-items: start;
+    gap: 20px;
+}
+.coupon_status {
+    text-align: center;
+}
+.price_builder input[name="coupon"] {
+    text-align: center;
 }
 </style>
 
