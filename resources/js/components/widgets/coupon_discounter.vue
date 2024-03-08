@@ -3,6 +3,7 @@ import {ref, computed, onMounted} from "vue";
 import mixins from "../../mixins";
 import router from "../../router";
 import SpinCirclePreloader from "./spin_circle_preloader.vue";
+import {useEventListener} from "../../storages/event_storage";
 
 const props = defineProps({
     unitPrice: {
@@ -30,6 +31,8 @@ const COUPON_STATUS_COLORS = {
     true: '#58cc02ff',
     false: '#cc3802',
 }
+
+const eventListener = useEventListener()
 
 const coupon = ref(null)
 const couponSerialNumber = ref('')
@@ -144,9 +147,6 @@ async function getCouponFromServer(serialNumber) {
 }
 
 function countTotalDiscountPrice(stringFormula, unitsAmount, unitPrice, discount) {
-    const amountSign = 'A'
-    const priceSign = 'P'
-    const discountSign = 'D'
     const formula = stringFormula
         .replace(/A/g, unitsAmount)
         .replace(/P/g, unitPrice)
@@ -158,8 +158,7 @@ function countTotalDiscountPrice(stringFormula, unitsAmount, unitPrice, discount
 onMounted(() => {
     router.isReady().then(() => {
         couponSerialNumber.value = router.currentRoute.value.query['coupon'] ?? ''
-        }
-    )
+    })
 })
 
 </script>
