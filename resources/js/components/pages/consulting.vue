@@ -13,7 +13,7 @@ const COUPON_TYPE = 'consulting'
 const multiLanguageStore = useMultiLanguageStore()
 
 const amountHours = ref(1)
-const hourPrice = ref(1)
+const hourPrice = ref()
 
 const isDisabledForm = ref(true)
 const changeFormDisability = (data) => {

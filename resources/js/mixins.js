@@ -119,5 +119,9 @@ export default {
                 || navigator.userAgent.match(/BlackBerry/i)
                 || navigator.userAgent.match(/Windows Phone/i)
         },
+        numRound(num, decimalPlaces = 0) {
+            const p = Math.pow(10, decimalPlaces);
+            return Math.round((num * p) * (1 + Number.EPSILON)) / p;
+        }
     },
 };
