@@ -3,7 +3,7 @@ import Closer from "../widgets/closer.vue"
 import InsertContent from '../widgets/insert_content.vue'
 import SubmitForm from "../widgets/submit_form.vue"
 import RegistrationFormFields from "../widgets/submit_form/registration_form_fields.vue"
-import {ref, computed} from "vue"
+import {ref} from "vue"
 import {useMultiLanguageStore} from "../../storages/multi_language_content"
 import WeekDaysFormField from "../widgets/submit_form/weekday_checkbox_set_form_item.vue"
 import CouponDiscounter from "../widgets/submit_form/coupon_discounter.vue"
@@ -45,7 +45,7 @@ multiLanguageStore.getContentByTag("full_private_course_price").then(insertData 
         </p>
         <section>
             <SubmitForm
-                :action="'add_consulting_request'"
+                action="add_consulting_request"
                 :is_disabled="isDisabledForm"
                 submit_button_name="Send request"
                 :isVisibleSubmitButton="true"
