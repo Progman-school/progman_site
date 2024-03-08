@@ -6,7 +6,7 @@ import RegistrationFormFields from "../widgets/submit_form/registration_form_fie
 import {ref, computed} from "vue"
 import {useMultiLanguageStore} from "../../storages/multi_language_content"
 import WeekDaysFormField from "../widgets/submit_form/weekday_checkbox_set_form_item.vue"
-import CouponDiscounter from "../widgets/coupon_discounter.vue"
+import CouponDiscounter from "../widgets/submit_form/coupon_discounter.vue"
 
 const COUPON_TYPE = 'consulting'
 

@@ -98,7 +98,7 @@ const multiLanguage = useMultiLanguageStore();
 <template>
     <div class="field week_days">
         <label>
-            <slot></slot>:
+            <slot></slot>
         </label>
         <div>
             <div v-for="day of daySets[multiLanguage.currentLanguage]" :title="day.name">

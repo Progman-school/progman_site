@@ -1,9 +1,9 @@
 <script setup>
 import {ref, computed, onMounted} from "vue";
-import mixins from "../../mixins";
-import router from "../../router";
-import SpinCirclePreloader from "./spin_circle_preloader.vue";
-import {useEventListener} from "../../storages/event_storage";
+import mixins from "../../../mixins";
+import router from "../../../router";
+import SpinCirclePreloader from "../spin_circle_preloader.vue";
+import {useEventListener} from "../../../storages/event_storage";
 
 const props = defineProps({
     unitPrice: {
@@ -197,6 +197,7 @@ onMounted(() => {
     text-align: center;
 }
 input {
+    font-weight: bold;
     text-align: center;
 }
 label{
