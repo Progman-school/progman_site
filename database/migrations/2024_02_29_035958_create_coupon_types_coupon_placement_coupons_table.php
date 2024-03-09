@@ -38,7 +38,7 @@ return new class extends Migration
         Schema::create('coupons', function (Blueprint $table) {
             $table->id();
             $table->string('name', 128);
-            $table->string('serial_number', 64)->unique();
+            $table->string('serial_number', 64)->unique()->nullable()->default(null);
             $table->string('description')->nullable();
             $table->enum('language', \App\Services\TagService::LANG_LIST)->nullable(false);
             $table->enum('method', Coupon::METHODS);

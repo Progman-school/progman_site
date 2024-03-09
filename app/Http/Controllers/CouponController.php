@@ -10,10 +10,23 @@ use App\Services\EmailService;
 
 class CouponController extends MainController
 {
+    /**
+     * @throws UserAlert
+     */
     public function checkCoupon(string $serialNumber): string
     {
         return ApiHelper::createFrontAnswer(
             CouponService::checkCoupon($serialNumber)
+        );
+    }
+
+    /**
+     * @throws UserAlert
+     */
+    public function checkCouponType(string $type, string $serialNumber): string
+    {
+        return ApiHelper::createFrontAnswer(
+            CouponService::checkCoupon($serialNumber, $type)
         );
     }
 }

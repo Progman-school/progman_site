@@ -1,52 +1,32 @@
-<script>
-export default {
-    name: "insert-content",
-    props: {
-        "set_class": ""
-    },
-}
-</script>
-
 <script setup>
-import { useSlots, computed } from 'vue'
-import { useMultiLanguageStore } from '../../storages/multi_language_content.js'
-
-const slots = useSlots()
-const multiLanguageStore = useMultiLanguageStore();
-const tag = slots.default()[0].children
-
-const created = () => {
-    multiLanguageStore.getContentByTag(tag)
-}
-
-const langContent = computed({
-    get () {
-        return multiLanguageStore.contentArray[tag] === undefined ? '' :
-            multiLanguageStore.contentArray[tag][multiLanguageStore.currentLanguage]
+defineProps({
+    isVisible: {
+        type: Boolean,
+        default: false
     },
+    transitionName: {
+        type: String,
+        default: 'slide-fade'
+    },
+    transitionMode: {
+        type: String,
+        default: 'out-in'
+    }
 })
-created()
 </script>
 
 <template>
-    <transition mode="out-in">
-    <div class="widget_preloader" v-show="!langContent">
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-    </div>
-    </transition>
-    <transition mode="out-in">
-        <content :class="set_class" v-html="langContent" v-show="langContent"></content>
+    <transition :name="transitionName" :mode="transitionMode">
+        <div class="widget_preloader" v-show="isVisible">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
     </transition>
 </template>
 
 <style scoped>
-content {
-    display: inline-block;
-}
-/*the wget preloader*/
 .widget_preloader{
     text-align: center;
     margin: 20px 0;
@@ -104,5 +84,4 @@ content {
         transform:translate(20px);
     }
 }
-
 </style>

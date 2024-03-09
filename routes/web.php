@@ -17,7 +17,5 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/{lang?}/{page?}', function ($lang = null, $page = null) {
     return Controller::index($lang);
-})
-    ->where('lang', implode('|', TagService::LANG_LIST))
-    ->where('page', '.*');
+})->where('page', '.*');
 

@@ -6,6 +6,7 @@ use App\Models\Coupon\CouponPlacement;
 use App\Models\Coupon\CouponType;
 use App\Models\Coupon\CouponUnit;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Coupon extends Model
@@ -53,19 +54,19 @@ class Coupon extends Model
     protected $hidden = [
     ];
 
-    public function type(): HasOne
+    public function couponType(): BelongsTo
     {
-        return $this->hasOne(CouponType::class);
+        return $this->belongsTo(CouponType::class);
     }
 
-    public function unit(): HasOne
+    public function couponUnit(): BelongsTo
     {
-        return $this->hasOne(CouponUnit::class);
+        return $this->belongsTo(CouponUnit::class);
     }
 
-    public function placement(): HasOne
+    public function placement(): BelongsTo
     {
-        return $this->hasOne(CouponPlacement::class);
+        return $this->belongsTo(CouponPlacement::class);
     }
 
 }

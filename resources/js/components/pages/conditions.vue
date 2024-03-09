@@ -1,6 +1,6 @@
 <script setup>
 import Closer from '../widgets/closer.vue';
-import InsertContent from '../widgets/insert-content.vue'
+import InsertContent from '../widgets/insert_content.vue'
 </script>
 
 <template>

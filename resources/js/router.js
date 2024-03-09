@@ -7,6 +7,8 @@ import free from './components/pages/free.vue'
 import conditions from './components/pages/conditions.vue'
 import contacts from './components/pages/contacts.vue'
 import checkCertificate from './components/pages/check_certificate.vue'
+import newTest from './components/pages/new_test.vue'
+import consulting from './components/pages/consulting.vue'
 import tmp from './components/pages/tmp.vue'
 
 const routes = [
@@ -55,6 +57,16 @@ const routes = [
     //     path: '/tmp',
     //     component: tmp
     // },
+    {
+        name: '',
+        path: '/:lang?/new_test',
+        component: newTest
+    },
+    {
+        name: '',
+        path: '/:lang?/consulting',
+        component: consulting
+    },
 ]
 
 const router = createRouter({

@@ -6,7 +6,7 @@ import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
 import {computed, ref} from "vue";
 import mixins from "../../mixins";
 import router from "../../router";
-import InsertContent from '../widgets/insert-content.vue'
+import InsertContent from './insert_content.vue'
 
 const multiLanguageStore = useMultiLanguageStore()
 const preloadedDataStorage = usePreloadedDataStorage()

@@ -3,7 +3,7 @@ import { useEventListener } from "../../storages/event_storage.js"
 const eventListener = useEventListener()
 import mixins from '../../mixins.js'
 import Closer from '../widgets/closer.vue';
-import InsertContent from '../widgets/insert-content.vue'
+import InsertContent from '../widgets/insert_content.vue'
 
 const showCheckResult = (resultData) => {
     eventListener.call('popup_alert:show', {

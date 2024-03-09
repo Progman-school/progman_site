@@ -64,7 +64,7 @@ export default {
                 const requestObject = {
                     method: method,
                     headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'Content-Type': 'application/x-www-submit_form-urlencoded',
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                     }
                 }
@@ -86,7 +86,10 @@ export default {
                     await callback(data)
                 }
             } catch (error) {
-                alert("The internet connection problem! Sorry.\nPlease try again later or reload the page.")
+                callback({
+                    status: 'error',
+                    data: "The internet connection problem! Sorry.\nPlease try again later or reload the page."
+                })
                 console.error(`Error:${error}`)
             }
         },
@@ -116,5 +119,9 @@ export default {
                 || navigator.userAgent.match(/BlackBerry/i)
                 || navigator.userAgent.match(/Windows Phone/i)
         },
+        numRound(num, decimalPlaces = 0) {
+            const p = Math.pow(10, decimalPlaces);
+            return Math.round((num * p) * (1 + Number.EPSILON)) / p;
+        }
     },
 };

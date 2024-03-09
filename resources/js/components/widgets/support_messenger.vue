@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import mixins from "../../mixins";
 import {useEventListener} from "../../storages/event_storage";
 import {useMultiLanguageStore} from "../../storages/multi_language_content"
-import InsertContent from '../widgets/insert-content.vue'
+import InsertContent from './insert_content.vue'
 
 const multiLanguageStore = useMultiLanguageStore();
 const eventListener = useEventListener()

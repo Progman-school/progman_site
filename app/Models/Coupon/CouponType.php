@@ -5,6 +5,7 @@ namespace App\Models\Coupon;
 use App\Models\Coupon;
 use App\Services\TagService;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class CouponType extends Model
