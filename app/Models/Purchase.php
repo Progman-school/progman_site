@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Coupon\CouponType;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use App\Models\Request as UserRequest;
@@ -24,6 +25,7 @@ class Purchase extends Model
     protected $fillable = [
         'request_id',
         'product_id',
+        'coupon_id',
         'quantity',
         'current_product_price',
         'total_price',
@@ -34,6 +36,11 @@ class Purchase extends Model
         'admin_id',
         'comment',
     ];
+
+    public function coupon(): HasOne
+    {
+        return $this->hasOne(Coupon::class);
+    }
 
     public function request(): HasOne
     {
