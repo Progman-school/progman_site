@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\User;
+use App\Models\Course;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,7 +13,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('requests', function (Blueprint $table) {
-            $table->foreignIdFor(User::class)->constrained();
+            $table->dropColumn('test_score');
+            $table->dropForeignIdFor(Course::class);
+            $table->dropColumn('course_id');
         });
     }
 
@@ -23,8 +25,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('requests', function (Blueprint $table) {
-            $table->dropForeignIdFor(User::class);
-            $table->dropColumn('user_id');
+            $table->foreignIdFor(Course::class)->nullable()->default(null)->constrained();
+            $table->integer('test_score')->nullable()->default(null);
         });
     }
 };

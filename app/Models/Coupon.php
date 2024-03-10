@@ -7,7 +7,8 @@ use App\Models\Coupon\CouponType;
 use App\Models\Coupon\CouponUnit;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Models\Request as UserRequest;
 
 class Coupon extends Model
 {
@@ -67,6 +68,16 @@ class Coupon extends Model
     public function placement(): BelongsTo
     {
         return $this->belongsTo(CouponPlacement::class);
+    }
+
+    public function requests(): HasMany
+    {
+        return $this->hasMany(UserRequest::class);
+    }
+
+    public function purchases(): HasMany
+    {
+        return $this->hasMany(Purchase::class);
     }
 
 }

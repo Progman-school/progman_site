@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Models\Uids\Email;
 use App\Models\Uids\Telegram;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -50,9 +49,9 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function requests(): BelongsToMany
+    public function requests(): HasMany
     {
-        return $this->belongsToMany(Request::class);
+        return $this->hasMany(Request::class);
     }
 
     public function telegrams(): HasMany
@@ -63,5 +62,10 @@ class User extends Authenticatable
     public function emails(): HasMany
     {
         return $this->hasMany(Email::class);
+    }
+
+    public function purchases(): HasMany
+    {
+        return $this->hasMany(Purchase::class);
     }
 }

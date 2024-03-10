@@ -5,7 +5,10 @@ namespace App\Models;
 use App\Models\Coupon\CouponType;
 use App\Services\TagService;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use App\Models\Request as UserRequest;
 
 class Product extends Model
 {
@@ -26,13 +29,24 @@ class Product extends Model
         'course_id',
     ];
 
-    public function couponType(): HasOne
+    public function couponType(): BelongsTo
     {
-        return $this->hasOne(CouponType::class);
+        return $this->belongsTo(CouponType::class);
     }
 
-    public function course(): HasOne
+    public function course(): BelongsTo
     {
-        return $this->hasOne(Course::class);
+        return $this->belongsTo(Course::class);
     }
+
+    public function request(): HasMany
+    {
+        return $this->hasMany(UserRequest::class);
+    }
+
+    public function purchases(): HasMany
+    {
+        return $this->hasMany(Purchase::class);
+    }
+
 }

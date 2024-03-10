@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Coupon\CouponType;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use App\Models\Request as UserRequest;
 
@@ -37,24 +38,24 @@ class Purchase extends Model
         'comment',
     ];
 
-    public function coupon(): HasOne
+    public function request(): BelongsTo
     {
-        return $this->hasOne(Coupon::class);
+        return $this->belongsTo(UserRequest::class);
     }
 
-    public function request(): HasOne
+    public function product(): BelongsTo
     {
-        return $this->hasOne(UserRequest::class);
+        return $this->belongsTo(Product::class);
     }
 
-    public function product(): HasOne
+    public function coupon(): BelongsTo
     {
-        return $this->hasOne(Product::class);
+        return $this->belongsTo(Coupon::class);
     }
 
-    public function user(): HasOne
+    public function user(): BelongsTo
     {
-        return $this->hasOne(User::class);
+        return $this->belongsTo(User::class);
     }
 
 }

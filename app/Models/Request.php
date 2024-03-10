@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Request extends Model
@@ -18,25 +20,40 @@ class Request extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'created_at',
         'updated_at',
-        'contact',
         'type',
         'hash',
-        'course_id',
-        'test_score',
+        'contact',
         'application_data',
+        'admin_message_id',
         'language',
+        'name',
+        'status',
+        'user_id',
+        'product_id',
+        'quantity',
+        'current_product_price',
+        'coupon_id',
     ];
 
-    public function users(): BelongsToMany
+    public function user(): BelongsTo
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsTo(User::class);
     }
 
-    public function course(): HasOne
+    public function product(): BelongsTo
     {
-        return $this->hasOne(Course::class);
+        return $this->belongsTo(Product::class);
+    }
+
+    public function coupon(): BelongsTo
+    {
+        return $this->belongsTo(Coupon::class);
+    }
+
+    public function purchases(): HasMany
+    {
+        return $this->hasMany(Purchase::class);
     }
 
     private function getRepeats()
