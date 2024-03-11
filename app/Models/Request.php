@@ -22,18 +22,18 @@ class Request extends Model
     protected $fillable = [
         'updated_at',
         'type',
-        'hash',
+//        'hash',
         'contact',
-        'application_data',
-        'admin_message_id',
-        'language',
+//        'application_data',
+//        'admin_message_id',
+//        'language',
         'name',
-        'status',
-        'user_id',
+//        'status',
+//        'user_id',
         'product_id',
         'quantity',
         'current_product_price',
-        'coupon_id',
+//        'coupon_id',
     ];
 
     public function user(): BelongsTo

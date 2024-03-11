@@ -21,11 +21,10 @@ class ConfirmApplication extends Mailable
 
     public string $text;
 
-    public function __construct(string $confirmUrl, int $score, string $text)
+    public function __construct(string $confirmUrl, string $text)
     {
         $this->confirmUrl = $confirmUrl;
         $this->text = $text;
-        $this->score = $score;
     }
 
     /**

@@ -20,14 +20,9 @@ class UserRequestService
         if (!in_array($request->uid_type, UidService::AVAILABLE_TYPES)) {
             throw new Exception("Unexpected uid type '{$request->uid_type}'");
         }
-
-        $score = self::calculateTestScore($request->toArray());
-        $userRequest = new UserRequest();
-        $userRequest->test_score = $score;
-        $userRequest->application_data = json_encode($request->input(), JSON_UNESCAPED_UNICODE);
-        $userRequest->type = $request->uid_type;
-        $userRequest->contact = $request->contact;
-        $userRequest->name = $request->name;
+        $requestData = $request->all();
+        $userRequest = new UserRequest($requestData);
+        $userRequest->application_data = json_encode($requestData, JSON_UNESCAPED_UNICODE);
         $userRequest->hash = self::getRequestHash($request);
         $userRequest->language = TagService::getCurrentLanguage();
         $userRequest->status = UserRequest::RECEIVED_STATUS;
@@ -55,17 +50,16 @@ class UserRequestService
             )[TagService::getCurrentLanguage()],
         ];
 
-        if ($userRequest->type == "telegram") {
+        if ($userRequest->uid_type == "telegram") {
                 $return['hash_link'] = "tg://resolve?domain=" . config("services.telegram.bot_login") .
-                    "&" . self::CONFIRM_URL_PARAM . "={$userRequest->type}-{$userRequest->hash}";
-        } elseif ($userRequest->type == "email") {
+                    "&" . self::CONFIRM_URL_PARAM . "={$userRequest->uid_type}-{$userRequest->hash}";
+        } elseif ($userRequest->uid_type == "email") {
             Mail::to($request->contact)->send(new ConfirmApplication(
                 "https://{$_SERVER['HTTP_HOST']}/" . EmailServiceSdk::API_ROUT . EmailServiceSdk::API_ENTRYPOINT .
                 "?" . http_build_query([
                     "action" => "confirm_request",
-                    self::CONFIRM_URL_PARAM => "{$userRequest->type}-{$userRequest->hash}",
+                    self::CONFIRM_URL_PARAM => "{$userRequest->uid_type}-{$userRequest->hash}",
                 ]),
-                $score,
                 self::generateAlertText($userRequest)
             ));
         }
@@ -188,24 +182,30 @@ class UserRequestService
 
     public static function createRequestMessageForAdminChat(
         UserRequest $userRequest,
-        array $testData,
+        array $productData,
         array $confirmedData = null,
         int $requestsCount = null,
         string $firstRequest = null
     ): string
     {
-        $message = "Request! ({$userRequest->type} type)\n";
+        $message = "Request! ({$userRequest->uid_type} type)\n";
         $message .= "№: {$userRequest->id}\n";
         $message .= "Lang: {$userRequest->language}\n";
         $message .= "Name: {$userRequest->name}\n";
         $message .= "Contact: {$userRequest->contact}\n\n";
+
+        $message .= "PRODUCT:\n";
+        foreach ($productData as $keyProductItem => $productItem) {
+            $message .= "$keyProductItem: $productItem\n";
+        }
+        $message .= "\n";
 
         $message .= "Created: " . date("m/d/Y H:i:s", strtotime($userRequest->created_at)) . "\n";
         $message .= "Updated: " . ($userRequest->updated_at ? date("m/d/Y H:i:s", strtotime($userRequest->updated_at)) : "-") . "\n";
         $message .= "Status: {$userRequest->status}\n\n";
 
         if ($confirmedData) {
-            $message .= "CONFIRMED DATA:\n";
+            $message .= "CONFIRMED UID DATA:\n";
             foreach ($confirmedData as $keyContactItem => $contactItem) {
                 $message .= "$keyContactItem: $contactItem\n";
             }
@@ -217,11 +217,10 @@ class UserRequestService
             $message .= "first request: " . ($firstRequest ? date("d.m.Y", strtotime($firstRequest)) : "none") . "\n";
         }
 
-        $message .= "TEST: \n";
-        foreach ($testData as $keyTestItem => $testItem) {
+        $message .= "Application: \n";
+        foreach ($userRequest->application_data as $keyTestItem => $testItem) {
             $message .= "$keyTestItem: $testItem\n";
         }
-        $message .= "\nTEST SCORE: {$userRequest->test_score}\n";
         return $message;
     }
 
@@ -232,7 +231,7 @@ class UserRequestService
     public static function confirmUserRequest(string $hashString): UserRequest
     {
         $hashData = explode("-", $hashString);
-        $userRequest = UserRequest::where(["type" => $hashData[0], "hash" => $hashData[1]])->first();
+        $userRequest = UserRequest::where(["uid_type" => $hashData[0], "hash" => $hashData[1]])->first();
         if (!$userRequest?->id) {
             throw new UserAlert(
                 TagService::getTagValueByName("invalid_command_from_site_error")[TagService::getCurrentLanguage()]

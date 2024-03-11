@@ -30,7 +30,8 @@ class UserService
         $checkUser->first_name = $firstName;
         $checkUser->last_name = $lastName;
         $checkUser->save();
-        $checkUser->requests()->attach($userRequest->id);
+        $userRequest->user()->associate($checkUser);
+        $userRequest->save();
 
         return $checkUser;
     }
