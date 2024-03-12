@@ -102,7 +102,7 @@ const multiLanguage = useMultiLanguageStore();
         </label>
         <div>
             <div v-for="day of daySets[multiLanguage.currentLanguage]" :title="day.name">
-                <input :id="`weekday_${day.code}`" type="checkbox" :name="`weekday__${day.name}`" :value="day.code">
+                <input :id="`weekday_${day.code}`" type="checkbox" :name="`weekday__${day.number}`" :value="day.code">
                 <label :for="`weekday_${day.code}`">{{day.short}}</label>
             </div>
         </div>

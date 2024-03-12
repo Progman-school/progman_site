@@ -2,7 +2,7 @@
 import mixins from "../../mixins";
 import { useEventListener } from "../../storages/event_storage.js"
 
-defineProps({
+const props = defineProps({
     action: {
         type: String,
         default: null
@@ -18,23 +18,30 @@ defineProps({
     is_disabled: {
         type: Boolean,
         default: true
+    },
+    preserveFunction: {
+        type: Function,
+        default: null
     }
 })
 
 const eventListener = useEventListener()
 const submitForm = (form) => {
     form.preventDefault()
-    const formData = new FormData(form.target)
+    let formData = new FormData(form.target)
+    if (props.preserveFunction) {
+        formData = props.preserveFunction(formData)
+    }
     mixins.methods.postAPI(
-        'add_request',
+        props.action,
         formData,
-        () => {
+        (result) => {
             eventListener.call('popup_alert:show', {
-                title: preLoginResult.data.alert_title ?? 'Info!',
-                text: preLoginResult.data.alert_text ?? '',
-                href: preLoginResult.data.href_link ?? null,
-                url: preLoginResult.data.url_link ?? null,
-                button: preLoginResult.data.alett_button_name ?? 'Ok',
+                title: result.data.status ?? 'Info!',
+                text: result.data?.alert_text ?? '',
+                href: result.data?.href_link ?? null,
+                url: result.data?.url_link ?? null,
+                button: result.data?.alett_button_name ?? 'Ok',
             });
             form.reset()
         }

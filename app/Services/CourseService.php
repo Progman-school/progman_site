@@ -6,7 +6,7 @@ use App\Models\Course;
 
 class CourseService
 {
-    public static function getCoursesList(?bool $active = null): array
+    public static function getAllCourses(?bool $active = null): array
     {
         $conditions = [];
         if (!is_null($active)) {

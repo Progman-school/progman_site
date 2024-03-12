@@ -5,11 +5,11 @@ import mixins from "../../mixins.js";
 import { useEventListener } from "../../storages/event_storage.js"
 import {ref} from "vue";
 import {useMultiLanguageStore} from "../../storages/multi_language_content";
-import {usePreloadedDataStorage} from "../../storages/preloaded_content_storage";
+import {useCourseStorage} from "../../storages/course_storage";
 import router from "../../router";
 const multiLanguageStore = useMultiLanguageStore()
 const eventListener = useEventListener()
-const preloadedData = usePreloadedDataStorage()
+const preloadedData = useCourseStorage()
 const showLoginAlert = (preLoginResult) => {
     eventListener.call('popup_alert:show', {
         title: '{{test_passed_alert_title}}',

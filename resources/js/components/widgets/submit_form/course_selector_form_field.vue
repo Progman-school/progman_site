@@ -1,6 +1,6 @@
 <script setup>
 import {ref} from "vue";
-import {usePreloadedDataStorage} from "../../../storages/preloaded_content_storage";
+import {useCourseStorage} from "../../../storages/course_storage";
 import {useMultiLanguageStore} from "../../../storages/multi_language_content";
 import router from "../../../router";
 import InlinePreloader from '../inline_preloader.vue'
@@ -21,13 +21,13 @@ const props = defineProps({
 const multiLanguageStore = useMultiLanguageStore()
 const emit = defineEmits([ON_SELECT_EMIT])
 const selectedCourse = ref(null)
-const preloadedData = usePreloadedDataStorage()
+const courseStorage = useCourseStorage()
 const isWidgetReady = ref(false)
 
-preloadedData.getCoursesList().then(() => {
+courseStorage.getCoursesList().then(() => {
     router.isReady().then(() => {
         const urlCourseId = router.currentRoute.value.query[props.urlParamName] ?? null
-        const requestedCourse = preloadedData.courses[urlCourseId] ?? preloadedData[props.openedCourseId] ?? null
+        const requestedCourse = courseStorage.courses[urlCourseId] ?? courseStorage[props.openedCourseId] ?? null
         if (requestedCourse) {
             setCourse(requestedCourse)
         }
@@ -55,7 +55,7 @@ function setCourse(course) {
 }
 
 const selectCourse = (event) => {
-    setCourse(preloadedData.courses[event.target.value])
+    setCourse(courseStorage.courses[event.target.value])
 }
 
 </script>
@@ -68,12 +68,12 @@ const selectCourse = (event) => {
         </label>
         <select id="course" name="course_id" :class="selectedCourse ? 'selected_course' : ''" @change="selectCourse">
             <option v-if="!selectedCourse" value="" selected disabled>Select course</option>
-            <option v-for="course in preloadedData.courses" :value=course.id :title=course.level :selected="selectedCourse?.id === course.id">
+            <option v-for="course in courseStorage.courses" :value=course.id :title=course.level :selected="selectedCourse?.id === course.id">
                 {{course.name}}
             </option>
         </select>
         <transition name="slide-fade" mode="out-in">
-            <div class="curse_details" v-show="selectedCourse">
+            <div class="curse_details" v-if="selectedCourse">
                 <h4>Details:</h4>
                 <div>
                     <b>Start from:&nbsp;&nbsp;{{ selectedCourse.level }}</b>

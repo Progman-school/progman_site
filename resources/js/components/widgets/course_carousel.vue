@@ -1,5 +1,5 @@
 <script setup>
-import {usePreloadedDataStorage} from "../../storages/preloaded_content_storage";
+import {useCourseStorage} from "../../storages/course_storage";
 import {useMultiLanguageStore} from "../../storages/multi_language_content";
 import 'vue3-carousel/dist/carousel.css'
 import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
@@ -9,10 +9,10 @@ import router from "../../router";
 import InsertContent from './insert_content.vue'
 
 const multiLanguageStore = useMultiLanguageStore()
-const preloadedDataStorage = usePreloadedDataStorage()
+const courseStorage = useCourseStorage()
 
 const name = "course-carousel"
-preloadedDataStorage.getCoursesList();
+courseStorage.getCoursesList();
 
 const autoPlay = ref(3000)
 
@@ -39,7 +39,7 @@ const getItemsToShow = computed({
 <template>
     <h3><InsertContent>course_carousel_widget_title</InsertContent></h3>
     <Carousel :autoplay=autoPlay :itemsToShow="getItemsToShow" :wrapAround="true" :transition="600">
-        <Slide v-for="course in preloadedDataStorage.courses" :key="course.id">
+        <Slide v-for="course in courseStorage.courses" :key="course.id">
             <div class="carousel__item" :title="course['description_' + multiLanguageStore.currentLanguage]">
                 <h5 @click="toggleDetails">{{course.name}}</h5>
                 <div class="full_details" style="display: none">
