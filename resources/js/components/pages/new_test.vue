@@ -85,7 +85,17 @@ function yearsMonthsWeeksDays(daysNumber) {
 }
 
 function countDays(takesHours, hoursPerDay, daysPerWeek, level, age) {
-    let days = Math.ceil(takesHours / (hoursPerDay * daysPerWeek)) * 7
+    if (hoursPerDay > 2) {
+        hoursPerDay -= (hoursPerDay * 0.3)
+    } else if (hoursPerDay > 5) {
+        hoursPerDay -= (hoursPerDay * 0.4)
+    }
+    else if (hoursPerDay > 6) {
+        hoursPerDay -= (hoursPerDay * 0.5)
+    }
+    let days = Math.ceil(takesHours / Math.floor(hoursPerDay * daysPerWeek)) * 7
+
+    days += 1
 
     switch (level) {
         case 'zero':
@@ -99,19 +109,21 @@ function countDays(takesHours, hoursPerDay, daysPerWeek, level, age) {
             break
     }
 
+    days = Math.ceil(days)
+
     if (age < 14) {
-        days *= 1.5
+        days *= 1.6
     } else if (age < 18) {
-        days *= 1.3
+        days *= 1.2
     }
     else if (age > 60) {
         days *= 1.8
     }
     else if (age > 45) {
-        days *= 1.5
+        days *= 1.4
     }
     else if (age > 35) {
-        days *= 1.3
+        days *= 1.2
     }
 
     return Math.ceil(days)
