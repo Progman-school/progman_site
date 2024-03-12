@@ -38,6 +38,7 @@ function processTest(formFields) {
     for (let technology of courseStorage.courses[formFields.get('course_id')].technologies) {
         hours += technology.pivot.hours
     }
+    console.log(hours)
 
     let weekDaysCount = 0
     formFields.entries().forEach((entry) => {
