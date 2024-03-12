@@ -38,8 +38,6 @@ function processTest(formFields) {
     for (let technology of courseStorage.courses[formFields.get('course_id')].technologies) {
         hours += technology.pivot.hours
     }
-    console.log(hours)
-
     let weekDaysCount = 0
     formFields.entries().forEach((entry) => {
         if (entry[0].includes('weekday__')) {
@@ -48,14 +46,14 @@ function processTest(formFields) {
     })
 
     const score = countDays(
-        formFields.get('day_hours'),
         hours,
+        formFields.get('day_hours'),
         weekDaysCount,
         formFields.get('current_level'),
         formFields.get('age')
     )
 
-    const yourselfScore = Math.ceil(score * 2.7)
+    const yourselfScore = Math.ceil((score + 1) * 2.7)
 
     formFields.append('score', score)
     formFields.append('yourself_score', yourselfScore)
@@ -87,13 +85,14 @@ function yearsMonthsWeeksDays(daysNumber) {
 
 function countDays(takesHours, hoursPerDay, daysPerWeek, level, age) {
     if (hoursPerDay > 2) {
-        hoursPerDay -= (hoursPerDay * 0.3)
+        hoursPerDay -= (hoursPerDay * 0.32)
     } else if (hoursPerDay > 5) {
-        hoursPerDay -= (hoursPerDay * 0.4)
+        hoursPerDay -= (hoursPerDay * 0.41)
     }
     else if (hoursPerDay > 6) {
         hoursPerDay -= (hoursPerDay * 0.5)
     }
+
     let days = Math.ceil(takesHours / Math.floor(hoursPerDay * daysPerWeek)) * 7
 
     days += 1
