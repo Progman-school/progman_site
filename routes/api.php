@@ -3,6 +3,7 @@
 use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\PreloadedContentController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RequestController;
 use App\Http\Controllers\SupportMessengerController;
 use App\Http\Controllers\TagController;
@@ -33,4 +34,6 @@ Route::get('get_courses_list', [PreloadedContentController::class, 'getCoursesLi
 Route::post("support_request_message", [SupportMessengerController::class, 'supportRequestMessage']);
 
 Route::get('check_coupon/any/{serialNumber}', [CouponController::class, 'checkCoupon']);
-Route::get('check_coupon/{type}/{serialNumber}', [CouponController::class, 'checkCouponType']);
+Route::get('check_coupon/{typeId}/{serialNumber}', [CouponController::class, 'checkCouponType']);
+
+Route::get('get_product_by/name/{name}', [ProductController::class, 'getProductsByName']);

@@ -16,17 +16,17 @@ class CouponController extends MainController
     public function checkCoupon(string $serialNumber): string
     {
         return ApiHelper::createFrontAnswer(
-            CouponService::checkCoupon($serialNumber)
+            CouponService::checkCouponBy($serialNumber)
         );
     }
 
     /**
      * @throws UserAlert
      */
-    public function checkCouponType(string $type, string $serialNumber): string
+    public function checkCouponType(int $typeId, string $serialNumber): string
     {
         return ApiHelper::createFrontAnswer(
-            CouponService::checkCoupon($serialNumber, $type)
+            CouponService::checkCouponBy($serialNumber, $typeId)
         );
     }
 }

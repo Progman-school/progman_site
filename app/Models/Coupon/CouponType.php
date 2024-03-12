@@ -3,10 +3,8 @@
 namespace App\Models\Coupon;
 
 use App\Models\Coupon;
-use App\Models\Product;
 use App\Services\TagService;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class CouponType extends Model
@@ -34,8 +32,4 @@ class CouponType extends Model
         return $this->hasMany(Coupon::class);
     }
 
-    public function products(): HasMany
-    {
-        return $this->hasMany(Product::class);
-    }
 }

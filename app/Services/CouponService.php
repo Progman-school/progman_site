@@ -10,18 +10,18 @@ class CouponService
 {
     const COUPON_NUMBER_KEY = 'serial_number';
 
-    public static function checkCoupon(string $serialNumber, string $typeName = null): array
+    public static function checkCouponBy(string $serialNumber, mixed $paramValue = null, string $paramName = 'id'): array
     {
         $serialNumber = strtoupper(trim($serialNumber));
-        if ($typeName === null) {
+        if ($paramValue === null) {
             $coupon = Coupon::where(self::COUPON_NUMBER_KEY, $serialNumber)
                 ->where('is_active', true)
                 ->with('couponUnit')
                 ->first();
         } else {
-            $couponType = CouponType::where('name', $typeName)->first();
+            $couponType = CouponType::where($paramName, $paramValue)->first();
             if ($couponType === null) {
-                throw new UserAlert("The coupon type {$typeName} is not found!");
+                throw new UserAlert("The coupon ({$paramName}:{$paramValue}) is not found!");
             }
             $coupon = Coupon::where(self::COUPON_NUMBER_KEY, $serialNumber)
                 ->where('is_active', true)
@@ -39,9 +39,7 @@ class CouponService
         if ($coupon->max_times !== null && $coupon->used_times >= $coupon->max_times) {
             throw new UserAlert('The coupon is used up, and not available anymore!');
         }
-        $coupon->ttt = $coupon->type;
         return $coupon->toArray();
     }
-
 
 }

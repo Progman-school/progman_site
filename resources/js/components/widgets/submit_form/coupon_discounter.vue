@@ -16,8 +16,9 @@ const props = defineProps({
         default: null,
         required: true,
     },
-    couponType: {
-        type: String,
+    couponTypeId: {
+        type: Number,
+        default: null,
         required: true,
     },
     currencySymbol: {
@@ -64,9 +65,9 @@ const discountPrice = computed(() => {
 
     router.replace({query: {coupon: couponSerialNumber.value}})
 
-    if (!checkedCouponSerialNumber.value || checkedCouponSerialNumber.value !== couponSerialNumber.value) {
+    if (props.couponTypeId && (!checkedCouponSerialNumber.value || checkedCouponSerialNumber.value !== couponSerialNumber.value)) {
         checkedCouponSerialNumber.value = couponSerialNumber.value
-        checkCoupon(couponSerialNumber.value).then((data) => {
+        checkCoupon(props.couponTypeId, couponSerialNumber.value).then((data) => {
             coupon.value = data
         })
     }
@@ -83,7 +84,7 @@ const discountPrice = computed(() => {
     return price
 })
 
-async function checkCoupon(serialNumber) {
+async function checkCoupon(couponTypeId, serialNumber) {
     inCheckingProcess.value = true
 
     if (!serialNumber || !serialNumber.length) {
@@ -96,7 +97,7 @@ async function checkCoupon(serialNumber) {
         return null
     }
 
-    const couponData = await getCouponFromServer(serialNumber)
+    const couponData = await getCouponFromServer(couponTypeId, serialNumber)
 
     if (couponData.status === 'OK') {
         setValueStatus(
@@ -134,10 +135,10 @@ function setDefaultStatus(statusMessage = 'Use coupon for discount!') {
     couponStatusColor.value = COUPON_STATUS_COLORS[null]
 }
 
-async function getCouponFromServer(serialNumber) {
+async function getCouponFromServer(couponTypeId, serialNumber) {
     let responseData = null
     await mixins.methods.getAPI(
-        `check_coupon/${props.couponType}/${serialNumber}`,
+        `check_coupon/${couponTypeId}/${serialNumber}`,
         null,
         (response) => {
             responseData = response
