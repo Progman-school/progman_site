@@ -50,10 +50,18 @@ function processTest(formFields) {
         formFields.get('day_hours'),
         weekDaysCount,
         formFields.get('current_level'),
-        formFields.get('age')
+        formFields.get('age'),
+        true
     )
 
-    const yourselfScore = Math.ceil((score + 1) * 2.7)
+    const yourselfScore = countDays(
+        hours,
+        formFields.get('day_hours'),
+        weekDaysCount,
+        formFields.get('current_level'),
+        formFields.get('age'),
+        false
+    )
 
     formFields.append('score', score)
     formFields.append('yourself_score', yourselfScore)
@@ -83,7 +91,7 @@ function yearsMonthsWeeksDays(daysNumber) {
     return result + days + (days > 1 ? 'days' : 'day')
 }
 
-function countDays(takesHours, hoursPerDay, daysPerWeek, level, age) {
+function countDays(takesHours, hoursPerDay, daysPerWeek, level, age, withHelp = false) {
     if (hoursPerDay > 2) {
         hoursPerDay -= (hoursPerDay * 0.32)
     } else if (hoursPerDay > 5) {
@@ -126,6 +134,22 @@ function countDays(takesHours, hoursPerDay, daysPerWeek, level, age) {
         days *= 1.2
     }
 
+    days = Math.ceil(days)
+    if (withHelp) {
+        return days - 3
+    }
+
+    switch (level) {
+        case 'zero':
+            days = (days + 7) * 2.8
+            break
+        case 'junior':
+            days = (days + 3) * 2.2
+            break
+        case 'middle':
+            days = days * 1.45
+            break
+    }
     return Math.ceil(days)
 }
 
