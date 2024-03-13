@@ -9,14 +9,18 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Models\Request as UserRequest;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Coupon extends Model
 {
     const CUSTOM_METHOD = "custom";
     const GENERATED_METHOD = "generated";
+    const AUTO_GENERATED_METHOD = "auto_generated";
+
     const METHODS = [
         self::CUSTOM_METHOD,
-        self::GENERATED_METHOD
+        self::GENERATED_METHOD,
+        self::AUTO_GENERATED_METHOD
     ];
 
     const ONLINE_AREA_TYPE= "online";
@@ -78,6 +82,11 @@ class Coupon extends Model
     public function purchases(): HasMany
     {
         return $this->hasMany(Purchase::class);
+    }
+
+    public function testResult(): HasOne
+    {
+        return $this->hasOne(TestResult::class);
     }
 
 }

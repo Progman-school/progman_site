@@ -37,3 +37,5 @@ Route::get('check_coupon/any/{serialNumber}', [CouponController::class, 'checkCo
 Route::get('check_coupon/{typeId}/{serialNumber}', [CouponController::class, 'checkCouponType']);
 
 Route::get('get_product_by/name/{name}', [ProductController::class, 'getProductsByName']);
+
+Route::post('process_test', [RequestController::class, 'addRequest']);
