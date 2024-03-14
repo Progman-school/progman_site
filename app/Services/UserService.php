@@ -20,7 +20,7 @@ class UserService
     ): User
     {
         /** @var User $checkUser */
-        $checkUser = $userRequest->users()->first();
+        $checkUser = $userRequest->user()->first();
 
         if ($checkUser?->id) {
             return $checkUser;

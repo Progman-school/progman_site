@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Exceptions\UserAlert;
 use App\Mail\ConfirmApplication;
+use App\Models\Product;
 use App\sdks\EmailServiceSdk;
 use Exception;
 use Illuminate\Http\Request;
@@ -21,7 +22,13 @@ class UserRequestService
             throw new Exception("Unexpected uid type '{$request->uid_type}'");
         }
         $requestData = $request->all();
+        $product = Product::where('id', $requestData['product_id'])->first();
+        if (!$product) {
+            throw new Exception("Product with (id:{$requestData['product_id']}) not found");
+        }
+
         $userRequest = new UserRequest($requestData);
+        $userRequest->current_product_price = $product->unit_price;
         $userRequest->application_data = json_encode($requestData, JSON_UNESCAPED_UNICODE);
         $userRequest->hash = self::getRequestHash($request);
         $userRequest->language = TagService::getCurrentLanguage();
@@ -39,14 +46,14 @@ class UserRequestService
                         'timeStamp' => 0,
                     ],
                     'where_to_look_for_results' => [
-                        TagService::DEFAULT_LANGUAGE => ucfirst($userRequest->type),
+                        TagService::DEFAULT_LANGUAGE => ucfirst($userRequest->uid_type),
                         'timeStamp' => 0,
                     ],
                 ]
             )[TagService::getCurrentLanguage()]
                 . "<br /><br />" .
             TagService::getTagValueByName(
-                "what_to_do_to_get_offer_by_{$userRequest->type}"
+                "what_to_do_to_get_offer_by_{$userRequest->uid_type}"
             )[TagService::getCurrentLanguage()],
         ];
 
@@ -80,99 +87,13 @@ class UserRequestService
     }
 
     public static function generateAlertText(UserRequest $userRequest): string {
-        $descriptionText = self::testScoreDescription($userRequest->test_score);
 
         return TagService::getTagValueByName(
             'test_passed_alert_text',
-            $userRequest->created_at->getTimestamp(),
-            [
-                'test_result_score' => [
-                    TagService::DEFAULT_LANGUAGE => $userRequest->test_score,
-                    'timeStamp' => 0,
-                ],
-                'test_result_description' => [
-                    TagService::DEFAULT_LANGUAGE => $descriptionText,
-                    'timeStamp' => 0,
-                ],
-            ]
+            $userRequest->created_at->getTimestamp()
         )[TagService::getCurrentLanguage()];
     }
 
-    protected static function testScoreDescription(int $scorePoints):string {
-        if ($scorePoints < 25) {
-            $descriptionText = '{{bad_test_description}}';
-        }
-        elseif ($scorePoints <= 35) {
-            $descriptionText = '{{satisfactory_test_description}}';
-        }
-        elseif ($scorePoints <= 49) {
-            $descriptionText = '{{good_test_description}}';
-        }
-        elseif ($scorePoints <= 79) {
-            $descriptionText = '{{great_test_description}}';
-        }
-        else {
-            $descriptionText = '{{best_test_description}}';
-        }
-        return $descriptionText;
-    }
-
-    protected static function calculateTestScore(array $testData): int{
-        unset($testData['city'], $testData['sex']);
-        $score = 0.45;
-        foreach ($testData as $keyItem => $testItem) {
-            if ($keyItem == 'age') {
-                if ($testItem > 14 && $testItem <= 17) {
-                    $score *= 0.6;
-                }
-                elseif ($testItem > 17 && $testItem <= 24) {
-                    $score *= 1;
-                }
-                elseif ($testItem > 24 && $testItem <= 35) {
-                    $score *= 0.9;
-                }
-                elseif ($testItem > 35) {
-                    $score *= 0.7;
-                }
-                continue;
-            }
-            if ($keyItem == "know_html") {
-                if (str_starts_with('yes', $testItem)) {
-                    $score *= 1;
-                }
-                else {
-                    $score *= 0.8;
-                }
-                continue;
-            }
-            if ($keyItem == 'project_idea') {
-                $wordsCount = count(explode(' ', $testItem));
-                if ($wordsCount <= 5) {
-                    $score *= 0.5;
-                }
-                elseif ($wordsCount < 35) {
-                    $score *= 1;
-                }
-                elseif ($wordsCount > 35) {
-                    $score *= 0.9;
-                }
-            }
-            if ($keyItem == 'occupation') {
-                $score += ((int) substr($testItem, -1)) / 10;
-            }
-            if(str_starts_with($keyItem, 'skill_')) {
-                $score += ((int) substr($testItem, -1)) / 10;
-            }
-            if($keyItem == 'target') {
-                $score *= (1 + ((int) substr($testItem, -1)) / 10);
-            }
-            if($keyItem == 'how_doing') {
-                $score += ((int) substr($testItem, -1)) / 10;
-            }
-        }
-
-        return round($score*100, 1);
-    }
 
     protected static function getRequestHash(Request $request): string {
         return md5(
@@ -218,7 +139,7 @@ class UserRequestService
         }
 
         $message .= "Application: \n";
-        foreach ($userRequest->application_data as $keyTestItem => $testItem) {
+        foreach (json_decode($userRequest->application_data, true) as $keyTestItem => $testItem) {
             $message .= "$keyTestItem: $testItem\n";
         }
         return $message;

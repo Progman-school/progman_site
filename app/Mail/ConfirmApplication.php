@@ -17,8 +17,6 @@ class ConfirmApplication extends Mailable
      */
     public string $confirmUrl;
 
-    public int $score;
-
     public string $text;
 
     public function __construct(string $confirmUrl, string $text)

@@ -29,6 +29,11 @@ const valueRestriction = (event) => {
     }
 }
 
+function setRequestParams(formData) {
+    formData.append('product_id', product.value.id)
+    return formData
+}
+
 onMounted(() => {
     productStorage.getProductByName('Personal consulting').then((productData) => {
         product.value = productData
@@ -47,34 +52,35 @@ onMounted(() => {
             I will not give you a fish, but I will teach you how to fish!
         </p>
         <p>
-            {{product["description_" + multiLanguageStore.currentLanguage] ?? ''}}
+            {{product["description_" + multiLanguageStore?.currentLanguage] ?? ''}}
         </p>
         <section>
             <SubmitForm
-                action="add_consulting_request"
+                action="add_request"
                 :is_disabled="isDisabledForm"
                 submit_button_name="Send request"
                 :isVisibleSubmitButton="true"
+                :preserve-function="setRequestParams"
             >
                 <div class="field">
                     <label>How many hours do you need:</label>
                     <div class="price_builder">
                         <div>
                             <div>
-                                <input type="radio" id="hours_1" name="hours" value=1 v-model="productAmount" required>
+                                <input type="radio" id="hours_1" name="quantity" value=1 v-model="productAmount" required>
                                 <label for="hours_1">One</label>
                             </div>
                             <div>
-                                <input type="radio" id="hours_2" name="hours" v-model="productAmount" value=2>
+                                <input type="radio" id="hours_2" name="quantity" v-model="productAmount" value=2>
                                 <label for="hours_2">Two</label>
                             </div>
                             <div v-if="productAmount < 3">
-                                <input type="radio" id="hours_more" name="hours" value="3" v-model="productAmount">
+                                <input type="radio" id="hours_more" name="quantity" value="3" v-model="productAmount">
                                 <label for="hours_more">More</label>
                             </div>
                             <div v-if="productAmount >= 3">
                                 <label for="hours_number">Your number</label>
-                                <input type="number" id="hours_number" name="hours" value=3 min=2 max=50 v-model="productAmount" @input="valueRestriction">
+                                <input type="number" id="hours_number" name="quantity" value=3 min=2 max=50 v-model="productAmount" @input="valueRestriction">
                             </div>
                         </div>
                         <CouponDiscounter :couponTypeId="product?.coupon_type?.id" :unit-amount="productAmount" :unit-price="product?.unit_price" />

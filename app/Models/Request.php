@@ -21,7 +21,7 @@ class Request extends Model
      */
     protected $fillable = [
         'updated_at',
-        'type',
+        'uid_type',
 //        'hash',
         'contact',
 //        'application_data',
@@ -59,7 +59,7 @@ class Request extends Model
     private function getRepeats()
     {
         return self::where('contact', $this->contact)
-            ->where('course_id', $this->courseId);
+            ->where('product_id', $this->courseId);
     }
 
     public function getRepeatsCount(): int
