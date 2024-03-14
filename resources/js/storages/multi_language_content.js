@@ -62,11 +62,11 @@ export const useMultiLanguageStore = defineStore({
                     this.currentLanguage
                     && router.currentRoute.value.params.lang !== this.currentLanguage
                 ) {
-                    router.push({
-                        name: router.currentRoute.value.name,
+                    router.replace({
                         params: {
                             lang: this.currentLanguage
-                        }
+                        },
+                        query: router.currentRoute.value.query
                     })
                 }
                 this.changeLanguageMetaTags()

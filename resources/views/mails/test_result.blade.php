@@ -5,11 +5,11 @@
     </div>
     @if($coupon)
         <h5>Special coupon:</h5>
-        @component('mail::button', ['url' => $coupon->type->url])
+        @component('mail::button', ['url' => "{$coupon->couponType->use_link}?coupon={$coupon->serial_number}"])
             {{$coupon->serial_number}}
         @endcomponent
         <p>
-            Use this at <a href="https://{{$coupon->type->url}}">{{$coupon->type->url}}</a>
+            Use this at <a href="{{"{$coupon->couponType->use_link}?coupon={$coupon->serial_number}"}}">{{$coupon->couponType->use_link}}</a>
             <b>Until {{date('F j, Y', $coupon->expired_ad)}}</b>
         </p>
     @endif

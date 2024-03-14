@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\App;
 class Controller extends BaseController
 {
     use AuthorizesRequests, ValidatesRequests;
-
+//  "REDIRECT_QUERY_STRING" => "coupon=VIP-32B6364D"
     /**
      * @throws UserAlert
      * @throws \Exception

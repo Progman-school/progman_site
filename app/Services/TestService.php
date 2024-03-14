@@ -39,13 +39,16 @@ class TestService
                 $testResultData['contact'],
                 null,
                 $user->id,
-                json_encode($testResultData, JSON_UNESCAPED_UNICODE);
+                json_encode($testResultData, JSON_UNESCAPED_UNICODE),
             );
         }
 
         $coupon = CouponService::generateCouponBySettingCode($testResultData['c']);
-
         $testResult = new TestResult($testResultData);
+        $testResult->form_data = json_encode(
+            array_diff_key($testResultData, array_flip(["uid_type", "name", "contact"])),
+            JSON_UNESCAPED_UNICODE
+        );
         $testResult->user()->associate($user);
         $testResult->coupon()->associate($coupon);
         $testResult->save();
