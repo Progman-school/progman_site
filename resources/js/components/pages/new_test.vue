@@ -69,6 +69,7 @@ function processTest(formFields) {
     formFields.append('yourself_result', yearsMonthsWeeksDays(yourselfScore))
     formFields.append('c', formFields.get('day_hours')[0] + '01020110')
     formFields.append('topic','study_plan_counter')
+    formFields.append('result_message', "<h2>Result!</h2><p>Yes! YOu got it!</p>")
     return formFields
 }
 
