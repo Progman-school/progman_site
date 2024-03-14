@@ -3,17 +3,17 @@ import Closer from "../widgets/closer.vue"
 import InsertContent from '../widgets/insert_content.vue'
 import SubmitForm from "../widgets/submit_form.vue"
 import RegistrationFormFields from "../widgets/submit_form/registration_form_fields.vue"
-import {ref} from "vue"
+import {onMounted, ref} from "vue"
 import {useMultiLanguageStore} from "../../storages/multi_language_content"
 import WeekDaysFormField from "../widgets/submit_form/weekday_checkbox_set_form_item.vue"
 import CouponDiscounter from "../widgets/submit_form/coupon_discounter.vue"
-
-const COUPON_TYPE = 'consulting'
+import {useProductStorage} from "../../storages/product_storage"
 
 const multiLanguageStore = useMultiLanguageStore()
+const productStorage = useProductStorage()
 
-const amountHours = ref(1)
-const hourPrice = ref()
+const productAmount = ref(1)
+const product = ref()
 
 const isDisabledForm = ref(true)
 const changeFormDisability = (data) => {
@@ -29,9 +29,12 @@ const valueRestriction = (event) => {
     }
 }
 
-multiLanguageStore.getContentByTag("full_private_course_price").then(insertData => {
-    hourPrice.value = insertData[multiLanguageStore.currentLanguage]
+onMounted(() => {
+    productStorage.getProductByName('Personal consulting').then((productData) => {
+        product.value = productData
+    })
 })
+
 </script>
 
 <template>
@@ -42,6 +45,9 @@ multiLanguageStore.getContentByTag("full_private_course_price").then(insertData 
             I will not give you a ready-made solution, but I will help you to find it.
             I will not do your work for you, but I will help you to do it yourself.
             I will not give you a fish, but I will teach you how to fish!
+        </p>
+        <p>
+            {{product["description_" + multiLanguageStore.currentLanguage] ?? ''}}
         </p>
         <section>
             <SubmitForm
@@ -55,23 +61,23 @@ multiLanguageStore.getContentByTag("full_private_course_price").then(insertData 
                     <div class="price_builder">
                         <div>
                             <div>
-                                <input type="radio" id="hours_1" name="hours" value=1 v-model="amountHours" required>
+                                <input type="radio" id="hours_1" name="hours" value=1 v-model="productAmount" required>
                                 <label for="hours_1">One</label>
                             </div>
                             <div>
-                                <input type="radio" id="hours_2" name="hours" v-model="amountHours" value=2>
+                                <input type="radio" id="hours_2" name="hours" v-model="productAmount" value=2>
                                 <label for="hours_2">Two</label>
                             </div>
-                            <div v-if="amountHours < 3">
-                                <input type="radio" id="hours_more" name="hours" value="3" v-model="amountHours">
+                            <div v-if="productAmount < 3">
+                                <input type="radio" id="hours_more" name="hours" value="3" v-model="productAmount">
                                 <label for="hours_more">More</label>
                             </div>
-                            <div v-if="amountHours >= 3">
+                            <div v-if="productAmount >= 3">
                                 <label for="hours_number">Your number</label>
-                                <input type="number" id="hours_number" name="hours" value=3 min=2 max=50 v-model="amountHours" @input="valueRestriction">
+                                <input type="number" id="hours_number" name="hours" value=3 min=2 max=50 v-model="productAmount" @input="valueRestriction">
                             </div>
                         </div>
-                        <CouponDiscounter :couponType="COUPON_TYPE" :unit-amount="amountHours" :unit-price="hourPrice" />
+                        <CouponDiscounter :couponTypeId="product?.coupon_type?.id" :unit-amount="productAmount" :unit-price="product?.unit_price" />
                     </div>
                 </div>
                 <WeekDaysFormField>What days is better for you:</WeekDaysFormField>

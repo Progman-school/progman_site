@@ -35,7 +35,7 @@ class EmailService extends EmailServiceSdk
         );
 
         UidService::createUid(
-            $userRequest->type,
+            $userRequest->uid_type,
             $userRequest->contact,
             $userRequest->contact,
             $confirmedUser->id,

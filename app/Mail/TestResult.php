@@ -2,29 +2,28 @@
 
 namespace App\Mail;
 
+use App\Models\Coupon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class ConfirmApplication extends Mailable
+class TestResult extends Mailable
 {
     use Queueable, SerializesModels;
 
     /**
      * Create a new message instance.
      */
-    public string $confirmUrl;
-
-    public int $score;
 
     public string $text;
+    public Coupon $coupon;
 
-    public function __construct(string $confirmUrl, string $text)
+    public function __construct(string $text, ?Coupon $coupon = null)
     {
-        $this->confirmUrl = $confirmUrl;
         $this->text = $text;
+        $this->coupon = $coupon;
     }
 
     /**
@@ -33,7 +32,7 @@ class ConfirmApplication extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Confirm Application',
+            subject: 'Your Result',
         );
     }
 
@@ -43,7 +42,7 @@ class ConfirmApplication extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'mails.application_confirmation',
+            markdown: 'mails.test_result',
         );
     }
 

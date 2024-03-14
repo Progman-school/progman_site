@@ -5,11 +5,11 @@ import mixins from "../../mixins.js";
 import { useEventListener } from "../../storages/event_storage.js"
 import {ref} from "vue";
 import {useMultiLanguageStore} from "../../storages/multi_language_content";
-import {usePreloadedDataStorage} from "../../storages/preloaded_content_storage";
+import {useCourseStorage} from "../../storages/course_storage";
 import router from "../../router";
 const multiLanguageStore = useMultiLanguageStore()
 const eventListener = useEventListener()
-const preloadedData = usePreloadedDataStorage()
+const preloadedData = useCourseStorage()
 const showLoginAlert = (preLoginResult) => {
     eventListener.call('popup_alert:show', {
         title: '{{test_passed_alert_title}}',
@@ -84,7 +84,21 @@ preloadedData.getCoursesList().then(() => {
             <br/>
         </p>
         <section>
-            <form id="test_form" @submit="saveTestData">
+            <h2>Not ready yet...</h2>
+            <h4>Huge updates are coming</h4>
+            <label class="important_text">
+                Sorry! We are working on updating this part of the site.
+                <br>
+                Please, come back later.
+            </label>
+            <br>
+            <b>on 15th of March it's gonna be ready!</b>
+            <br>
+            <br>
+            <span>
+                Text to support widget at the right corner.
+            </span>
+            <form id="test_form" @submit="saveTestData" v-if="false">
                 <content class="fields">
                     <div class="field">
                         <label for="course">

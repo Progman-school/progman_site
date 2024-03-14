@@ -9,9 +9,12 @@ use Exception;
 
 class UidService
 {
+    const TELEGRAM_UID_TYPE = "telegram";
+    const EMAIL_UID_TYPE = "email";
+
     const AVAILABLE_TYPES = [
-        "telegram",
-        "email",
+        self::TELEGRAM_UID_TYPE,
+        self::EMAIL_UID_TYPE,
     ];
 
     public static function createUid(

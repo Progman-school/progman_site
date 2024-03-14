@@ -7,6 +7,9 @@ import RegistrationFormFields from "../widgets/submit_form/registration_form_fie
 import {ref} from "vue"
 import {useMultiLanguageStore} from "../../storages/multi_language_content"
 import WeekDaysFormField from "../widgets/submit_form/weekday_checkbox_set_form_item.vue"
+import {useCourseStorage} from "../../storages/course_storage";
+const courseStorage = useCourseStorage()
+
 
 const multiLanguageStore = useMultiLanguageStore()
 
@@ -26,6 +29,130 @@ const changeFormDisability = (data) => {
     isDisabledForm.value = !data
 }
 
+/**
+ * Returns the sum of a and b
+ * @param {FormData} formFields
+ */
+function processTest(formFields) {
+    let hours = 0
+    for (let technology of courseStorage.courses[formFields.get('course_id')].technologies) {
+        hours += technology.pivot.hours
+    }
+    let weekDaysCount = 0
+    formFields.entries().forEach((entry) => {
+        if (entry[0].includes('weekday__')) {
+            weekDaysCount++
+        }
+    })
+
+    const score = countDays(
+        hours,
+        formFields.get('day_hours'),
+        weekDaysCount,
+        formFields.get('current_level'),
+        formFields.get('age'),
+        true
+    )
+
+    const yourselfScore = countDays(
+        hours,
+        formFields.get('day_hours'),
+        weekDaysCount,
+        formFields.get('current_level'),
+        formFields.get('age'),
+        false
+    )
+
+    formFields.append('score', score)
+    formFields.append('yourself_score', yourselfScore)
+    formFields.append('result', yearsMonthsWeeksDays(score))
+    formFields.append('yourself_result', yearsMonthsWeeksDays(yourselfScore))
+    formFields.append('c', formFields.get('day_hours')[0] + '01020110')
+    formFields.append('topic','study_plan_counter')
+    return formFields
+}
+
+function yearsMonthsWeeksDays(daysNumber) {
+    const years = Math.floor(daysNumber / 365);
+    const months = Math.floor((daysNumber % 365) / 30);
+    const weeks = Math.floor(((daysNumber % 365) % 30) / 7);
+    const days = ((daysNumber % 365) % 30) % 7;
+
+    let result = ''
+    if (years > 0) {
+        result += years + (years > 1 ? 'years' : 'year') + ', '
+    }
+    if (months > 0) {
+        result += months + (months > 1 ? 'months' : 'month') + ', '
+    }
+    if (weeks > 0) {
+        result += weeks + (weeks > 1 ? 'weeks' : 'week') + ', '
+    }
+    return result + days + (days > 1 ? 'days' : 'day')
+}
+
+function countDays(takesHours, hoursPerDay, daysPerWeek, level, age, withHelp = false) {
+    if (hoursPerDay > 2) {
+        hoursPerDay -= (hoursPerDay * 0.32)
+    } else if (hoursPerDay > 5) {
+        hoursPerDay -= (hoursPerDay * 0.41)
+    }
+    else if (hoursPerDay > 6) {
+        hoursPerDay -= (hoursPerDay * 0.5)
+    }
+
+    let days = Math.ceil(takesHours / Math.floor(hoursPerDay * daysPerWeek)) * 7
+
+    days += 1
+
+    switch (level) {
+        case 'zero':
+            days *= 1.4
+            break
+        case 'junior':
+            days *= 1.2
+            break
+        case 'middle':
+            days *= 1
+            break
+    }
+
+    days = Math.ceil(days)
+
+    if (age < 14) {
+        days *= 1.6
+    } else if (age < 18) {
+        days *= 1.2
+    }
+    else if (age > 60) {
+        days *= 1.8
+    }
+    else if (age > 45) {
+        days *= 1.4
+    }
+    else if (age > 35) {
+        days *= 1.2
+    }
+
+    days = Math.ceil(days)
+    if (withHelp) {
+        return days - 3
+    }
+
+    switch (level) {
+        case 'zero':
+            days = (days + 7) * 2.8
+            break
+        case 'junior':
+            days = (days + 3) * 2.2
+            break
+        case 'middle':
+            days = days * 1.45
+            break
+    }
+    return Math.ceil(days)
+}
+
 </script>
 
 <template>
@@ -37,10 +164,11 @@ const changeFormDisability = (data) => {
         </p>
         <section>
             <SubmitForm
-                :action="'add_study_plan_request'"
+                :action="'process_test'"
                 :is_disabled="isDisabledForm"
                 submit_button_name="Get my plan"
                 :isVisibleSubmitButton="isShowedTest"
+                :preserveFunction="processTest"
             >
                 <CourseSelectorFormField urlParamName="course" @onSelect="showOrderCourseButton" />
                 <div v-if="isVisibleOrderCourseButton && !isShowedTest" class="field show_test_button">
@@ -54,7 +182,7 @@ const changeFormDisability = (data) => {
                 <WeekDaysFormField v-if="isShowedTest">Week days</WeekDaysFormField>
                 <div class="field" v-if="isShowedTest">
                     <label for="day_hours">How many hours per day a you ready to learn:</label>
-                    <input type="number" id="day_hours" name="day_hours" min="1" max="24" placeholder="number" required>
+                    <input type="number" id="day_hours" name="day_hours" min="1" max="14" placeholder="number" required>
                 </div>
                 <div class="field" v-if="isShowedTest">
                     <label>Your current level you think:</label>
@@ -67,7 +195,7 @@ const changeFormDisability = (data) => {
                 </div>
                 <div class="field" v-if="isShowedTest">
                     <label for="age">Your age (full years count):</label>
-                    <input type="number" id="age" name="age" min="7" max="70" placeholder="number" required>
+                    <input type="number" id="age" name="age" min="7" max="100" placeholder="number" required>
                 </div>
                 <div class="field" v-if="isShowedTest">
                     <label for="details">Describe your the project that you want to make:</label>
