@@ -7,6 +7,8 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RequestController;
 use App\Http\Controllers\SupportMessengerController;
 use App\Http\Controllers\TagController;
+use App\Http\Controllers\TestController;
+use App\Models\TestResult;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -38,4 +40,4 @@ Route::get('check_coupon/{typeId}/{serialNumber}', [CouponController::class, 'ch
 
 Route::get('get_product_by/name/{name}', [ProductController::class, 'getProductsByName']);
 
-Route::post('process_test', [RequestController::class, 'addRequest']);
+Route::post('process_test', [TestController::class, 'processTest']);

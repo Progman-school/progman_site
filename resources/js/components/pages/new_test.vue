@@ -39,11 +39,11 @@ function processTest(formFields) {
         hours += technology.pivot.hours
     }
     let weekDaysCount = 0
-    formFields.entries().forEach((entry) => {
-        if (entry[0].includes('weekday__')) {
+    for (let fieldEntry of formFields.entries()) {
+        if (fieldEntry[0].includes('weekday__')) {
             weekDaysCount++
         }
-    })
+    }
 
     const score = countDays(
         hours,
@@ -69,6 +69,7 @@ function processTest(formFields) {
     formFields.append('yourself_result', yearsMonthsWeeksDays(yourselfScore))
     formFields.append('c', formFields.get('day_hours')[0] + '01020110')
     formFields.append('topic','study_plan_counter')
+    formFields.append('result_message', "<h2>Result!</h2><p>Yes! YOu got it!</p>")
     return formFields
 }
 
@@ -201,7 +202,7 @@ function countDays(takesHours, hoursPerDay, daysPerWeek, level, age, withHelp = 
                     <label for="details">Describe your the project that you want to make:</label>
                     <textarea name="details" id="details" minlength="10" maxlength="1500" placeholder="The name of the project?, what functions is it going to have etc?.." rows="3"></textarea>
                 </div>
-                <RegistrationFormFields v-if="isShowedTest" @onPrivacyPolicyConfirmed="changeFormDisability">
+                <RegistrationFormFields v-if="isShowedTest" :available-types="['email']" @onPrivacyPolicyConfirmed="changeFormDisability">
                     <InsertContent>test_privacy_policy_link</InsertContent>
                 </RegistrationFormFields>
             </SubmitForm>

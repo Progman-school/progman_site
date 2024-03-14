@@ -31,21 +31,24 @@ class TestService
         } else {
             $user = new User();
             $userFullName = explode(' ', $testResultData['name']);
-            $user->first_name = $userFullName[0];
-            $user->last_name = $userFullName[1];
+            $user->first_name = $userFullName[0] ?? null;
+            $user->last_name = $userFullName[1] ?? null;
             $user->save();
             $uid = UidService::createUid(
                 UidService::EMAIL_UID_TYPE,
                 $testResultData['contact'],
                 null,
                 $user->id,
-                $testResultData['form_data']
+                json_encode($testResultData, JSON_UNESCAPED_UNICODE),
             );
         }
 
         $coupon = CouponService::generateCouponBySettingCode($testResultData['c']);
-
         $testResult = new TestResult($testResultData);
+        $testResult->form_data = json_encode(
+            array_diff_key($testResultData, array_flip(["uid_type", "name", "contact"])),
+            JSON_UNESCAPED_UNICODE
+        );
         $testResult->user()->associate($user);
         $testResult->coupon()->associate($coupon);
         $testResult->save();

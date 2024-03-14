@@ -1,5 +1,5 @@
 <script setup>
-import {ref} from "vue";
+import {ref, onMounted} from "vue";
 import {useCourseStorage} from "../../../storages/course_storage";
 import {useMultiLanguageStore} from "../../../storages/multi_language_content";
 import router from "../../../router";
@@ -24,32 +24,29 @@ const selectedCourse = ref(null)
 const courseStorage = useCourseStorage()
 const isWidgetReady = ref(false)
 
-courseStorage.getCoursesList().then(() => {
-    router.isReady().then(() => {
-        const urlCourseId = router.currentRoute.value.query[props.urlParamName] ?? null
-        const requestedCourse = courseStorage.courses[urlCourseId] ?? courseStorage[props.openedCourseId] ?? null
-        if (requestedCourse) {
-            setCourse(requestedCourse)
-        }
+onMounted(() => {
+    courseStorage.getCoursesList().then(() => {
+        router.isReady().then(() => {
+            const urlCourseId = router.currentRoute.value.query[props.urlParamName] ?? null
+            setCourse(
+                courseStorage.courses[urlCourseId] ?? courseStorage[props.openedCourseId] ?? null
+            )
+        })
+        isWidgetReady.value = true
     })
-    isWidgetReady.value = true
 })
 
 function setCourse(course) {
     selectedCourse.value = null
     setTimeout(() => {
-        const currentRout = router.currentRoute.value.path
         if (course && course?.id) {
-            router.push(`${currentRout}?${props.urlParamName}=${course.id}`)
             selectedCourse.value = course
             selectedCourse.value.hours = 0
             for (let technology of selectedCourse.value.technologies) {
                 selectedCourse.value.hours += technology.pivot.hours
             }
-        } else {
-            router.push(currentRout)
-            selectedCourse.value = null
         }
+        router.replace({query: {[props.urlParamName]: selectedCourse.value?.id}})
         emit(ON_SELECT_EMIT, selectedCourse.value)
     }, 300)
 }

@@ -3,6 +3,13 @@ import InsertContent from '../insert_content.vue'
 import {ref} from "vue";
 const emit = defineEmits(['onPrivacyPolicyConfirmed'])
 
+defineProps({
+    "availableTypes": {
+        type: Array,
+        default: null,
+    }
+})
+
 const showEmailField = ref('email')
 const changeRegistrationType = (event) => {
     showEmailField.value = event.target.value
@@ -21,8 +28,12 @@ const confirmPrivacyPolicy = (event) => {
         <div>
             <label for="uid_type">Contact type:</label>
             <select id="uid_type" name="uid_type" @change="changeRegistrationType">
-                <option value="email" selected>E-Mail address</option>
-                <option value="telegram">Telegram messenger</option>
+                <option value="email" :disabled="availableTypes && !availableTypes.includes('email')">
+                    E-Mail address{{availableTypes && !availableTypes.includes('email') ? ' (unavailable here)' : ''   }}
+                </option>
+                <option value="telegram" :disabled="availableTypes && !availableTypes.includes('telegram')">
+                    Telegram messenger{{availableTypes && !availableTypes.includes('telegram') ? ' (unavailable here)' : ''   }}
+                </option>
             </select>
         </div>
         <div v-if="showEmailField === 'email'" style="border: none">
