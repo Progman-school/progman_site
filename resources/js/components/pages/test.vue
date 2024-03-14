@@ -78,12 +78,7 @@ preloadedData.getCoursesList().then(() => {
 
 <template>
     <article id="test">
-        <h2 class="major">Get your chance!</h2>
-        <p>
-            <InsertContent>test_preview</InsertContent>
-            <br/>
-        </p>
-        <section>
+        <div>
             <h2>Not ready yet...</h2>
             <h4>Huge updates are coming</h4>
             <label class="important_text">
@@ -98,6 +93,13 @@ preloadedData.getCoursesList().then(() => {
             <span>
                 Text to support widget at the right corner.
             </span>
+        </div>
+        <h2 class="major" v-if="false">Get your chance!</h2>
+        <p v-if="false">
+            <InsertContent>test_preview</InsertContent>
+            <br/>
+        </p>
+        <section>
             <form id="test_form" @submit="saveTestData" v-if="false">
                 <content class="fields">
                     <div class="field">
