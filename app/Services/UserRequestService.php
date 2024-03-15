@@ -17,6 +17,9 @@ class UserRequestService
     const REQUEST_DELAY_DAYS = 3;
     const MAX_REQUEST_REPEATS = 3;
 
+    /**
+     * @throws UserAlert
+     */
     public static function addRequest(Request $request): ?array {
         if (!in_array($request->uid_type, UidService::AVAILABLE_TYPES)) {
             throw new Exception("Unexpected uid type '{$request->uid_type}'");
@@ -26,6 +29,10 @@ class UserRequestService
         if (!$product) {
             throw new Exception("Product with (id:{$requestData['product_id']}) not found");
         }
+
+        $coupon = CouponService::checkCouponBy($requestData['coupon']);
+        $coupon->used_times++;
+        $coupon->save();
 
         $userRequest = new UserRequest($requestData);
         $userRequest->current_product_price = $product->unit_price;
