@@ -39,8 +39,10 @@ function processTest(formFields) {
         hours += technology.pivot.hours
     }
     let weekDaysCount = 0
+    const weekdays = []
     for (let fieldEntry of formFields.entries()) {
         if (fieldEntry[0].includes('weekday__')) {
+            weekdays.push(fieldEntry[1])
             weekDaysCount++
         }
     }
@@ -69,7 +71,9 @@ function processTest(formFields) {
     formFields.append('yourself_result', yearsMonthsWeeksDays(yourselfScore))
     formFields.append('c', formFields.get('day_hours')[0] + '01020110')
     formFields.append('topic','study_plan_counter')
-    formFields.append('result_message', "<h2>Result!</h2><p>Yes! YOu got it!</p>")
+    formFields.append('result_template_path','test_results/study_plan_counter')
+    formFields.append('weekdays', weekdays.join(','))
+    formFields.append('technologies', null)
     return formFields
 }
 
@@ -158,35 +162,41 @@ function countDays(takesHours, hoursPerDay, daysPerWeek, level, age, withHelp = 
 
 <template>
     <article>
-        <h2 class="major">Get your chance!</h2>
+        <h2 class="major">Study plan calculator</h2>
         <p>
-            <InsertContent>test_preview</InsertContent>
+            <InsertContent>study_plan_calculation_test_preview</InsertContent>
             <br/>
         </p>
         <section>
             <SubmitForm
                 :action="'process_test'"
                 :is_disabled="isDisabledForm"
-                submit_button_name="Get my plan"
+                submit_button_name="Calculate plan"
                 :isVisibleSubmitButton="isShowedTest"
                 :preserveFunction="processTest"
             >
                 <CourseSelectorFormField urlParamName="course" @onSelect="showOrderCourseButton" />
                 <div v-if="isVisibleOrderCourseButton && !isShowedTest" class="field show_test_button">
                     <button type="submit" class="primary" @click="showTestForm">
-                        <InsertContent>first_free_class_order_button</InsertContent>
+                        <InsertContent>open_study_plan_calculator_form_button</InsertContent>
                     </button>
                 </div>
                 <h3 class="major test_title" v-if="isShowedTest">
-                    Calculate your personal study plan
+                    <InsertContent>study_plan_calculator_form_title</InsertContent>
                 </h3>
-                <WeekDaysFormField v-if="isShowedTest">Week days</WeekDaysFormField>
+                <WeekDaysFormField v-if="isShowedTest">
+                    <InsertContent>study_plan_calculator_days_label</InsertContent>:
+                </WeekDaysFormField>
                 <div class="field" v-if="isShowedTest">
-                    <label for="day_hours">How many hours per day a you ready to learn:</label>
+                    <label for="day_hours">
+                        <InsertContent>study_plan_calculator_hours_label</InsertContent>:
+                    </label>
                     <input type="number" id="day_hours" name="day_hours" min="1" max="14" placeholder="number" required>
                 </div>
                 <div class="field" v-if="isShowedTest">
-                    <label>Your current level you think:</label>
+                    <label>
+                        <InsertContent>study_plan_calculator_level_label</InsertContent>:
+                    </label>
                     <input type="radio" id="current_level_zero" name="current_level" value="zero" required>
                     <label for="current_level_zero">Zero</label>
                     <input type="radio" id="current_level_junior" name="current_level" value="junior">
@@ -195,15 +205,25 @@ function countDays(takesHours, hoursPerDay, daysPerWeek, level, age, withHelp = 
                     <label for="current_level_middle">Middle</label>
                 </div>
                 <div class="field" v-if="isShowedTest">
-                    <label for="age">Your age (full years count):</label>
+                    <label for="age">
+                        <InsertContent>study_plan_calculator_age_label</InsertContent>:
+                    </label>
                     <input type="number" id="age" name="age" min="7" max="100" placeholder="number" required>
                 </div>
                 <div class="field" v-if="isShowedTest">
-                    <label for="details">Describe your the project that you want to make:</label>
-                    <textarea name="details" id="details" minlength="10" maxlength="1500" placeholder="The name of the project?, what functions is it going to have etc?.." rows="3"></textarea>
+                    <label for="details">
+                        <InsertContent>study_plan_calculator_details_label</InsertContent>:
+                    </label>
+                    <textarea
+                        name="details"
+                        id="details"
+                        minlength="10"
+                        maxlength="1500"
+                        :placeholder="multiLanguageStore.getContentByTag('study_plan_calculator_details_placeholder')[multiLanguageStore.currentLanguage]"
+                        rows="3"></textarea>
                 </div>
                 <RegistrationFormFields v-if="isShowedTest" :available-types="['email']" @onPrivacyPolicyConfirmed="changeFormDisability">
-                    <InsertContent>test_privacy_policy_link</InsertContent>
+                    <InsertContent>registration_form_privacy_policy_link</InsertContent>
                 </RegistrationFormFields>
             </SubmitForm>
         </section>

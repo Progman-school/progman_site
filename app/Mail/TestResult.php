@@ -16,13 +16,14 @@ class TestResult extends Mailable
     /**
      * Create a new message instance.
      */
-
-    public string $text;
+    protected string $template;
+    public array $testResultData;
     public Coupon $coupon;
 
-    public function __construct(string $text, ?Coupon $coupon = null)
+    public function __construct(string $template, array $testResultData, ?Coupon $coupon = null)
     {
-        $this->text = $text;
+        $this->template = $template;
+        $this->testResultData = $testResultData;
         $this->coupon = $coupon;
     }
 
@@ -42,7 +43,7 @@ class TestResult extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'mails.test_result',
+            markdown: 'mails/' . $this->template,
         );
     }
 
