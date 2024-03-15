@@ -31,8 +31,7 @@ class UserRequestService
         }
 
         $coupon = CouponService::checkCouponBy($requestData['coupon']);
-        $coupon->used_times++;
-        $coupon->save();
+
 
         $userRequest = new UserRequest($requestData);
         $userRequest->current_product_price = $product->unit_price;
@@ -82,13 +81,20 @@ class UserRequestService
         $result = $telegramService->sendMessageToAdminChat(
             UserRequestService::createRequestMessageForAdminChat(
                 $userRequest,
-                array_diff_key($request->toArray(), array_flip(["uid_type", "name", "contact"]))
+                array_diff_key($request->toArray(), array_flip(["uid_type", "name", "contact"])
+                ) + [
+                    'product_name' => $product->getName(),
+                    'coupon_value' => $coupon->value . $coupon->couponUnit()->first()->symbol,
+                ]
             ),
             TelegramService::REQUEST_STATUS_KEYBOARDS[$userRequest->status]
         );
 
         $userRequest->admin_message_id = $result["result"]["message_id"];
         $userRequest->save();
+
+        $coupon->used_times++;
+        $coupon->save();
 
         return $return;
     }

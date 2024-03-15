@@ -95,6 +95,7 @@ created()
         padding: 15px 5px 0 10px;
     }
     .popup_keys_box {
+        margin-top: 20px;
         width: 100%;
         text-align: center;
     }

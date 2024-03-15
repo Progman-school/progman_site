@@ -36,13 +36,21 @@ const submitForm = (event) => {
         props.action,
         formData,
         (result) => {
-            eventListener.call('popup_alert:show', {
-                title: result.data.status ?? 'Info!',
-                text: result.data?.alert_text ?? '',
-                href: result.data?.href_link ?? null,
-                url: result.data?.url_link ?? null,
-                button: result.data?.alert_button_name ?? 'Ok',
-            });
+            if (result.status === 'OK') {
+                eventListener.call('popup_alert:show', {
+                    title: result.data.status ?? 'Info!',
+                    text: result.data?.alert_text ?? '',
+                    href: result.data?.href_link ?? null,
+                    url: result.data?.url_link ?? null,
+                    button: result.data?.alert_button_name ?? 'Ok',
+                });
+            } else {
+                eventListener.call('popup_alert:show', {
+                    title: result.status ?? 'Error!',
+                    text: result.error ?? 'Unexpected error!',
+                    button: 'Ok',
+                });
+            }
             event.target.reset()
             router.push(router.currentRoute.value.path)
         }
