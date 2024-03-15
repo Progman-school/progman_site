@@ -72,11 +72,11 @@ class CouponService
      * @throws UserAlert
      * @throws Exception
      */
-    public static function generateCouponBySettingCode($code): Coupon
+    public static function generateCouponBySettingCode(string $code, string $language): Coupon
     {
         $couponParams = [
             'name' => 'Special VIP Offer',
-            'language' => TagService::getCurrentLanguage(),
+            'language' => $language,
             'method' => Coupon::AUTO_GENERATED_METHOD,
             'max_times' => 1,
             'area_type' => Coupon::ONLINE_AREA_TYPE,

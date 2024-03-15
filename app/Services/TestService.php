@@ -18,9 +18,6 @@ class TestService
      */
     public static function processTest(array $testResultData): string
     {
-        $resultLetterText = $testResultData["result_message"];
-        unset($testResultData["result_message"]);
-
         if ($testResultData['uid_type'] === UidService::TELEGRAM_UID_TYPE) {
             throw new UserAlert("Telegram uid type is not supported yet for tests");
         }
@@ -43,7 +40,8 @@ class TestService
             );
         }
 
-        $coupon = CouponService::generateCouponBySettingCode($testResultData['c']);
+        $currentLanguage = TagService::getCurrentLanguage();
+        $coupon = CouponService::generateCouponBySettingCode($testResultData['c'], $currentLanguage);
         $testResult = new TestResult($testResultData);
         $testResult->form_data = json_encode(
             array_diff_key($testResultData, array_flip(["uid_type", "name", "contact"])),
@@ -52,9 +50,10 @@ class TestService
         $testResult->user()->associate($user);
         $testResult->coupon()->associate($coupon);
         $testResult->save();
-
+        $testResultData = $testResultData + $testResult->toArray() + ['created_at' => $testResult->created_at];
         Mail::to($testResultData['contact'])->send(new TestResultMail(
-            $resultLetterText,
+            "{$testResultData['result_template_path']}/{$currentLanguage}",
+            $testResultData,
             $coupon
         ));
 
