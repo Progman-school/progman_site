@@ -96,7 +96,7 @@ onMounted(() => {
                     <textarea name="details" id="details" minlength="10" maxlength="500" placeholder="Any additional wishes or questions (optional)" rows="3"></textarea>
                 </div>
                 <RegistrationFormFields @onPrivacyPolicyConfirmed="changeFormDisability">
-                    <InsertContent>test_privacy_policy_link</InsertContent>
+                    <InsertContent>registration_form_privacy_policy_link</InsertContent>
                 </RegistrationFormFields>
             </SubmitForm>
         </section>
