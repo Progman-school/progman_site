@@ -50,7 +50,7 @@ class TestService
         $testResult->user()->associate($user);
         $testResult->coupon()->associate($coupon);
         $testResult->save();
-        $testResultData = $testResultData + $testResult->toArray() + ['created_at' => $testResult->created_at];
+        $testResultData = $testResultData + $testResult->toArray();
         Mail::to($testResultData['contact'])->send(new TestResultMail(
             "{$testResultData['result_template_path']}/{$currentLanguage}",
             $testResultData,

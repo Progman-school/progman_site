@@ -23,17 +23,13 @@ width: 100% !important;
 }
 }
 b {
-    color: #1b1f22;
-}
-.important_text {
-    font-weight: bold;
-    color: #58cc02ff;
+    color: rgba(255, 255, 255, 0.85);
 }
 </style>
 </head>
-<body>
+<body >
 
-<table class="wrapper" width="100%" cellpadding="0" cellspacing="0" role="presentation">
+<table style="background-image: url('{{ asset('/images/4_mail.jpg') }}')" class="wrapper" width="100%" cellpadding="0" cellspacing="0" role="presentation">
 <tr>
 <td align="center">
 <table class="content" width="100%" cellpadding="0" cellspacing="0" role="presentation">
