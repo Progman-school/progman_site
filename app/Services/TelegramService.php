@@ -3,6 +3,7 @@
 namespace App\Services;
 use App\Exceptions\UserAlert;
 use App\Helpers\AppHelper;
+use App\Models\Product;
 use App\Models\Request as UserRequest;
 use App\Models\User;
 use App\sdks\TelegramBotApiSdk;
@@ -153,11 +154,20 @@ class TelegramService extends TelegramBotApiSdk
         $confirmedData["First name"] = $request["message"]["from"]["first_name"] ?? "-";
         $confirmedUser["Last name"] = $request["message"]["from"]["last_name"] ?? "-";
 
+        $product = Product::where("id", $userRequest->product_id)->first();
+        $coupon = CouponService::checkCouponBy($userRequest->coupon);
+
         $result = $this->editMessageInAdminChat(
             $userRequest->admin_message_id,
             UserRequestService::createRequestMessageForAdminChat(
                 $userRequest,
-                array_diff_key($applicationDataArray, array_flip(["uid_type", "name", "contact"])),
+                array_diff_key(
+                    $applicationDataArray,
+                    array_flip(["uid_type", "name", "contact"])
+                ) + [
+                    'product_name' => $product->getName(),
+                    'coupon_value' => $coupon->value . $coupon->couponUnit()->first()->symbol,
+                ],
                 $confirmedData,
                 $userRequest->getRepeatsCount(),
                 $userRequest->getRepeatsCount()

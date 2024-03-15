@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Exceptions\UserAlert;
+use App\Models\Product;
 use App\Models\Request as UserRequest;
 use App\sdks\EmailServiceSdk;
 use App\sdks\TelegramBotApiSdk;
@@ -48,11 +49,19 @@ class EmailService extends EmailServiceSdk
         $confirmedData["First name"] = $userName[0] ?? "-";
         $confirmedUser["Last name"] = $userName[1] ?? "-";
 
+        $product = Product::where("id", $userRequest->product_id)->first();
+        $coupon = CouponService::checkCouponBy($userRequest->coupon);
         $result = $this->telegramService->editMessageInAdminChat(
             $userRequest->admin_message_id,
             UserRequestService::createRequestMessageForAdminChat(
                 $userRequest,
-                array_diff_key($applicationDataArray, array_flip(["uid_type", "name", "contact"])),
+                array_diff_key(
+                        $applicationDataArray,
+                        array_flip(["uid_type", "name", "contact"])
+                    ) + [
+                        'product_name' => $product->getName(),
+                        'coupon_value' => $coupon->value . $coupon->couponUnit()->first()->symbol,
+                    ],
                 $confirmedData,
                 $userRequest->getRepeatsCount(),
                 $userRequest->getRepeatsCount()
