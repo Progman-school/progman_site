@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Exceptions\UserAlert;
+use App\Models\Coupon;
 use App\Models\Product;
 use App\Models\Request as UserRequest;
 use App\sdks\EmailServiceSdk;
@@ -50,7 +51,7 @@ class EmailService extends EmailServiceSdk
         $confirmedUser["Last name"] = $userName[1] ?? "-";
 
         $product = Product::where("id", $userRequest->product_id)->first();
-        $coupon = CouponService::checkCouponBy($userRequest->coupon);
+        $coupon = Coupon::where("serial_number", $userRequest->coupon)->first();
         $result = $this->telegramService->editMessageInAdminChat(
             $userRequest->admin_message_id,
             UserRequestService::createRequestMessageForAdminChat(
