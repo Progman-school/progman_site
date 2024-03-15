@@ -16,7 +16,7 @@ class TestService
      * @throws UserAlert
      * @throws \Exception
      */
-    public static function processTest(array $testResultData): string
+    public static function processTest(array $testResultData): array
     {
         if ($testResultData['uid_type'] === UidService::TELEGRAM_UID_TYPE) {
             throw new UserAlert("Telegram uid type is not supported yet for tests");
@@ -50,14 +50,18 @@ class TestService
         $testResult->user()->associate($user);
         $testResult->coupon()->associate($coupon);
         $testResult->save();
-        $testResultData = $testResultData + $testResult->toArray() + ['created_at' => $testResult->created_at];
+        $testResultData = $testResultData + $testResult->toArray();
         Mail::to($testResultData['contact'])->send(new TestResultMail(
             "{$testResultData['result_template_path']}/{$currentLanguage}",
             $testResultData,
             $coupon
         ));
 
-        return "Test result is saved successfully!";
+        return [
+            'status' => TagService::getTagValueByCurrentLanguage("test_passed_alert_title"),
+            'alert_text' => TagService::getTagValueByCurrentLanguage("test_passed_alert_text"),
+            'alert_button_name' => TagService::getTagValueByCurrentLanguage("test_passed_alert_button"),
+        ];
     }
 
 }

@@ -29,6 +29,14 @@ class Product extends Model
         'course_id',
     ];
 
+    public function getName(): string
+    {
+        if ($this->course()->exists()) {
+            return "{$this->name} \"{$this->course->name}\"";
+        }
+        return $this->name;
+    }
+
     public function couponType(): BelongsTo
     {
         return $this->belongsTo(CouponType::class);

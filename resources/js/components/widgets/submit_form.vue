@@ -26,9 +26,9 @@ const props = defineProps({
 })
 
 const eventListener = useEventListener()
-const submitForm = (form) => {
-    form.preventDefault()
-    let formData = new FormData(form.target)
+const submitForm = (event) => {
+    event.preventDefault()
+    let formData = new FormData(event.target)
     if (props.preserveFunction) {
         formData = props.preserveFunction(formData)
     }
@@ -41,9 +41,10 @@ const submitForm = (form) => {
                 text: result.data?.alert_text ?? '',
                 href: result.data?.href_link ?? null,
                 url: result.data?.url_link ?? null,
-                button: result.data?.alett_button_name ?? 'Ok',
+                button: result.data?.alert_button_name ?? 'Ok',
             });
-            form.reset()
+            event.target.reset()
+            router.push(router.currentRoute.value.path)
         }
     )
 }

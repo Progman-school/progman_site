@@ -116,6 +116,8 @@ class UserRequestService
         $message .= "Contact: {$userRequest->contact}\n\n";
 
         $message .= "PRODUCT:\n";
+        $message .= "Product name: {$productData['product_name']}\n";
+        $message .= "Coupon value: {$productData['coupon_value']}\n";
         foreach ($productData as $keyProductItem => $productItem) {
             $message .= "$keyProductItem: $productItem\n";
         }

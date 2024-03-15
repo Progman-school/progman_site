@@ -34,8 +34,9 @@ const changeFormDisability = (data) => {
  * @param {FormData} formFields
  */
 function processTest(formFields) {
+    const course = courseStorage.courses[formFields.get('course_id')]
     let hours = 0
-    for (let technology of courseStorage.courses[formFields.get('course_id')].technologies) {
+    for (let technology of course.technologies) {
         hours += technology.pivot.hours
     }
     let weekDaysCount = 0
@@ -73,6 +74,7 @@ function processTest(formFields) {
     formFields.append('topic','study_plan_counter')
     formFields.append('result_template_path','test_results/study_plan_counter')
     formFields.append('weekdays', weekdays.join(','))
+    formFields.append('course_name', course.name)
     formFields.append('technologies', null)
     return formFields
 }
@@ -85,15 +87,15 @@ function yearsMonthsWeeksDays(daysNumber) {
 
     let result = ''
     if (years > 0) {
-        result += years + (years > 1 ? 'years' : 'year') + ', '
+        result += years + ' ' + (years > 1 ? 'years' : 'year') + ', '
     }
     if (months > 0) {
-        result += months + (months > 1 ? 'months' : 'month') + ', '
+        result += months + ' ' + (months > 1 ? 'months' : 'month') + ', '
     }
     if (weeks > 0) {
-        result += weeks + (weeks > 1 ? 'weeks' : 'week') + ', '
+        result += weeks + ' ' + (weeks > 1 ? 'weeks' : 'week') + ', '
     }
-    return result + days + (days > 1 ? 'days' : 'day')
+    return result + days + ' ' + (days > 1 ? 'days' : 'day')
 }
 
 function countDays(takesHours, hoursPerDay, daysPerWeek, level, age, withHelp = false) {

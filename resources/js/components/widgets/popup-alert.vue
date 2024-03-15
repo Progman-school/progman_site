@@ -59,6 +59,7 @@ created()
                             <a class="button_links" :href="props.href" v-if="props.href">
                                 <button @click="modalClose">{{props.button}}</button>
                             </a>
+                            <button v-if="!props.href && props.button"  @click="modalClose">{{props.button}}</button>
                         </div>
                     </div>
                 </div>
