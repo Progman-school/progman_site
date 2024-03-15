@@ -44,6 +44,7 @@ const submitForm = (event) => {
                 button: result.data?.alert_button_name ?? 'Ok',
             });
             event.target.reset()
+            router.push(router.currentRoute.value.path)
         }
     )
 }
