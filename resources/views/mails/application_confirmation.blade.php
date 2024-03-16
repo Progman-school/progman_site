@@ -4,6 +4,6 @@
         <p><b>{!! $text !!}</b></p>
     </div>
     @component('mail::button', ['url' => $confirmUrl])
-        Confirm application
+        Confirm
     @endcomponent
 @endcomponent
