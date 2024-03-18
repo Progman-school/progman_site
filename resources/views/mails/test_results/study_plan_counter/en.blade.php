@@ -31,7 +31,7 @@
     @endif
     <div>
         <h5>TO DO list to study along:</h5>
-        <ul>
+        <ol>
             <li>Figure out the detailed functionality of your project idea.</li>
             <li>Make a list of technologies to use in case you want a different stack. Or simply use listed ones above.</li>
             <li>Come up with exact project development steps. Better to have help from any professional you know.</li>
@@ -56,7 +56,7 @@
             <li>Make pages in the most important social networks and websites for IT job searching. Find these portals your self using advice from the internet, and design your pages as good as you can.</li>
             <li>Train yourself for the IT job interview, find some one how can help.</li>
             <li>You're ready! Start searching for a job, and don't stop until you find it.</li>
-        </ul>
+        </ol>
     </div>
     <br>
     <div class="important_line_info" style="padding: 10px">
@@ -68,7 +68,7 @@
     <hr />
     <div>
         <h5>TO DO list with a professional mentor:</h5>
-        <ul>
+        <ol>
             <li>Figure out the detailed functionality of your project idea.</li>
             <li>Mentor helps you to chose the best technologies and steps to learn them for your particular project.</li>
             <li>Get the all necessary software you need from the mentor, use his help to set it up and configure your computer.</li>
@@ -81,7 +81,7 @@
             <li>Mentor gives you his personal endorse reference and an official study certificate with a provable serial number to prove your knowledge and skills.</li>
             <li>Get trainings for the IT job interview and the code interview tasks from the mentor.</li>
             <li>You're ready! Mentor will help you to start job resecting or your own startup, just don't stop until you make it.</li>
-        </ul>
+        </ol>
     </div>
     <br>
     <div class="important_line_info" style="padding: 10px">
