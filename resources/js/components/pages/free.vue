@@ -33,7 +33,7 @@ import InsertContent from '../widgets/insert_content.vue'
             We constantly add something new. Check this page!
         </p>
         <div style="margin-bottom: 20px">
-            <router-link :to="'start'" >
+            <router-link :to="'study_plan'" >
                 <strong>
                     <InsertContent>go_to_start_link</InsertContent>
                 </strong>

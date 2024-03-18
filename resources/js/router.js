@@ -54,19 +54,20 @@ const routes = [
     },
 
     // redirects from the old pages
-    {
-        name: null,
-        path: '/:lang?/test',
-        // component: test,
-        redirect: '/:lang?/study_plan',
-    },
-    {
-        name: null,
-        path: '/:lang?/start',
-        // component: start,
-        redirect: '/:lang?/study_plan',
-
-    },
+    // todo: remove them and their components
+    // {
+    //     name: null,
+    //     path: '/:lang?/test',
+    //     // component: test,
+    //     redirect: '/study_plan',
+    // },
+    // {
+    //     name: null,
+    //     path: '/:lang?/start',
+    //     // component: start,
+    //     redirect: '/study_plan',
+    //
+    // },
 
     // 404
     {
