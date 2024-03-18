@@ -10,12 +10,12 @@ import CourseCarousel from "./widgets/course_carousel.vue";
         </div>
         <div class="content">
             <div class="inner">
-                <h1>ProgMan school</h1>
+                <h1>ProgMan society</h1>
                 <p>
                     <InsertContent>main_page_text</InsertContent>
                 </p>
                 <div>
-                    <CourseCarousel></CourseCarousel>
+                    <CourseCarousel redirect-path="study_plan"></CourseCarousel>
                 </div>
             </div>
         </div>

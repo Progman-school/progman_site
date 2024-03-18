@@ -7,66 +7,72 @@ import free from './components/pages/free.vue'
 import conditions from './components/pages/conditions.vue'
 import contacts from './components/pages/contacts.vue'
 import checkCertificate from './components/pages/check_certificate.vue'
-import newTest from './components/pages/new_test.vue'
+import studyPlan from './components/pages/study_plan.vue'
 import consulting from './components/pages/consulting.vue'
-import tmp from './components/pages/tmp.vue'
+import notFound from './components/not_found.vue'
 
 const routes = [
-    // {
-    //     name: null,
-    //     path: '/',
-    //     component: hello
-    // },
+    // the main page
     {
         name: null,
         path: '/:lang?',
-        component: hello
+        component: hello,
     },
+
+    // menu pages
     {
-        name: null,
-        path: '/:lang?/start',
-        component: start
-    },
-    {
-        name: 'test & start',
-        path: '/:lang?/test',
-        component: test
+        name: 'study plan',
+        path: '/:lang?/study_plan',
+        component: studyPlan,
     },
     {
         name: 'free',
         path: '/:lang?/free',
-        component: free
+        component: free,
     },
     {
         name: 'conditions',
         path: '/:lang?/conditions',
-        component: conditions
+        component: conditions,
     },
     {
         name: 'contacts',
         path: '/:lang?/contacts',
-        component: contacts
+        component: contacts,
     },
     {
         name: 'check cert',
         path: '/:lang?/check_certificate',
-        component: checkCertificate
+        component: checkCertificate,
     },
-    // {
-    //     name: '',
-    //     path: '/tmp',
-    //     component: tmp
-    // },
-    {
-        name: '',
-        path: '/:lang?/new_test',
-        component: newTest
-    },
+
+    // non menu pages
     {
         name: '',
         path: '/:lang?/consulting',
-        component: consulting
+        component: consulting,
     },
+
+    // redirects from the old pages
+    {
+        name: 'test & start',
+        path: '/:lang?/test',
+        // component: test,
+        redirect: '/:lang?/study_plan',
+    },
+    {
+        name: null,
+        path: '/:lang?/start',
+        // component: start,
+        redirect: '/:lang?/study_plan',
+
+    },
+
+    // 404
+    {
+        path: '*',
+        component: notFound,
+    }
 ]
 
 const router = createRouter({
