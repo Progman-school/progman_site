@@ -36,15 +36,15 @@
             <li>Make a list of technologies to use in case you want a different stack. Or simply use listed ones above.</li>
             <li>Come up with exact project development steps. Better to have help from any professional you know.</li>
             <li>Choose the software you need for drawing the architecture of your app and for code development.</li>
-            <li>Learn yourself how to architect an application using books and YouTobe.</li>
             <li>Understand what parts of your app you are going to have.</li>
+            <li>Learn yourself how to architect an application using books and YouTube.</li>
             <li>Made the scheme of the relations between separated parts of your app(front, back, DB, etc).</li>
-            <li>Learn yourself how to architect a DataBases using books and YouTobe.</li>
+            <li>Learn yourself how to architect a DataBases using books and YouTube.</li>
             <li>Come up with exact models(db tables) and their properties in your app.</li>
             <li>Make DataBase relations scheme including all properties attributes and types of data.</li>
             <li>Find out what is Git and GitHub are learn the basic commands of them.</li>
             <li>Make your github repository to store the project code and connect it to your local device(laptop).</li>
-            <li>Learn the basics of chosen programming(backend/frontend) languages and technologies probably using books and YouTobe.</li>
+            <li>Learn the basics of chosen programming(backend/frontend) languages and technologies probably using books and YouTube.</li>
             <li>Start programming your app, you have to choose yourself which part (backend/frontend) is going to be created fist.</li>
             <li>Search info about all difficulties, and your misunderstanding of code during programming your app.</li>
             <li>Find all syntax/typo issues hiding into your code, and solve all logical bugs.</li>
@@ -85,7 +85,7 @@
     </div>
     <br>
     <div class="important_line_info" style="padding: 10px">
-        <h5>Total time to make it with a mentor:</h5>
+        <h5>Total time to make it with the mentor:</h5>
         <div class="important_text" style="text-align: center; width: 100%; font-size: 1.2rem; font-weight: bold">
             ~ {{$testResultData['result']}}
         </div>
