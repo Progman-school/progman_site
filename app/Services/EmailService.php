@@ -51,7 +51,12 @@ class EmailService extends EmailServiceSdk
         $confirmedUser["Last name"] = $userName[1] ?? "-";
 
         $product = Product::where("id", $userRequest->product_id)->first();
-        $coupon = Coupon::where("serial_number", $userRequest->coupon)->first();
+
+        $coupon = null;
+        if (isset($userRequest['coupon']) ?? $userRequest->coupon) {
+            $coupon = Coupon::where("serial_number", $userRequest->coupon)->first();
+        }
+
         $result = $this->telegramService->editMessageInAdminChat(
             $userRequest->admin_message_id,
             UserRequestService::createRequestMessageForAdminChat(
@@ -61,7 +66,7 @@ class EmailService extends EmailServiceSdk
                         array_flip(["uid_type", "name", "contact"])
                     ) + [
                         'product_name' => $product->getName(),
-                        'coupon_value' => $coupon->value . $coupon->couponUnit()->first()->symbol,
+                        'coupon_value' => $coupon ? $coupon->value . $coupon->couponUnit()->first()->symbol : 'none',
                     ],
                 $confirmedData,
                 $userRequest->getRepeatsCount(),
