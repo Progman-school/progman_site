@@ -11,15 +11,18 @@ import InsertContent from '../widgets/insert_content.vue'
             <blockquote>
                 <InsertContent>conditions_teacher_message</InsertContent>
             </blockquote>
+            <div style="margin: 20px auto">
+                <router-link to="consulting" >
+                    <strong>Get a personal consultation</strong>
+                </router-link>
+            </div>
         </section>
         <hr />
         <section>
             <InsertContent>course_description_conditions</InsertContent>
             <div class="goto_test_button">
-                <a href="test">
-                    <button class="primary">
-                        TEST & START NOW
-                    </button>
+                <a href="consulting">
+                    <button class="primary">TEST & START NOW</button>
                 </a>
             </div>
         </section>
