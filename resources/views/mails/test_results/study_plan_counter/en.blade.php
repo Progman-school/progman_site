@@ -42,7 +42,8 @@
             <li>Learn yourself how to architect a DataBases using books and YouTobe.</li>
             <li>Come up with exact models(db tables) and their properties in your app.</li>
             <li>Make DataBase relations scheme including all properties attributes and types of data.</li>
-            <li>Find out what is Git and GitHub are, and make your github repository to store the project code.</li>
+            <li>Find out what is Git and GitHub are learn the basic commands of them.</li>
+            <li>Make your github repository to store the project code and connect it to your local device(laptop).</li>
             <li>Learn the basics of chosen programming(backend/frontend) languages and technologies probably using books and YouTobe.</li>
             <li>Start programming your app, you have to choose yourself which part (backend/frontend) is going to be created fist.</li>
             <li>Search info about all difficulties, and your misunderstanding of code during programming your app.</li>
@@ -68,9 +69,18 @@
     <div>
         <h5>TO DO list with a professional mentor:</h5>
         <ul>
-            <li>one thing</li>
-            <li>another thing</li>
-            <li>and more more things</li>
+            <li>Figure out the detailed functionality of your project idea.</li>
+            <li>Mentor helps you to chose the best technologies and steps to learn them for your particular project.</li>
+            <li>Get the all necessary software you need from the mentor, use his help to set it up and configure your computer.</li>
+            <li>Make the architect schemes for your app (the app parts communications and the db tables relations), learning how to architect an app and DataBases with the mentor, step by step.</li>
+            <li>Use mentor guid to create you GitHub repository, to set up git on your machine and learn the git commands and roles you need provided by the mentor.</li>
+            <li>Mentor provides you the step by step course of learning the languages/technologies you need for the project and teach you to use them personally.</li>
+            <li>Start to build your app with the mentor, he helps you to solve all the difficulties, syntax/typo issues and logical bugs you have or fixes them for you in the tough case.</li>
+            <li>Deploy your ready app using the mentor's detailed guidelines.</li>
+            <li>Create your programming portfolio with the mentor, including GitHub page decoration, a professional resume and pages in the special networks/websites for IT job searching.</li>
+            <li>Mentor gives you his personal endorse reference and an official study certificate with a provable serial number to prove your knowledge and skills.</li>
+            <li>Get trainings for the IT job interview and the code interview tasks from the mentor.</li>
+            <li>You're ready! Mentor will help you to start job resecting or your own startup, just don't stop until you make it.</li>
         </ul>
     </div>
     <br>
