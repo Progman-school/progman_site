@@ -49,13 +49,13 @@ const routes = [
     // non menu pages
     {
         name: '',
-        path: '/:lang?/about',
+        path: '/:lang?/consulting',
         component: consulting,
     },
 
     // redirects from the old pages
     {
-        name: 'test & start',
+        name: null,
         path: '/:lang?/test',
         // component: test,
         redirect: '/:lang?/study_plan',
@@ -70,7 +70,8 @@ const routes = [
 
     // 404
     {
-        path: '*',
+        name: null,
+        path: '/:pathMatch(.*)*',
         component: notFound,
     }
 ]

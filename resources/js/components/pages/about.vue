@@ -12,7 +12,7 @@ import InsertContent from '../widgets/insert_content.vue'
                 <InsertContent>conditions_teacher_message</InsertContent>
             </blockquote>
             <div style="margin: 20px auto">
-                <router-link to="consulting" >
+                <router-link :to="'consulting'" >
                     <strong>Get a personal consultation</strong>
                 </router-link>
             </div>
