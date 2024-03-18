@@ -8,6 +8,13 @@ import mixins from "../../mixins";
 import router from "../../router";
 import InsertContent from './insert_content.vue'
 
+const props = defineProps({
+    redirectPath: {
+        type: String,
+        required: true
+    }
+})
+
 const multiLanguageStore = useMultiLanguageStore()
 const courseStorage = useCourseStorage()
 
@@ -49,7 +56,7 @@ const getItemsToShow = computed({
                         </li>
                     </ul>
                 </div>
-                <button @click="router.push(`${multiLanguageStore.currentLanguage}/test?course=${course.id}`)">START</button>
+                <button @click="router.push(`${multiLanguageStore.currentLanguage}/${props.redirectPath}?course=${course.id}`)">START</button>
             </div>
         </Slide>
     </Carousel>

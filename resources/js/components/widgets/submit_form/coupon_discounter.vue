@@ -175,7 +175,7 @@ onMounted(() => {
             </strong>
         </label>
         <div class="coupon_field">
-            <input type="text" name="coupon" id="coupon" minlength="5" placeholder="COUPON-CODE" v-model="couponSerialNumber" required/>
+            <input type="text" name="coupon" id="coupon" minlength="5" placeholder="COUPON-CODE" v-model="couponSerialNumber" />
             <div>
                 <SpinCirclePreloader v-show="inCheckingProcess" />
                 <span v-show="!inCheckingProcess" :style="{color: couponStatusColor}" v-text="couponStatus" ></span>

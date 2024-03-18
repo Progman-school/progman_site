@@ -1,6 +1,7 @@
 <script setup>
 import mixins from "../../mixins";
 import { useEventListener } from "../../storages/event_storage.js"
+import router from "../../router";
 
 const props = defineProps({
     action: {

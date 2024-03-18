@@ -67,11 +67,11 @@ onMounted(() => {
                     <div class="price_builder">
                         <div>
                             <div>
-                                <input type="radio" id="hours_1" name="quantity" value=1 v-model="productAmount" required>
+                                <input type="radio" id="hours_1" name="quantity" value=1 v-model="productAmount" required :disabled="productAmount >= 3">
                                 <label for="hours_1">One</label>
                             </div>
                             <div>
-                                <input type="radio" id="hours_2" name="quantity" v-model="productAmount" value=2>
+                                <input type="radio" id="hours_2" name="quantity" v-model="productAmount" value=2 :disabled="productAmount >= 3">
                                 <label for="hours_2">Two</label>
                             </div>
                             <div v-if="productAmount < 3">
@@ -80,7 +80,7 @@ onMounted(() => {
                             </div>
                             <div v-if="productAmount >= 3">
                                 <label for="hours_number">Your number</label>
-                                <input type="number" id="hours_number" name="quantity" value=3 min=2 max=50 v-model="productAmount" @input="valueRestriction">
+                                <input type="number" id="hours_number" name="quantity" value=3 min=2 max=50 v-model="productAmount" @input="valueRestriction" required>
                             </div>
                         </div>
                         <CouponDiscounter :couponTypeId="product?.coupon_type?.id" :unit-amount="productAmount" :unit-price="product?.unit_price" />

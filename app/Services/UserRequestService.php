@@ -30,7 +30,10 @@ class UserRequestService
             throw new Exception("Product with (id:{$requestData['product_id']}) not found");
         }
 
-        $coupon = CouponService::checkCouponBy($requestData['coupon']);
+        $coupon = null;
+        if(isset($requestData['coupon']) && $requestData['coupon']) {
+            $coupon = CouponService::checkCouponBy($requestData['coupon']);
+        }
 
 
         $userRequest = new UserRequest($requestData);
@@ -84,7 +87,7 @@ class UserRequestService
                 array_diff_key($request->toArray(), array_flip(["uid_type", "name", "contact"])
                 ) + [
                     'product_name' => $product->getName(),
-                    'coupon_value' => $coupon->value . $coupon->couponUnit()->first()->symbol,
+                    'coupon_value' => $coupon ? $coupon->value . $coupon->couponUnit()->first()->symbol : 'none',
                 ]
             ),
             TelegramService::REQUEST_STATUS_KEYBOARDS[$userRequest->status]
@@ -93,8 +96,10 @@ class UserRequestService
         $userRequest->admin_message_id = $result["result"]["message_id"];
         $userRequest->save();
 
-        $coupon->used_times++;
-        $coupon->save();
+        if ($coupon) {
+            $coupon->used_times++;
+            $coupon->save();
+        }
 
         return $return;
     }
