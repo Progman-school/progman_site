@@ -4,7 +4,7 @@ import hello from './components/hello.vue'
 import start from './components/pages/start.vue'
 import test from './components/pages/test.vue'
 import free from './components/pages/free.vue'
-import conditions from './components/pages/conditions.vue'
+import about from './components/pages/about.vue'
 import contacts from './components/pages/contacts.vue'
 import checkCertificate from './components/pages/check_certificate.vue'
 import studyPlan from './components/pages/study_plan.vue'
@@ -31,9 +31,9 @@ const routes = [
         component: free,
     },
     {
-        name: 'conditions',
-        path: '/:lang?/conditions',
-        component: conditions,
+        name: 'about',
+        path: '/:lang?/about',
+        component: about,
     },
     {
         name: 'contacts',
@@ -49,7 +49,7 @@ const routes = [
     // non menu pages
     {
         name: '',
-        path: '/:lang?/consulting',
+        path: '/:lang?/about',
         component: consulting,
     },
 
