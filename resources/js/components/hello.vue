@@ -10,7 +10,7 @@ import CourseCarousel from "./widgets/course_carousel.vue";
         </div>
         <div class="content">
             <div class="inner">
-                <h1>ProgMan society</h1>
+                <h1>ProgMan site</h1>
                 <p>
                     <InsertContent>main_page_text</InsertContent>
                 </p>

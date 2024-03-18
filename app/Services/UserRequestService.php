@@ -157,10 +157,10 @@ class UserRequestService
             $message .= "first request: " . ($firstRequest ? date("d.m.Y", strtotime($firstRequest)) : "none") . "\n";
         }
 
-        $message .= "Application: \n";
-        foreach (json_decode($userRequest->application_data, true) as $keyTestItem => $testItem) {
-            $message .= "$keyTestItem: $testItem\n";
-        }
+//        $message .= "Application: \n";
+//        foreach (json_decode($userRequest->application_data, true) as $keyTestItem => $testItem) {
+//            $message .= "$keyTestItem: $testItem\n";
+//        }
         return $message;
     }
 
