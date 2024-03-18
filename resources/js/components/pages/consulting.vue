@@ -89,7 +89,7 @@ onMounted(() => {
                     <input type="text" name="city" id="city" minlength="3" placeholder="Your current city (country into the brackets)" required/>
                 </div>
                 <div class="field">
-                    <label for="details"><insert-content>consulting_page_message_label</insert-content>:</label>
+                    <label for="details"><insert-content>consulting_page_message_label</insert-content>*</label>
                     <textarea name="details" id="details" minlength="10" maxlength="500" placeholder="Any additional wishes or questions (optional)" rows="3"></textarea>
                 </div>
                 <RegistrationFormFields @onPrivacyPolicyConfirmed="changeFormDisability">
