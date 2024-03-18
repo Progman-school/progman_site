@@ -57,7 +57,7 @@ const checkCertificate = (event) => {
                 </ul>
             </form>
             <div style="margin-bottom: 20px">
-                <router-link :to="'start'" >
+                <router-link :to="'study_plan'" >
                     <strong>
                         <InsertContent>go_to_start_link</InsertContent>
                     </strong>
@@ -71,5 +71,7 @@ const checkCertificate = (event) => {
 </template>
 
 <style scoped>
-
+.actions{
+    margin-top: 20px;
+}
 </style>

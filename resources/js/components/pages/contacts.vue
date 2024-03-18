@@ -19,7 +19,7 @@ multiLanguageStore.getContentByTag("telegram_manager_account").then(insertData =
         </ul>
         <hr />
         <div style="margin: 12px 0; text-align: center">
-            <router-link :to="'start'" >
+            <router-link :to="'study_plan'" >
                 <strong>
                     <InsertContent>go_to_start_link</InsertContent>
                 </strong>
