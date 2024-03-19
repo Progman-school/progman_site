@@ -67,8 +67,9 @@ class UserRequestService
         ];
 
         if ($userRequest->uid_type == "telegram") {
-                $return['hash_link'] = "tg://resolve?domain=" . config("services.telegram.bot_login") .
+                $return['href_link'] = "tg://resolve?domain=" . config("services.telegram.bot_login") .
                     "&" . self::CONFIRM_URL_PARAM . "={$userRequest->uid_type}-{$userRequest->hash}";
+            $return['alert_button_name'] = 'Open Telegram';
         } elseif ($userRequest->uid_type == "email") {
             Mail::to($request->contact)->send(new ConfirmApplication(
                 "https://{$_SERVER['HTTP_HOST']}/" . EmailServiceSdk::API_ROUT . EmailServiceSdk::API_ENTRYPOINT .
