@@ -102,7 +102,7 @@
                 Используй до: <a href="{{"{$coupon->couponType->use_link}?coupon={$coupon->serial_number}"}}">{{$coupon->couponType->use_link}}</a>
                 <br/>
                 <br/>
-                <b>Купон действителен до {{date('F j, Y', $coupon->expired_ad)}}</b>
+                <b>Купон действителен до {{date('F j, Y', $coupon->expired_at)}}</b>
             </p>
         </div>
     @endif
