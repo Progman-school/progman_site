@@ -44,7 +44,7 @@ const getItemsToShow = computed({
 </script>
 
 <template>
-    <h3><InsertContent>course_carousel_widget_title</InsertContent></h3>
+    <h3 class="important_text"><InsertContent>course_carousel_widget_title</InsertContent></h3>
     <Carousel :autoplay=autoPlay :itemsToShow="getItemsToShow" :wrapAround="true" :transition="600">
         <Slide v-for="course in courseStorage.courses" :key="course.id">
             <div class="carousel__item" :title="course['description_' + multiLanguageStore.currentLanguage]">
