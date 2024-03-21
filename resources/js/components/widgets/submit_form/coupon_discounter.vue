@@ -41,6 +41,7 @@ const checkedCouponSerialNumber = ref(null)
 const couponStatus = ref('')
 const couponStatusColor = ref(COUPON_STATUS_COLORS[null])
 const inCheckingProcess = ref(false)
+const couponFieldName = ref(null)
 
 const usualPrice = computed(() => {
     if (props.unitPrice !== null && props.unitAmount !== null) {
@@ -89,10 +90,12 @@ async function checkCoupon(couponTypeId, serialNumber) {
 
     if (!serialNumber || !serialNumber.length) {
         setDefaultStatus()
+        couponFieldName.value = 'coupon'
         return null
     }
 
     if (serialNumber.length < 5) {
+        couponFieldName.value = null;
         setErrorStatus('Wrong coupon code!')
         return null
     }
@@ -175,7 +178,7 @@ onMounted(() => {
             </strong>
         </label>
         <div class="coupon_field">
-            <input type="text" name="coupon" id="coupon" minlength="5" placeholder="COUPON-CODE" v-model="couponSerialNumber" />
+            <input type="text" :name="couponFieldName" id="coupon" minlength="5" placeholder="COUPON-CODE" v-model="couponSerialNumber" />
             <div>
                 <SpinCirclePreloader v-show="inCheckingProcess" />
                 <span v-show="!inCheckingProcess" :style="{color: couponStatusColor}" v-text="couponStatus" ></span>
