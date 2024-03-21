@@ -14,6 +14,7 @@ export const useMultiLanguageStore = defineStore({
         currentLanguage: null,
         contentArray: {},
         languageLocateMetaTags: {},
+        requestedTags: [],
     }),
     actions: {
         readCurrentLanguage() {
@@ -84,31 +85,43 @@ export const useMultiLanguageStore = defineStore({
             );
         },
         async getContentByTag(tag, ifOldOny = true) {
-            let params = {
-                tag: tag,
-                timeStamp: 0
+
+            if (this.contentArray[tag] !== undefined && ifOldOny && this.contentArray[tag].timeStamp !== undefined) {
+                if ((this.contentArray[tag].timeStamp + refreshDelay - getTimeStamp()) > 0) {
+                    return this.contentArray[tag]
+                }
+                // this.contentArray[tag]['timeStamp'] = getTimeStamp()
             }
 
-            if (this.contentArray[tag] !== undefined && ifOldOny) {
-                if (this.contentArray[tag].timeStamp !== undefined) {
-                    if ((this.contentArray[tag].timeStamp + refreshDelay - getTimeStamp()) > 0) {
-                        return this.contentArray[tag]
-                    }
-                    this.contentArray[tag]['timeStamp'] = getTimeStamp()
-                }
-                params.timeStamp = this.contentArray[tag].timeStamp
+            if(!this.requestedTags.includes(tag)) {
+                this.requestedTags.push(tag)
             }
-            await mixins.methods.getAPI(
-                'tag_value_by_name',
-                params,
-                (response) => {
-                    if (response.data === 1) {
-                        return true;
-                    }
-                    this.contentArray[tag] = response.data
-                    this.contentArray[tag].timeStamp = getTimeStamp()
+
+            if (this.requestedTags.length > 1) {
+                let params = {tags: [], timeStamps:[]}
+                for (let tag in this.requestedTags) {
+                    params.tags.push(this.requestedTags[tag])
+                    params.timeStamps.push(this.requestedTags[tag].timeStamp ?? 0)
                 }
-            )
+                params.tags = params.tags.join(',')
+                params.timeStamps = params.timeStamps.join(',')
+                setTimeout(async () => {
+                    await mixins.methods.getAPI(
+                        'tags_value_by_names',
+                        params,
+                        (response) => {
+                            if (response.data === 1) {
+                                return true;
+                            }
+                            for (let tag in response.data) {
+                                this.contentArray[tag] = response.data[tag]
+                                this.contentArray[tag].timeStamp = getTimeStamp()
+                            }
+                        }
+                    )
+                    this.requestedTags = []
+                }, 1000)
+            }
             return this.contentArray[tag]
         },
         async getCurrentLanguageContentByTag(tag, ifOldOny = true) {

@@ -41,6 +41,19 @@ class TagController extends MainController
     }
 
     /**
+     * @throws Exception
+     */
+    public function getTagValuesByNames(Request $request): string
+    {
+        return ApiHelper::createFrontAnswer(
+            TagService::getTagValuesByNames(
+                explode(",", $request->tags),
+                explode(",", $request->timeStamps)
+            )
+        );
+    }
+
+    /**
      * @throws UserAlert
      */
     public function getLanguageLocateMetaTagsContents(Request $request): string

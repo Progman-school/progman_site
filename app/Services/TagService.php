@@ -121,6 +121,17 @@ class TagService extends MainService
         return $tagDataWithValues;
     }
 
+    /**
+     * @throws UserAlert
+     */
+    public static function getTagValuesByNames(array $tags, array $timeStamps = []): array {
+        $answer = [];
+        foreach ($tags as $tagKey => $tag) {
+            $answer[$tag] = self::getTagValueByName($tag, $timeStamps[$tagKey] ?? 0);
+        }
+        return $answer;
+    }
+
     public static function getTagValueByCurrentLanguage(string $name, $time = 0, $injectionContent = []): ?string {
         return self::getTagValueByName($name, $time, $injectionContent)[self::getCurrentLanguage()];
     }
