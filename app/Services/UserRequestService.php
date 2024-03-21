@@ -44,26 +44,13 @@ class UserRequestService
         $userRequest->status = UserRequest::RECEIVED_STATUS;
         $userRequest->save();
 
+        $product = $userRequest->product()->first();
+
         $return = [
             'hash_link' => null,
-            'alert_text' => TagService::getTagValueByName(
-                'alert_text_after_application_complete',
-                $request->timeStamp ?? 0,
-                [
-                    'type_of_user_uid' => [
-                        TagService::DEFAULT_LANGUAGE => $request->uid_type,
-                        'timeStamp' => 0,
-                    ],
-                    'where_to_look_for_results' => [
-                        TagService::DEFAULT_LANGUAGE => ucfirst($userRequest->uid_type),
-                        'timeStamp' => 0,
-                    ],
-                ]
-            )[TagService::getCurrentLanguage()]
-                . "<br /><br />" .
-            TagService::getTagValueByName(
-                "what_to_do_to_get_offer_by_{$userRequest->uid_type}"
-            )[TagService::getCurrentLanguage()],
+            'alert_text' => TagService::getTagValueByCurrentLanguage(
+                "instructions_of_request_confirmation_by_{$userRequest->uid_type}"
+            )
         ];
 
         if ($userRequest->uid_type == "telegram") {
@@ -77,7 +64,13 @@ class UserRequestService
                     "action" => "confirm_request",
                     self::CONFIRM_URL_PARAM => "{$userRequest->uid_type}-{$userRequest->hash}",
                 ]),
-                self::generateAlertText($userRequest)
+                TagService::getTagValueByCurrentLanguage(
+                    'email_confirmation_message_text',
+                    0 ,
+                    [
+                        'product_name' => [TagService::DEFAULT_LANGUAGE => $product->getName()],
+                    ]
+                )
             ));
         }
 
@@ -105,15 +98,6 @@ class UserRequestService
         return $return;
     }
 
-    public static function generateAlertText(UserRequest $userRequest): string {
-
-        return TagService::getTagValueByName(
-            'test_passed_alert_text',
-            $userRequest->created_at->getTimestamp()
-        )[TagService::getCurrentLanguage()];
-    }
-
-
     protected static function getRequestHash(Request $request): string {
         return md5(
             UserRequest::all()->count() - 1 . '-' . print_r($request->toArray(), 1). '=' . microtime()
@@ -128,9 +112,12 @@ class UserRequestService
         string $firstRequest = null
     ): string
     {
-        $message = "Request! ({$userRequest->uid_type} type)\n";
-        $message .= "№: {$userRequest->id}\n";
+        $message = "Request! #{$userRequest->id} ({$userRequest->uid_type} type)\n";
         $message .= "Lang: {$userRequest->language}\n";
+        $user = $userRequest->user()->first();
+        if ($user) {
+            $message .= "User id: {$user->id}\n";
+        }
         $message .= "Name: {$userRequest->name}\n";
         $message .= "Contact: {$userRequest->contact}\n\n";
 

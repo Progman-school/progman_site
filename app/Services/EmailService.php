@@ -75,18 +75,12 @@ class EmailService extends EmailServiceSdk
             TelegramService::REQUEST_STATUS_KEYBOARDS[$userRequest->status]
         );
 
-        $userMessage = TagService::getTagValueByName(
-                "thanks_for_registration_message",
-                0 ,
-                ["new_id" => [
-                    TagService::DEFAULT_LANGUAGE => $confirmedUser->id]
-                ]
-            )[TagService::getCurrentLanguage()]
-            . "\n\n" . TagService::getTagValueByName(
-                "telegram_success_answer_to_new_user"
-            )[TagService::getCurrentLanguage()];
-
-        return $userMessage;
+        return TagService::getTagValueByName(
+            "successfully_confirmed_request_alert_text",
+            0,
+            ["new_request_id" => [TagService::DEFAULT_LANGUAGE => $userRequest->id]
+            ]
+        )[TagService::getCurrentLanguage()];
     }
 
     public function showResultPage(string $text): string {

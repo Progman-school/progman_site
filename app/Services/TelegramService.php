@@ -139,7 +139,6 @@ class TelegramService extends TelegramBotApiSdk
             json_encode($request->toArray(), JSON_UNESCAPED_UNICODE)
         );
 
-        $userMessage = "Super!\n". UserRequestService::generateAlertText($userRequest);
 //        if ($userRequestsCount > 1) {
 //            $userMessage .=
 //                "\n\n" . TagService::getTagValueByName("previously_applied_warning_message")[TagService::getCurrentLanguage()]
@@ -180,15 +179,12 @@ class TelegramService extends TelegramBotApiSdk
             TelegramService::REQUEST_STATUS_KEYBOARDS[$userRequest->status]
         );
 
-        $userMessage .= "\n\n" . TagService::getTagValueByName(
-            "thanks_for_registration_message",
-            0 ,
-                ["new_id" => [
-                    TagService::DEFAULT_LANGUAGE => $confirmedUser->id]
+        $userMessage = TagService::getTagValueByName(
+                "successfully_confirmed_request_alert_text",
+                0,
+                ["new_request_id" => [
+                    TagService::DEFAULT_LANGUAGE => $userRequest->id]
                 ]
-            )[TagService::getCurrentLanguage()]
-            . "\n\n" . TagService::getTagValueByName(
-                "telegram_success_answer_to_new_user"
             )[TagService::getCurrentLanguage()];
         $this->sendEchoMessage(AppHelper::removeHtmlTagsFromString($userMessage));
     }

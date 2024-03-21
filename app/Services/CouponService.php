@@ -38,7 +38,7 @@ class CouponService
                     ->first();
             }
             if ($coupon === null) {
-                throw new UserAlert("The coupon ({$paramName}:{$paramValue}) is not found!");
+                throw new UserAlert("The coupon is not found!");
             }
         }
 
