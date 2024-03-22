@@ -103,7 +103,7 @@
                 Use this at: <a href="{{"{$coupon->couponType->use_link}?coupon={$coupon->serial_number}"}}">{{$coupon->couponType->use_link}}</a>
                 <br/>
                 <br/>
-                <b>The coupon is available till {{date('F j, Y', $coupon->expired_at)}}</b>
+                <b>The coupon is available till {{date('F j, Y', strtotime($coupon->expired_at))}}</b>
             </p>
         </div>
     @endif
