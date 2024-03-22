@@ -5,12 +5,20 @@ import InsertContent from '../widgets/insert_content.vue'
 
 <template>
     <article id="conditions">
-        <h2 class="major">Study conditions</h2>
+        <h2 class="major">About us</h2>
         <section>
-            <h4>Message from the teacher:</h4>
+            <h4>Founder's message:</h4>
+            <p>
+                <img src="/images/Denis_Progman (denis ProgMan) (prog.man) (progman community) (IT menthor) small_size.jpg">
+                <strong>
+                    <span class="important_text">Hey progmans!</span> I'm Denis.
+                    <br />
+                    Welcome to our IT community!
+                </strong>
             <blockquote>
                 <InsertContent>conditions_teacher_message</InsertContent>
             </blockquote>
+            </p>
             <div style="margin: 20px auto">
                 <div class="goto_test_button">
                     <a href="consulting">
@@ -49,5 +57,16 @@ import InsertContent from '../widgets/insert_content.vue'
 .goto_test_button {
     text-align: center;
     margin: 20px auto;
+}
+p strong {
+    line-height: 36px;
+}
+p img {
+    border-radius: 50%;
+    border: #58cc02 solid 2px;
+    width: 80px;
+    height: 80px;
+    margin: 0 20px 20px 35px;
+    float: left;
 }
 </style>
