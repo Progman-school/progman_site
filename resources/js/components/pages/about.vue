@@ -9,26 +9,27 @@ import InsertContent from '../widgets/insert_content.vue'
         <section>
             <h4>Founder's message:</h4>
             <p>
-                <img src="/images/Denis_Progman (denis ProgMan) (prog.man) (progman community) (IT menthor) small_size.jpg">
+                <img src="/images/Denis_Progman (denis ProgMan) (prog.man) (progman community) (IT menthor) small_size.jpg" />
                 <strong>
                     <span class="important_text">Hey progmans!</span> I'm Denis.
                     <br />
                     Welcome to our IT community!
                 </strong>
-            <blockquote>
-                <InsertContent>conditions_teacher_message</InsertContent>
-            </blockquote>
+                <blockquote>
+                    <InsertContent>conditions_teacher_message</InsertContent>
+                </blockquote>
             </p>
             <div style="margin: 20px auto">
                 <div class="goto_test_button">
                     <a href="consulting">
-                        <button class="primary">Get a personal consultation</button>
+                        <button class="primary">Personal consultation</button>
                     </a>
                 </div>
             </div>
         </section>
         <hr />
         <section>
+            <h3>The benefits of IT:</h3>
             <InsertContent>course_description_conditions</InsertContent>
             <div class="goto_test_button">
                 <a href="study_plan">
@@ -66,7 +67,7 @@ p img {
     border: #58cc02 solid 2px;
     width: 80px;
     height: 80px;
-    margin: 0 20px 20px 35px;
+    margin: 0 20px 20px 20px;
     float: left;
 }
 </style>
