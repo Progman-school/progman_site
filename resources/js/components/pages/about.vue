@@ -30,6 +30,15 @@ import InsertContent from '../widgets/insert_content.vue'
         <hr />
         <section>
             <h3>The benefits of IT:</h3>
+            <div class="icons_line">
+                <font-awesome-icon icon="fa-solid fa-wand-magic-sparkles"></font-awesome-icon>
+                <font-awesome-icon icon="fa-solid fa-globe"></font-awesome-icon>
+                <font-awesome-icon icon="fa-solid fa-file-shield"></font-awesome-icon>
+                <font-awesome-icon icon="fa-solid fa-hand-holding-dollar"></font-awesome-icon>
+                <font-awesome-icon icon="fa-solid fa-sack-dollar"></font-awesome-icon>
+                <font-awesome-icon icon="fa-solid fa-thumbs-up"></font-awesome-icon>
+                <font-awesome-icon icon="fa-solid fa-people-roof"></font-awesome-icon>
+            </div>
             <InsertContent>course_description_conditions</InsertContent>
             <div class="goto_test_button">
                 <a href="study_plan">
@@ -70,4 +79,16 @@ p img {
     margin: 0 20px 20px 20px;
     float: left;
 }
+.icons_line {
+    display: flex;
+    justify-content: space-around;
+    margin: 50px auto;
+}
+.icons_line svg {
+    font-size: 2.5em;
+}
+.icons_line svg:hover {
+    color: #58cc02;
+}
+
 </style>
