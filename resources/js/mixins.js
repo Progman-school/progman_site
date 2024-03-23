@@ -75,15 +75,22 @@ export default {
                 let response = await fetch(
                     `${this.getAppUrl()}/api/${URL}`,
                     requestObject
-                );
-                let data = await response.json()
+                )
 
-                if (data.status === "error") {
-                    console.error(data.data)
-                }
+                if (response.status === 429) {
+                    setTimeout(async () => {
+                        response = await this.APIRequest(method, URL, body, callback)
+                    }, 2500)
+                } else {
+                    let data = await response.json()
 
-                if (callback) {
-                    await callback(data)
+                    if (data.status === "error") {
+                        console.error(data.data)
+                    }
+
+                    if (callback) {
+                        await callback(data)
+                    }
                 }
             } catch (error) {
                 alert("Bad internet connection! Sorry.\nPlease try again later or reload the page.")
