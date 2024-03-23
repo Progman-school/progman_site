@@ -82,10 +82,11 @@ p img {
 .icons_line {
     display: flex;
     justify-content: space-around;
-    margin: 50px auto;
+    margin: 40px auto;
 }
 .icons_line svg {
     font-size: 2.5em;
+    margin: 0 5px;
 }
 .icons_line svg:hover {
     color: #58cc02;
