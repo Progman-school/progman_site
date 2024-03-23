@@ -63,6 +63,9 @@ const getItemsToShow = computed({
 </template>
 
 <style scoped>
+h3 {
+    margin-top: 12px;
+}
 .carousel__item {
     width: 150px;
     background: rgba(1, 3, 4, 0.4);
