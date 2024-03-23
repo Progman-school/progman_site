@@ -187,17 +187,17 @@ function countDays(takesHours, hoursPerDay, daysPerWeek, level, age, withHelp = 
                     <InsertContent>study_plan_calculator_form_title</InsertContent>
                 </h3>
                 <WeekDaysFormField v-if="isShowedTest">
-                    <InsertContent>study_plan_calculator_days_label</InsertContent>:
+                    <InsertContent>study_plan_calculator_days_label</InsertContent>
                 </WeekDaysFormField>
                 <div class="field" v-if="isShowedTest">
                     <label for="day_hours">
-                        <InsertContent>study_plan_calculator_hours_label</InsertContent>:
+                        <InsertContent>study_plan_calculator_hours_label</InsertContent>
                     </label>
                     <input type="number" id="day_hours" name="day_hours" min="1" max="14" placeholder="number" required>
                 </div>
                 <div class="field" v-if="isShowedTest">
                     <label>
-                        <InsertContent>study_plan_calculator_level_label</InsertContent>:
+                        <InsertContent>study_plan_calculator_level_label</InsertContent>
                     </label>
                     <input type="radio" id="current_level_zero" name="current_level" value="zero" required>
                     <label for="current_level_zero">Zero</label>
@@ -208,13 +208,13 @@ function countDays(takesHours, hoursPerDay, daysPerWeek, level, age, withHelp = 
                 </div>
                 <div class="field" v-if="isShowedTest">
                     <label for="age">
-                        <InsertContent>study_plan_calculator_age_label</InsertContent>:
+                        <InsertContent>study_plan_calculator_age_label</InsertContent>
                     </label>
                     <input type="number" id="age" name="age" min="7" max="100" placeholder="number" required>
                 </div>
                 <div class="field" v-if="isShowedTest">
                     <label for="details">
-                        <InsertContent>study_plan_calculator_details_label</InsertContent>:
+                        <InsertContent>study_plan_calculator_details_label</InsertContent>
                     </label>
                     <textarea
                         name="details"

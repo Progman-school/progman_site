@@ -60,7 +60,7 @@ onMounted(() => {
                 :preserve-function="setRequestParams"
             >
                 <div class="field">
-                    <label><insert-content>consulting_page_hours_label</insert-content>:</label>
+                    <label><insert-content>consulting_page_hours_label</insert-content></label>
                     <div class="price_builder">
                         <div>
                             <div>
@@ -83,9 +83,9 @@ onMounted(() => {
                         <CouponDiscounter :couponTypeId="product?.coupon_type?.id" :unit-amount="productAmount" :unit-price="product?.unit_price" />
                     </div>
                 </div>
-                <WeekDaysFormField><insert-content>consulting_page_weekdays_label</insert-content>:</WeekDaysFormField>
+                <WeekDaysFormField><insert-content>consulting_page_weekdays_label</insert-content></WeekDaysFormField>
                 <div class="field">
-                    <label for="city"><insert-content>consulting_page_city_label</insert-content>:</label>
+                    <label for="city"><insert-content>consulting_page_city_label</insert-content></label>
                     <input type="text" name="city" id="city" minlength="3" placeholder="Your current city (country into the brackets)" required/>
                 </div>
                 <div class="field">
