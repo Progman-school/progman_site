@@ -70,7 +70,7 @@ function processTest(formFields) {
     formFields.append('yourself_score', yourselfScore)
     formFields.append('result', yearsMonthsWeeksDays(score))
     formFields.append('yourself_result', yearsMonthsWeeksDays(yourselfScore))
-    formFields.append('c', formFields.get('day_hours')[0] + '01020110')
+    formFields.append('c', formFields.get('day_hours')[0] + '01055010')
     formFields.append('topic','study_plan_counter')
     formFields.append('result_template_path','test_results/study_plan_counter')
     formFields.append('weekdays', weekdays.join(','))
