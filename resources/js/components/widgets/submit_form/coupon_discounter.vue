@@ -70,11 +70,11 @@ const discountPrice = computed(() => {
         checkedCouponSerialNumber.value = couponSerialNumber.value
         checkCoupon(props.couponTypeId, couponSerialNumber.value).then((data) => {
             coupon.value = data
-            couponFieldName.value = 'coupon'
         })
     }
 
     if (coupon.value) {
+        couponFieldName.value = 'coupon'
         return countTotalDiscountPrice(
             coupon.value['coupon_unit']['formula'],
             props.unitAmount,
