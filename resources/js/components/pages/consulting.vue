@@ -76,8 +76,8 @@ onMounted(() => {
                                 <label for="hours_more">More</label>
                             </div>
                             <div v-if="productAmount >= 3">
-                                <label for="hours_number">Your number</label>
-                                <input type="number" id="hours_number" name="quantity" value=3 min=2 max=50 v-model="productAmount" @input="valueRestriction" required>
+                                <label for="hours_number">Your number (max 16)</label>
+                                <input type="number" id="hours_number" name="quantity" value=3 min=2 max=16 v-model="productAmount" @input="valueRestriction" required>
                             </div>
                         </div>
                         <CouponDiscounter :couponTypeId="product?.coupon_type?.id" :unit-amount="productAmount" :unit-price="product?.unit_price" />
