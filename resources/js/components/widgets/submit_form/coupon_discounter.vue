@@ -74,6 +74,7 @@ const discountPrice = computed(() => {
     }
 
     if (coupon.value) {
+        couponFieldName.value = 'coupon'
         return countTotalDiscountPrice(
             coupon.value['coupon_unit']['formula'],
             props.unitAmount,
