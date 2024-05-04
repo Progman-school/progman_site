@@ -53,7 +53,8 @@ const submitForm = (event) => {
                 });
             }
             event.target.reset()
-            router.push(router.currentRoute.value.path)
+            props.is_disabled = true
+            // router.push(router.currentRoute.value.path)
         }
     )
 }

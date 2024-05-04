@@ -99,4 +99,14 @@ class CouponService
         return self::checkCouponBy($coupon->serial_number, $coupon->id);
     }
 
+    public static function countPriceByCoupon(float $price, int $amount = 1,  ?Coupon $coupon = null): float
+    {
+        $couponUnit = $coupon?->couponUnit()->first();
+        if ($couponUnit === null) {
+            return $price * $amount;
+        }
+        $filledFormula = str_replace(['A', 'P', 'D'], [$amount, $price, $coupon->value], $couponUnit->formula);
+        return eval("return $filledFormula;");
+    }
+
 }

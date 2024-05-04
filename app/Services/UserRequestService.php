@@ -40,6 +40,7 @@ class UserRequestService
         $userRequest->current_product_price = $product->unit_price;
         $userRequest->application_data = json_encode($requestData, JSON_UNESCAPED_UNICODE);
         $userRequest->hash = self::getRequestHash($request);
+        $userRequest->coupon()->associate($coupon);
         $userRequest->language = TagService::getCurrentLanguage();
         $userRequest->status = UserRequest::RECEIVED_STATUS;
         $userRequest->save();
@@ -73,7 +74,7 @@ class UserRequestService
                 )
             ));
         }
-
+        $couponUnit = $coupon?->couponUnit()->first();
         $telegramService = new TelegramService();
         $result = $telegramService->sendMessageToAdminChat(
             UserRequestService::createRequestMessageForAdminChat(
@@ -81,7 +82,9 @@ class UserRequestService
                 array_diff_key($request->toArray(), array_flip(["uid_type", "name", "contact"])
                 ) + [
                     'product_name' => $product->getName(),
-                    'coupon_value' => $coupon ? $coupon->value . $coupon->couponUnit()->first()->symbol : 'none',
+                    'product_unit_price' => $product->unit_price,
+                    'coupon_value' => $coupon ? $coupon->value . $couponUnit->symbol : 'none',
+                    'total' => CouponService::countPriceByCoupon($product->unit_price, $userRequest->quantity, $coupon),
                 ]
             ),
             TelegramService::REQUEST_STATUS_KEYBOARDS[$userRequest->status]

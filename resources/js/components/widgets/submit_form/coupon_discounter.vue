@@ -91,12 +91,12 @@ async function checkCoupon(couponTypeId, serialNumber) {
 
     if (!serialNumber || !serialNumber.length) {
         setDefaultStatus()
-        couponFieldName.value = 'coupon'
+        couponFieldName.value = null
         return null
     }
 
     if (serialNumber.length < 5) {
-        couponFieldName.value = null;
+        couponFieldName.value = null
         setErrorStatus('Wrong coupon code!')
         return null
     }
@@ -111,6 +111,7 @@ async function checkCoupon(couponTypeId, serialNumber) {
         )
         return couponData.data
     } else {
+        couponFieldName.value = null
         setErrorStatus(couponData.data)
         return null
     }
