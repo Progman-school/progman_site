@@ -64,7 +64,7 @@ onMounted(() => {
                     <div class="price_builder">
                         <div>
                             <div>
-                                <input type="radio" id="hours_1" name="quantity" value=1 v-model="productAmount" required :disabled="productAmount >= 3">
+                                <input type="radio" id="hours_1" name="quantity" value=1 v-model="productAmount" required checked :disabled="productAmount >= 3">
                                 <label for="hours_1">One</label>
                             </div>
                             <div>
