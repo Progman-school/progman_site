@@ -35,6 +35,12 @@ const COUPON_STATUS_COLORS = {
 
 const eventListener = useEventListener()
 
+eventListener.add('coupon:reset', () => {
+    couponSerialNumber.value = ''
+    checkedCouponSerialNumber.value = null
+    coupon.value = null
+})
+
 const coupon = ref(null)
 const couponSerialNumber = ref('')
 const checkedCouponSerialNumber = ref(null)

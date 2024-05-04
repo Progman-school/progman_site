@@ -8,7 +8,7 @@ export const useEventListener = defineStore('eventListener', {
         add(eventName, callback) {
             this.events[eventName] = callback
         },
-        call(eventName, data) {
+        call(eventName, data = null) {
             if (this.events[eventName] !== undefined) {
                 return this.events[eventName](data)
             }

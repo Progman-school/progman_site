@@ -52,9 +52,9 @@ const submitForm = (event) => {
                     button: 'Ok',
                 });
             }
-            event.target.reset()
+            eventListener.call('coupon:reset')
             props.is_disabled = true
-            // router.push(router.currentRoute.value.path)
+            event.target.reset()
         }
     )
 }
