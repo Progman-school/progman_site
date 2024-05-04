@@ -90,7 +90,7 @@ onMounted(() => {
                 </div>
                 <div class="field">
                     <label for="details"><insert-content>consulting_page_message_label</insert-content>*</label>
-                    <textarea name="details" id="details" minlength="10" maxlength="500" placeholder="Any additional wishes or questions (optional)" rows="3"></textarea>
+                    <textarea name="details" id="details" maxlength="500" placeholder="Any additional wishes or questions (optional)" rows="3"></textarea>
                 </div>
                 <RegistrationFormFields @onPrivacyPolicyConfirmed="changeFormDisability">
                     <InsertContent>registration_form_privacy_policy_link</InsertContent>
