@@ -54,7 +54,7 @@ const submitForm = (event) => {
             }
             event.target.reset()
             props.is_disabled = true
-            // router.push(router.currentRoute.value.path)
+            router.replace({query: null})
         }
     )
 }
