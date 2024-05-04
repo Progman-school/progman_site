@@ -156,11 +156,8 @@ class TelegramService extends TelegramBotApiSdk
 
         $product = Product::where("id", $userRequest->product_id)->first();
 
-        $coupon = null;
-        if (isset($userRequest['coupon']) ?? $userRequest->coupon) {
-            $coupon = Coupon::where("serial_number", $userRequest->coupon)->first();
-        }
-
+        $coupon = $userRequest->coupon()->first() ?? null;
+        $couponUnit = $coupon?->couponUnit()->first();
         $result = $this->editMessageInAdminChat(
             $userRequest->admin_message_id,
             UserRequestService::createRequestMessageForAdminChat(
@@ -170,7 +167,9 @@ class TelegramService extends TelegramBotApiSdk
                     array_flip(["uid_type", "name", "contact"])
                 ) + [
                     'product_name' => $product->getName(),
-                    'coupon_value' => $coupon ? $coupon->value . $coupon->couponUnit()->first()->symbol : 'none',
+                    'product_unit_price' => $product->unit_price,
+                    'coupon_value' => $coupon ? $coupon->value . $couponUnit->symbol : 'none',
+                    'total' => CouponService::countPriceByCoupon($product->unit_price, $userRequest->quantity, $coupon),
                 ],
                 $confirmedData,
                 $userRequest->getRepeatsCount(),
