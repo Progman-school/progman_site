@@ -10,13 +10,26 @@ use App\Models\Request as UserRequest;
 
 class Purchase extends Model
 {
-    const AUTO_PAYMENT_TYPE = "auto";
-    const MANAGER_PAYMENT_TYPE = "manager";
+    const AUTO_PAYMENT_METHOD = "auto";
+    const MANAGER_PAYMENT_METHOD = "manager";
+
+    const PAYMENT_METHODS = [
+        self::AUTO_PAYMENT_METHOD,
+        self::MANAGER_PAYMENT_METHOD
+    ];
+
+    const PAYPAL_PAYMENT_TYPE = "paypal";
+    const CASH_PAYMENT_TYPE = "cash";
+    const ZELLE_PAYMENT_TYPE = "zelle";
+    const RUSSIAN_MOBILE_PAYMENT_TYPE = "russian_mobile";
 
     const PAYMENT_TYPES = [
-        self::AUTO_PAYMENT_TYPE,
-        self::MANAGER_PAYMENT_TYPE
+        self::PAYPAL_PAYMENT_TYPE,
+        self::CASH_PAYMENT_TYPE,
+        self::ZELLE_PAYMENT_TYPE,
+        self::RUSSIAN_MOBILE_PAYMENT_TYPE
     ];
+
 
     /**
      * The attributes that are mass assignable.
@@ -31,10 +44,13 @@ class Purchase extends Model
         'current_product_price',
         'total_price',
         'contact',
+        'name',
         'user_id',
+        'method',
         'payment_type',
         'payment_details',
-        'admin_id',
+        'service_fee',
+//        'admin_id',
         'comment',
     ];
 
