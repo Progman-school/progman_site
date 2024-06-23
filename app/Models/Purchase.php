@@ -2,10 +2,8 @@
 
 namespace App\Models;
 
-use App\Models\Coupon\CouponType;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use App\Models\Request as UserRequest;
 
 class Purchase extends Model
